@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-22
+
 ### Added
 
 - Initial release.
+
+[unreleased]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/50c509808ad6421d2c40353e1c6ed2354f02278f...1.0.0
