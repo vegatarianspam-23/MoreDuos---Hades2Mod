@@ -1,0 +1,135 @@
+# Offer Requirements
+
+Each duo needs one boon from every group (sub-bullet). Boons marked *(BoonEdits)* only count while that BoonEdits rework is on.
+
+- **Air Control**
+  - Divine Vengeance, Power Surge, Lightning Lance
+  - Smolder Ring, Heat Rush
+- **Bitter End**
+  - Grievous Blow, Mutual Destruction, Blood Spree
+  - Weed Killer, Local Climate, Cold Storage
+  - Vicious Strike, Vicious Flourish, Ice Strike, Ice Flourish
+- **Bleeding Heart**
+  - Vicious Strike, Vicious Flourish, Profuse Bleeding *(only without BoonEdits' rework)*
+  - Rapture Ring, Passion Rush, Glamour Gain
+- **Blinding Smite**
+  - Solar Ring, Blinding Rush, Light Smite, Dazzling Display
+  - Divine Vengeance, Power Surge, Lightning Lance
+- **Blood Born**
+  - Grievous Blow, Mutual Destruction, Blood Spree
+  - Hereditary Bane, Dying Wish, Rousing Reception *(BoonEdits)*
+- **Boiling Blood**
+  - Grisly Gain, Visceral Impact, Meat Grinder *(BoonEdits)*, Profuse Bleeding *(BoonEdits)*
+  - Flash Fry, Hot Pot, Snuffed Candle *(Volcanic Crown in BoonEdits)*
+- **Bubbling Cauldron**
+  - Flame Strike, Flame Flourish, Smolder Ring
+  - Slippery Slope, Tidal Ring
+- **Burnt Offering** — also needs another boon to give up.
+  - Bridal Glow, Uncommon Grace, Extended Family
+  - Flash Fry, Hot Pot, Snuffed Candle *(Volcanic Crown in BoonEdits)*
+- **Cold Hearted**
+  - Rapture Ring, Passion Rush, Glamour Gain
+  - Ice Strike, Ice Flourish, Arctic Ring
+- **Discerning Taste** — not offered during Fates' Whim.
+  - Shameless Attitude, Secret Crush, Spiritual Affirmation
+  - Divine Vengeance, Power Surge, Lightning Lance
+- **Energy Overflow**
+  - Super Nova, Extra Dose, Light Smite
+  - Buried Treasure, Sea Star
+- **Explosive Sparks**
+  - Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, Ionic Gain
+  - Anvil Ring, Smithy Rush *(BoonEdits)*
+- **Family Reunion**
+  - Extended Family, Bridal Glow, Uncommon Grace
+  - Lightning Lance, Divine Vengeance, Power Surge
+- **Family Trade**
+  - King's Ransom, Queen's Ransom
+- **Gentle Caress**
+  - Secret Crush, Spiritual Affirmation, Shameless Attitude
+  - Heavy Metal, Trusty Shield, Security System, Uncanny Fortitude
+- **Glacial Advance**
+  - Ice Strike, Ice Flourish, Arctic Ring
+  - Wave Strike, Wave Flourish, Breaker Rush *(BoonEdits)*
+- **Golden Rule**
+  - Sea Star, Buried Treasure
+  - Bridal Glow, Uncommon Grace, Extended Family
+- **Hot Iron** (Hephaestus × Hestia)
+  - Furnace Blast, Anvil Ring *(BoonEdits)*, Smithy Rush *(BoonEdits)*
+  - Glowing Coal, Controlled Burn, Volcanic Crown *(BoonEdits)*
+- **Ingenious Invention**
+  - Super Nova, Perfect Image, Extra Dose
+  - Heavy Metal, Trusty Shield, Security System, Uncanny Fortitude
+- **Intertwined Fate**
+  - Dying Wish, Hereditary Bane, Rousing Reception *(BoonEdits)*
+  - Flutter Strike, Flutter Flourish
+- **Kindled Spirit**
+  - Spiritual Affirmation, Secret Crush, Shameless Attitude
+  - Flash Fry, Hot Pot, Snuffed Candle *(Volcanic Crown in BoonEdits)*
+- **Land Mine**
+  - Volcanic Strike, Volcanic Flourish
+  - Grievous Blow, Mutual Destruction, Blood Spree
+- **Orbital Ring**
+  - Hereditary Bane, Dying Wish, Rousing Reception *(BoonEdits)*
+  - Super Nova, Extra Dose, Light Smite
+- **Permafrost Shield**
+  - Snow Queen, Plentiful Forage, Steady Growth
+  - Trusty Shield, Heavy Metal, Security System, Uncanny Fortitude
+- **Plasmic Capacitor**
+  - Grisly Gain, Visceral Impact, Meat Grinder *(BoonEdits)*, Profuse Bleeding *(BoonEdits)*
+  - Static Shock
+- **Razor Shoals**
+  - Tidal Ring, Slippery Slope
+  - Vicious Strike, Vicious Flourish
+- **Room Temperature**
+  - Ice Strike, Ice Flourish, Arctic Ring
+  - Glowing Coal, Controlled Burn, Volcanic Crown *(BoonEdits)*
+- **Royal Banquet**
+  - Bridal Glow, Uncommon Grace, Extended Family
+  - Ice Strike, Ice Flourish, Arctic Ring, Frigid Rush, Tranquil Gain
+- **Solar Eclipse**
+  - Solar Ring, Blinding Rush, Dazzling Display, Light Smite
+  - Grievous Blow, Mutual Destruction, Blood Spree
+- **Solar Flare**
+  - Flame Strike, Flame Flourish, Smolder Ring
+  - Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, Lucid Gain
+- **Spiteful Strength**
+  - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain
+  - Volcanic Strike, Volcanic Flourish, Anvil Ring, Smithy Rush, Tough Gain
+  - High Surf, Static Shock, Secret Crush, Killing Stroke, Ingenious Strike, Ingenious Flourish, Stalwart Stand, Trusty Shield
+- **Storm Front**
+  - Arctic Gale, Frigid Rush
+  - Divine Vengeance, Power Surge, Lightning Lance
+- **Tectonic Cycle**
+  - Wave Strike, Wave Flourish, Tidal Ring, Breaker Rush, Flood Gain
+  - Anvil Ring, Smithy Rush, Tough Gain
+  - Security System, Hydraulic Might
+- **Tipped Scales**
+  - Sea Star, Buried Treasure
+  - Divine Vengeance, Power Surge, Lightning Lance
+- **Untouchable Glow**
+  - Flutter Strike, Flutter Flourish, Glamour Gain
+  - Super Nova, Perfect Image, Extra Dose
+- **Winter Solstice**
+  - Ice Strike, Ice Flourish, Arctic Ring, Frigid Rush, Tranquil Gain
+  - Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, Lucid Gain
+- **Wishing Well**
+  - Buried Treasure, Sea Star
+  - Shameless Attitude, Secret Crush, Spiritual Affirmation
+
+## Base Game Offer Requirements
+
+Certain base duo boons are offered under different requirements so they have less overlapping requirements with new duo boons:
+
+- **Hot Pot** — no longer needs Flame Strike, Flame Flourish or Smolder Ring first.
+- **Tropical Cyclone**
+  - Super Nova, Perfect Image, Extra Dose
+  - Frigid Rush, Arctic Gale
+- **Natural Selection**
+  - Sea Star, Buried Treasure
+  - Plentiful Forage, Steady Growth, Snow Queen
+- **Hearty Appetite**
+  - Shameless Attitude, Secret Crush, Spiritual Affirmation
+  - Plentiful Forage, Snow Queen, Steady Growth
+- **Cherished Heirloom**
+  - Snow Queen, Plentiful Forage, Steady Growth
+  - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain

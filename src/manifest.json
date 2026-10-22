@@ -1,0 +1,19 @@
+{
+  "namespace": "SWu",
+  "name": "MoreDuosMod",
+  "description": "Adds new Duo Boons to Hades II.",
+  "version_number": "0.0.1",
+  "dependencies": [
+    "Hell2Modding-Hell2Modding-1.0.115",
+    "LuaENVY-ENVY-1.2.1",
+    "SGG_Modding-Chalk-2.1.2",
+    "SGG_Modding-ReLoad-1.0.3",
+    "SGG_Modding-SJSON-1.0.3",
+    "SGG_Modding-ModUtil-4.0.1",
+    "zannc-GodsAPI-2.1.5",
+    "zannc-Droppable_Gods-3.0.9",
+    "zerp-HexReroll-1.0.2"
+  ],
+  "website_url": "https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod",
+  "FullName": "SWu-MoreDuosMod"
+}
