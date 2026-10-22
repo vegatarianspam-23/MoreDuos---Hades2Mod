@@ -2,9 +2,9 @@
   "namespace": "SWu",
   "name": "MoreDuosMod",
   "description": "Adds new Duo Boons to Hades II.",
-  "version_number": "0.0.1",
+  "version_number": "1.0.0",
   "dependencies": [
-    "Hell2Modding-Hell2Modding-1.0.115",
+    "Hell2Modding-Hell2Modding-1.0.119",
     "LuaENVY-ENVY-1.2.1",
     "SGG_Modding-Chalk-2.1.2",
     "SGG_Modding-ReLoad-1.0.3",
