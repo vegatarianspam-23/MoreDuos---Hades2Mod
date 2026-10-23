@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-10-23
+
 ### Changed
 
 - Bleeding Heart: falling blades now deal 50% more damage to Weak foes (was 30%).
@@ -37,7 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[unreleased]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.4...HEAD
+[unreleased]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.5...HEAD
+[1.0.5]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.4...1.0.5
 [1.0.4]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.1...1.0.2
