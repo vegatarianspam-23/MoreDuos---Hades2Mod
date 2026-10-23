@@ -35,6 +35,10 @@ register_duo({
 			Name = _PLUGIN.guid .. '.LandMineArmed',
 		},
 
+		OnProjectileArmFunction = {
+			FunctionName = _PLUGIN.guid .. '.LandMinePrimed',
+		},
+
 		OnProjectileDeathFunction = {
 			ValidProjectiles = { 'ProjectileCast' },
 			ValidProjectilesLookup = game.ToLookup({ 'ProjectileCast' }),
@@ -58,6 +62,17 @@ function mod.LandMineArmed(triggerArgs, _args)
 
 	game.SessionMapState.SWuLandMines = game.SessionMapState.SWuLandMines or {}
 	game.SessionMapState.SWuLandMines[triggerArgs.ProjectileId] = true
+end
+
+
+---@diagnostic disable-next-line: unused-local
+function mod.LandMinePrimed(triggerArgs, _args)
+	if not triggerArgs or not triggerArgs.ProjectileId then return end
+
+	local mines = game.SessionMapState.SWuLandMines
+	if mines then
+		mines[triggerArgs.ProjectileId] = nil
+	end
 end
 
 

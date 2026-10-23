@@ -28,7 +28,7 @@
 - **Razor Shoals** (Ares × Poseidon) — Wounds can be re-inflicted on Frothed foes more quickly.
 - **Room Temperature** (Hestia × Demeter) — Hestia's fireballs thaw Frozen foes (so that they can be Frozen again), and deal 200 more damage to them.
 - **Royal Banquet** (Hera × Demeter) — Your boons are one rarity higher tonight, repeat this effect whenever one gains a Pom level.
-- **Solar Eclipse** (Apollo × Ares) — Move and strike 10% faster for each Dazed foe, up to 50%. If all foes are Dazed, go Dark and deal double damage for 5 seconds (30 second recharge).
+- **Solar Eclipse** (Apollo × Ares) — Move and strike 10% faster for each Dazed foe, up to 50%. If all foes are Dazed, go Dark and deal double damage for 5 seconds (40 second recharge).
 - **Solar Flare** (Apollo × Hestia) — While you channel an Omega move, a ring of fire expands around you, inflicting 90 Scorch every second. Inflict 50% more Scorch from all sources.
 - **Spiteful Strength** (Hera × Hephaestus) — Prime 60 Magick now. Your weapon strikes deal more damage for the share of your Magick that is Primed, up to +100% at all of it. Bonus is doubled for an Attack or Special with no percentage-damage boon on it (none, Zeus, Poseidon, Hestia, Hephaestus).
 - **Storm Front** (Zeus × Demeter) — Demeter's Gusts are larger and throw chain lightning at foes they strike. 

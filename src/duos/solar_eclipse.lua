@@ -182,7 +182,6 @@ local function solar_eclipse_ready_announce()
 		if tuning.ReadySound then
 			game.PlaySound({ Name = tuning.ReadySound, Id = hero.ObjectId })
 		end
-		solar_eclipse_announce()
 	end
 	solarEclipseWasReady = ready
 end

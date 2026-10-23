@@ -512,7 +512,7 @@ mod.tuning = {
 	SolarEclipse = {
 		DamageMultiplier = 2.00,
 		Duration = 5,
-		Recharge = 30,
+		Recharge = 40,
 
 		SpeedPerDazed = 0.10,
 		MaxSpeedBonus = 0.50,

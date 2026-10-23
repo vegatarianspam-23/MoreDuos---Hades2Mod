@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Solar Eclipse: recharge raised to 40 seconds (was 30)
+- Solar Eclipse: no longer shows a text popup when it recharges
+- Land Mine: no longer triggers on a Cast already primed as an Omega Cast
+
 ## [1.0.9] - 2026-10-23
 
 ### Changed
