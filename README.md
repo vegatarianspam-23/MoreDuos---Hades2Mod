@@ -14,7 +14,7 @@ Please note: installing [the companion mod, BoonEdits](https://thunderstore.io/c
 
 Install through a mod manager (Thunderstore or r2modman) to pull in dependencies.
 To install by hand, drop the folder into `ReturnOfModding/plugins/` and make sure these are present:
-Hell2Modding, ENVY, Chalk, ReLoad, SJSON, ModUtil, GodsAPI, Droppable Gods and HexReroll.
+Hell2Modding, ENVY, Chalk, ReLoad, SJSON, ModUtil, GodsAPI, Droppable Gods, HexReroll and MultiDressHelper.
 
 ## Configuration
 
@@ -34,6 +34,8 @@ no other modder's code is redistributed here.
   Pandemonium.
 - [HexReroll](https://github.com/adi1998/HexReroll) by Aditya Gupta (MIT) supplies the Hex screen's
   reroll interface.
+- [MultiDressHelper](https://github.com/adi1998/H2-MultiDressHelper) by Aditya Gupta (MIT) lets
+  you hold more than one of Arachne's dresses at once, which Wishing Well can give you.
 - [Reroll_Hammers](https://github.com/mozzarellathicc/reroll-hammers) by mozzarellathicc (MIT)
   showed how to enable Hammer rerolls.
 

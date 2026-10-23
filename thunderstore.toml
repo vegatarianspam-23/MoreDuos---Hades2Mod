@@ -20,6 +20,7 @@ SGG_Modding-ModUtil = "4.0.1"
 zannc-GodsAPI = "2.1.5"
 zannc-Droppable_Gods = "3.0.9"
 zerp-HexReroll = "1.0.2"
+zerp-MultiDressHelper = "1.0.0"
 
 
 [build]

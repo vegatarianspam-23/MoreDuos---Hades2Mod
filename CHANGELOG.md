@@ -7,7 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Dependency on [MultiDressHelper](https://thunderstore.io/c/hades-ii/p/zerp/MultiDressHelper/), so holding more than one Arachne dress through Wishing Well works properly.
+
 ## [1.0.3] - 2026-10-23
+
+### Changed
+
+- Intertwined Fate: Hitched foes no longer spread hitch to nearby foes.
+
+### Fixed
+
+- Intertwined Fate: updated description
 
 ## [1.0.2] - 2026-10-23
 

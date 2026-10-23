@@ -15,6 +15,7 @@ runtime, and none of their code is copied into this repository.
 | [GodsAPI](https://thunderstore.io/c/hades-ii/p/zannc/GodsAPI/) | zannc | GPL-3.0 |
 | [Droppable Gods](https://thunderstore.io/c/hades-ii/p/zannc/Droppable_Gods/) | zannc | GPL-3.0 |
 | [HexReroll](https://thunderstore.io/c/hades-ii/p/zerp/HexReroll/) | Aditya Gupta | MIT |
+| [MultiDressHelper](https://thunderstore.io/c/hades-ii/p/zerp/MultiDressHelper/) | Aditya Gupta | MIT |
 
 **Droppable Gods** supplies Artemis, Athena, Dionysus and Hades, who have no loot tables in vanilla,
 along with their icons and sounds. Family Reunion, Wishing Well and Pandemonium draw on these gods by
@@ -27,6 +28,10 @@ enabling rerolls on hammer upgrades for Discerning Taste
 **HexReroll** supplies the reroll interface for the Hex screen, which vanilla leaves without one. It
 shows for holders of the Panel Reroll arcana, and Discerning Taste reports that arcana as held, so
 the screen works for this boon without either mod knowing about the other.
+
+**MultiDressHelper** fixes the game's handling of more than one Arachne dress held at once. Wishing
+Well can offer Arachne again while you already wear one of her dresses, and vanilla only ever
+expects one.
 
 GodsAPI and Droppable Gods are GPL-3.0. This mod only depends on them and reads their public data.
 
