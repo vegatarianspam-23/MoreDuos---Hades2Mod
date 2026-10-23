@@ -41,8 +41,11 @@ register_duo({
 })
 
 
-local function untouchable_glow_show(room)
-	local percent = math.floor((room.SWuUntouchedBonus or 0) * 100 + 0.5)
+local function untouchable_glow_show(run)
+	local room = run.CurrentRoom
+	if not room then return end
+
+	local percent = math.floor((run.SWuUntouchedBonus or 0) * 100 + 0.5)
 	if room.SWuUntouchedPercent == percent then return end
 
 	room.SWuUntouchedPercent = percent
@@ -58,11 +61,20 @@ function mod.UntouchableGlowReset(_attacker, _args, triggerArgs)
 	if triggerArgs.ManuallyTriggered then return end
 	if not triggerArgs.DamageAmount or triggerArgs.DamageAmount <= 0 then return end
 
-	local room = game.CurrentRun and game.CurrentRun.CurrentRoom
-	if not room then return end
-	room.SWuUntouchedSeconds = 0
-	room.SWuUntouchedBonus = 0
-	untouchable_glow_show(room)
+	local run = game.CurrentRun
+	if not run then return end
+	run.SWuUntouchedSeconds = 0
+	run.SWuUntouchedBonus = 0
+	untouchable_glow_show(run)
+end
+
+
+local UNTOUCHABLE_UNLIMITED_RANGE = 3000
+
+
+local function untouchable_glow_everywhere()
+	local boon = mod.tuning.UntouchableGlow.NearbyExclusionBoon
+	return boon and game.HeroHasTrait(boon)
 end
 
 
@@ -76,7 +88,7 @@ local function untouchable_glow_foes_near()
 		IgnoreInvulnerable = true,
 		IgnoreHomingIneligible = true,
 		IgnoreSelf = true,
-		Distance = mod.tuning.UntouchableGlow.Radius,
+		Distance = untouchable_glow_everywhere() and UNTOUCHABLE_UNLIMITED_RANGE or mod.tuning.UntouchableGlow.Radius,
 		PreciseCollision = true,
 	})
 
@@ -93,27 +105,25 @@ function mod.UntouchableGlow(_hero, args)
 	local interval = (args and args.Interval) or 1.0
 	local tuning = mod.tuning.UntouchableGlow
 
-	local room = game.CurrentRun and game.CurrentRun.CurrentRoom
-	if not room then return end
+	local run = game.CurrentRun
+	if not run then return end
 
-	room.SWuUntouchedSeconds = 0
-	room.SWuUntouchedBonus = 0
-	room.SWuUntouchedPercent = 0
+	untouchable_glow_show(run)
 
 	local loop = duo_loop_claim(duo_traits.UntouchableGlow)
 	if not loop then return end
 
 	while duo_running(duo_traits.UntouchableGlow) do
 		game.wait(interval, loop)
-		room = game.CurrentRun and game.CurrentRun.CurrentRoom
-		if not room then return end
+		run = game.CurrentRun
+		if not run then return end
 
 		if untouchable_glow_foes_near() then
-			room.SWuUntouchedSeconds = (room.SWuUntouchedSeconds or 0) + interval
-			room.SWuUntouchedBonus =
-				math.min(room.SWuUntouchedSeconds * tuning.PercentPerSecond, tuning.MaxPercent)
-			untouchable_glow_show(room)
+			run.SWuUntouchedSeconds = (run.SWuUntouchedSeconds or 0) + interval
+			run.SWuUntouchedBonus =
+				math.min(run.SWuUntouchedSeconds * tuning.PercentPerSecond, tuning.MaxPercent)
 		end
+		untouchable_glow_show(run)
 	end
 end
 
@@ -130,11 +140,11 @@ local function untouchable_glow_multiplier(attacker, victim, triggerArgs)
 		return 1
 	end
 
-	local room = game.CurrentRun and game.CurrentRun.CurrentRoom
-	local bonus = room and room.SWuUntouchedBonus
+	local bonus = game.CurrentRun and game.CurrentRun.SWuUntouchedBonus
 	if not bonus or bonus <= 0 then return 1 end
 
 	if not victim or not victim.ObjectId then return 1 end
+	if untouchable_glow_everywhere() then return 1 + bonus end
 	local distance = game.GetDistance({ Id = hero.ObjectId, DestinationId = victim.ObjectId })
 	if not distance or distance > mod.tuning.UntouchableGlow.Radius then return 1 end
 

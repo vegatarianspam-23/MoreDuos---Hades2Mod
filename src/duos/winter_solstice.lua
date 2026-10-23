@@ -253,6 +253,7 @@ local function winter_solstice_squall_reach()
 	if not hero then return {} end
 
 	local tuning = mod.tuning.WinterSolstice
+	local everywhere = tuning.NearbyExclusionBoon and game.HeroHasTrait(tuning.NearbyExclusionBoon)
 	return game.ToLookup(game.GetClosestIds({
 		Id = hero.ObjectId,
 		DestinationName = 'EnemyTeam',
@@ -260,8 +261,8 @@ local function winter_solstice_squall_reach()
 		StopsProjectiles = true,
 		IgnoreHomingIneligible = true,
 		IgnoreSelf = true,
-		Distance = tuning.SquallRadius,
-		ScaleY = tuning.SquallScaleY,
+		Distance = everywhere and 3000 or tuning.SquallRadius,
+		ScaleY = not everywhere and tuning.SquallScaleY or nil,
 		PreciseCollision = true,
 	}))
 end

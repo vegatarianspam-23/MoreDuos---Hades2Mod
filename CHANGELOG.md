@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Untouchable Glow: bonus now kept across encounters and locations
+
+### Fixed
+
+- Untouchable Glow: now works with Island Getaway
+- Winter Solstice: now works with Island Getaway
+
 ## [1.0.5] - 2026-10-23
 
 ### Changed
@@ -28,10 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Intertwined Fate: updated description
-
-## [1.0.2] - 2026-10-23
-
-## [1.0.1] - 2026-10-23
 
 ## [1.0.0] - 2026-10-22
 

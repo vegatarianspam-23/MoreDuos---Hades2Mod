@@ -357,6 +357,7 @@ mod.tuning = {
 		PercentPerSecond = 0.01,
 		MaxPercent = 1.00,
 		Radius = 430,
+		NearbyExclusionBoon = 'AllCloseBoon',
 	},
 	ColdHearted = {
 		Power = 50,
@@ -554,6 +555,7 @@ mod.tuning = {
 		SquallChillDelay = 0.2,
 		SquallRadius = 806,
 		SquallScaleY = 0.54,
+		NearbyExclusionBoon = 'AllCloseBoon',
 
 		RingFx = 'SWuWinterSolsticeCircle',
 		RingRadius = 430,
