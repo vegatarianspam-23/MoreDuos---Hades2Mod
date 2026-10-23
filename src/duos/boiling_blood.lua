@@ -48,8 +48,6 @@ end
 function mod.BoilingBlood()
 	if not duo_on('BoilingBlood') then return end
 
-	local room = game.CurrentRun and game.CurrentRun.CurrentRoom
-	if room then room.SWuBoilingBloodHits = 0 end
 	boiling_blood_apply()
 end
 

@@ -106,7 +106,7 @@ duo_text = {
 	BoilingBlood = {
 		Name = 'Boiling Blood',
 		Description = 'Whenever you collect {!Icons.BloodDropIcon}, restore {!Icons.Health}. You deal more ' ..
-			'damage for every hit you take this {$Keywords.EncounterAlt}, up to {#BoldFormatGraft}' ..
+			'damage for every hit you take this {$Keywords.RoomAlt}, up to {#BoldFormatGraft}' ..
 			'{$TooltipData.ExtractData.TooltipMaxBonus}%{#Prev}.',
 		StatLines = {
 			SWuBoilingBloodHealStatDisplay = { Name = 'Life Restored per Plasma:', Index = 1 },
@@ -448,7 +448,7 @@ duo_text = {
 	EnergyOverflow = {
 		Name = 'Energy Overflow',
 		Description = 'You restore more {!Icons.Mana}. Any you restore past your limit raises it for the ' ..
-			'rest of the {$Keywords.EncounterAlt}.',
+			'rest of the {$Keywords.RoomAlt}.',
 		StatLines = {
 			SWuEnergyOverflowStatDisplay = { Name = 'Bonus Magick Restoration:', Index = 1 },
 			SWuEnergyOverflowCapStatDisplay = { Name = 'Max Magick:', Index = 2 },

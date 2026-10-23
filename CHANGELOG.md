@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Boiling Blood: bonus now lasts the whole location instead of each encounter
+- Energy Overflow: raised Magick limit now lasts the whole location instead of each encounter
+- Solar Eclipse: speed bonus raised to 10% per Dazed foe (was 5%), still up to 50%
+
 ## [1.0.7] - 2026-10-23
 
 ### Changed
@@ -19,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Winter Solstice: now works with Island Getaway
 
 ## [1.0.6] - 2026-10-23
+
+- text updates
 
 ## [1.0.5] - 2026-10-23
 
@@ -41,6 +49,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Intertwined Fate: updated description
+  
+## [1.0.2] - 2026-10-23
+
+- text updates
+  
+## [1.0.1] - 2026-10-23
+
+- text updates
 
 ## [1.0.0] - 2026-10-22
 

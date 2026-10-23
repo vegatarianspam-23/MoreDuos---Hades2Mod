@@ -165,6 +165,12 @@ function mod.EnergyOverflowSetup()
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero then return end
 
+	local room = game.CurrentRun.CurrentRoom
+	if room then
+		if room.SWuEnergyOverflowReset then return end
+		room.SWuEnergyOverflowReset = true
+	end
+
 	local trait = game.GetHeroTrait(duo_traits.EnergyOverflow)
 	if trait then
 		local entry = energy_overflow_ceiling(trait)

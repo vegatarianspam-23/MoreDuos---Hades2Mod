@@ -513,7 +513,7 @@ mod.tuning = {
 		Duration = 5,
 		Recharge = 30,
 
-		SpeedPerDazed = 0.05,
+		SpeedPerDazed = 0.10,
 		MaxSpeedBonus = 0.50,
 		DarkSpeedBonus = 0.50,
 
