@@ -6,7 +6,7 @@ schemaVersion = "0.0.1"
 namespace = "SWu"
 name = "MoreDuosMod"
 versionNumber = "1.0.4"
-description = "Adds new Duo Boons to Hades II. Companion mod to BoonEdits (highly recommended)."
+description = "Adds new Duo Boons to Hades II. A BoonEdits mod install is highly recommended."
 websiteUrl = "https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod"
 containsNsfwContent = false
 
