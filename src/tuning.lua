@@ -397,7 +397,7 @@ mod.tuning = {
 		Blade = 'ProjectileAresSwordCast',
 
 		BladeDamage = 200,
-		WeakMultiplier = 1.30,
+		WeakMultiplier = 1.50,
 	},
 	ExplosiveSparks = {
 		Chance = 0.30,

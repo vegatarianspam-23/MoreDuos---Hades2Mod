@@ -2,7 +2,7 @@
 
 - **Air Control** (Hestia × Zeus) — Foes' ranged shots travel at 25% speed. Your Cast, Sprint and channelled Omega destroy them and strike the attacker back with lightning.
 - **Bitter End** (Ares × Demeter) — Your weapon strikes that hit deal 50% more damage when inflicting Wounds or Freeze.
-- **Bleeding Heart** (Ares × Aphrodite) — Inflicting Wounds on a Weak foe creates a falling blade. Falling blades deal 30% more damage to Weak foes.
+- **Bleeding Heart** (Ares × Aphrodite) — Inflicting Wounds on a Weak foe creates a falling blade. Falling blades deal 50% more damage to Weak foes.
 - **Blinding Smite** (Apollo × Zeus) — When a Dazed foe misses its attack, 1–5 lightning bolts strike it . Lightning from Zeus deals 30% more damage to Dazed foes.
 - **Blood Born** (Hera × Ares) — Whenever a foe is slain, 5 Shamblers rise to take its place (capped at 25). Deal 2% more damage for every foe slain this encounter, up to 100%.
 - **Boiling Blood** (Ares × Hestia) — Plasma restores 1 Health on pickup. Deal 10% more damage for every hit you take this encounter, up to 100%.

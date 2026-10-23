@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Bleeding Heart: falling blades now deal 50% more damage to Weak foes (was 30%).
+
 ## [1.0.4] - 2026-10-23
 
 ### Added

@@ -1,7 +1,6 @@
 # MoreDuos
 
-A Hades II mod that adds 37 new Duo Boons, one or two for nearly every pairing of Olympians, plus a
-Chaos Legendary. Every duo is independent and can be switched off on its own.
+A Hades II mod that adds 37 new Duo Boons, one for each pair in the base game. Every duo is independent and can be switched off on its own.
 
 Please note: installing [the companion mod, BoonEdits](https://thunderstore.io/c/hades-ii/p/SWu/BoonEdits/) is highly recommended!
 
