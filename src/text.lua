@@ -176,13 +176,14 @@ duo_text = {
 
 	IntertwinedFate = {
 		Name = 'Intertwined Fate',
-		Description = 'All foes are afflicted with {$Keywords.Link}. {$Keywords.Link} shares more damage for each ' ..
-			'{$Keywords.Link}-afflicted foe.' ..
-			(mod.tuning.IntertwinedFate.Revenge and
-				' After you or your allies take damage, deal much more of it to {#ItalicFormat}all ' ..
-				'{#Prev}{$Keywords.Link}-afflicted foes.' or ''),
+		Description = (not mod.tuning.IntertwinedFate.NearbyOnly and
+				'All foes are afflicted with {$Keywords.Link}. ' or
+				mod.tuning.IntertwinedFate.Ripple and
+				'Foes nearby to you and other {$Keywords.Link} afflicted foes are also afflicted with {$Keywords.Link}.' or
+				'Nearby foes are afflicted with {$Keywords.Link}. ') ..
+			'{$Keywords.Link} shares more damage for each {$Keywords.Link}-afflicted foe.',
 		StatLines = {
-			SWuIntertwinedFateStatDisplay = { Name = 'Bonus {$Keywords.Link} Damage per Foe:', Index = 1 },
+			SWuIntertwinedFateStatDisplay = { Name = 'Bonus {$Keywords.Link} Damage per Hitched Foe:', Index = 1 },
 		},
 	},
 	IntertwinedFateAlt = {

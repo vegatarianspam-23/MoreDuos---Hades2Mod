@@ -724,6 +724,7 @@ mod.tuning = {
 		NearbyExclusionBoon = 'AllCloseBoon',
 		NearbyDuration = 2,
 
+		Ripple = false,
 		ChainDelay = 0.15,
 		PulseCooldown = 0.5,
 

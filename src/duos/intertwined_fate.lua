@@ -140,7 +140,7 @@ function intertwined_fate_ripple(sourceId)
 		end
 		intertwined_fate_set_share()
 
-		if #nextWave == 0 then return end
+		if #nextWave == 0 or not mod.tuning.IntertwinedFate.Ripple then return end
 		game.wait(mod.tuning.IntertwinedFate.ChainDelay, game.RoomThreadName)
 		if not duo_running(duo_traits.IntertwinedFate) then return end
 
@@ -204,6 +204,7 @@ end
 
 function intertwined_fate_chain(victim)
 	if not mod.tuning.IntertwinedFate.NearbyOnly or INTERTWINED_FATE_ALT then return end
+	if not mod.tuning.IntertwinedFate.Ripple then return end
 	if not duo_running(duo_traits.IntertwinedFate) then return end
 	if not victim or not victim.ObjectId or victim.IsDead then return end
 	if victim == game.CurrentRun.Hero then return end

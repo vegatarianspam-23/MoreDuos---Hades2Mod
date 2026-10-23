@@ -19,7 +19,7 @@
 - **Golden Rule** (Hera × Poseidon) — Deal 0.05% more damage per Gold held, up to 100%. Earn 5% interest on your Gold whenever you leave a location.
 - **Hot Iron** (Hephaestus × Hestia) — Your weapon strikes gain bonuses from your Fireball effects from Hestia. Your fireball effects deal 30% more damage against foes with Glow.
 - **Ingenious Invention** (Apollo × Hephaestus) — Gain a random Hammer upgrade now, and another every 6 encounters.
-- **Intertwined Fate** (Aphrodite × Hera) — Every 1 second, a pulse Hitches nearby foes. Each foe it Hitches pulses in turn, Hitching foes near it, so the pulse ripples outward. Hitch shares 10% more damage for each Hitched foe, up to +200%.
+- **Intertwined Fate** (Aphrodite × Hera) — Every 1 second, a pulse Hitches nearby foes. Hitch shares 10% more damage for each Hitched foe, up to +200%.
 - **Kindled Spirit** (Aphrodite × Hestia) — Whenever you restore Health, inflict 20 Scorch per point restored on nearby foes. Restore 3 Health after taking damage.
 - **Land Mine** (Hephaestus × Ares) — When a foe steps into your Cast, spend 50 Magick to prime your Omega Cast, then erupt in a Hephaestus blast for 500 damage. Re-arms after 8 seconds.
 - **Orbital Ring** (Apollo × Hera) — When you Cast, every Hitched foe is pulled into the binding circle. Foes held in a Cast take 30% more damage.
