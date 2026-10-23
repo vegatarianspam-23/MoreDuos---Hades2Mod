@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.4] - 2026-10-23
+
 ### Added
 
 - Dependency on [MultiDressHelper](https://thunderstore.io/c/hades-ii/p/zerp/MultiDressHelper/), so holding more than one Arachne dress through Wishing Well works properly.
@@ -31,7 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[unreleased]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.3...HEAD
+[unreleased]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.4...HEAD
+[1.0.4]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.0...1.0.1
