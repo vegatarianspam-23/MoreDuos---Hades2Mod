@@ -44,7 +44,22 @@ register_duo({
 })
 
 
-function spiteful_strength_refresh(attacker)
+local ATTACK_WEAPONS = game.ToLookup(game.AddLinkedWeapons(game.WeaponSets.HeroPrimaryWeapons))
+
+
+function spiteful_strength_slot_scales(weapon)
+	if not weapon or not DUO_SCOPE_WEAPON.ValidWeaponsLookup[weapon] then return true end
+	local slot = ATTACK_WEAPONS[weapon] and 'Melee' or 'Secondary'
+	for _, trait in pairs(game.CurrentRun.Hero.Traits or {}) do
+		if trait.Slot == slot and (trait.AddOutgoingDamageModifiers or trait.AddOutgoingDamageModifiersArray) then
+			return true
+		end
+	end
+	return false
+end
+
+
+function spiteful_strength_refresh(attacker, triggerArgs)
 	if not duo_on('SpitefulStrength') then return end
 
 	local hero = game.CurrentRun and game.CurrentRun.Hero
@@ -63,5 +78,9 @@ function spiteful_strength_refresh(attacker)
 		fraction = math.min(primed / hero.MaxMana, 1)
 	end
 
-	trait.SWuPrimedMultiplier = 1 + fraction * mod.tuning.SpitefulStrength.DamagePerPrimed
+	local bonus = fraction * mod.tuning.SpitefulStrength.DamagePerPrimed
+	if not spiteful_strength_slot_scales(triggerArgs and triggerArgs.SourceWeapon) then
+		bonus = bonus * mod.tuning.SpitefulStrength.UnscaledMultiplier
+	end
+	trait.SWuPrimedMultiplier = 1 + bonus
 end

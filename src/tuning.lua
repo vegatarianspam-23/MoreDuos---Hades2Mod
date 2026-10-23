@@ -458,8 +458,9 @@ mod.tuning = {
 		PollInterval = 0.5,
 	},
 	SpitefulStrength = {
-		PrimeMana = 50,
+		PrimeMana = 60,
 		DamagePerPrimed = 1.00,
+		UnscaledMultiplier = 2,
 	},
 	FamilyTrade = {
 		Choices = 3,
@@ -720,7 +721,7 @@ mod.tuning = {
 
 		RevengeSource = 'SWuIntertwinedFateRevenge',
 
-		BindInterval = 1,
+		BindInterval = 0.3,
 
 		NearbyRadius = 430,
 		NearbyExclusionBoon = 'AllCloseBoon',
@@ -730,6 +731,7 @@ mod.tuning = {
 		ChainDelay = 0.15,
 		PulseCooldown = 0.5,
 
+		PulseDecal = false,
 		PulseFx = 'SWuIntertwinedFateCircle',
 		PulseFxAlpha = 0.5,
 

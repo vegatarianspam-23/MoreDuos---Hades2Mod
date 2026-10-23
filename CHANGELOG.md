@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Intertwined Fate: Hitch now refreshes on nearby foes every 0.3s during combat, like Glamour Gain, instead of a 1-second pulse; the Hera ring decal is off by default (`PulseDecal`)
+- Spiteful Strength: Primes 60 Magick (was 50); bonus is doubled on an Attack or Special that holds no percentage-damage boon
+
 ## [1.0.8] - 2026-10-23
 
 ### Changed

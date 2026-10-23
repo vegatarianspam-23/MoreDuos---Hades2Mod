@@ -197,8 +197,9 @@ duo_text = {
 
 	SpitefulStrength = {
 		Name = 'Spiteful Strength',
-		Description = '{$Keywords.ReserveMana} {!Icons.Mana} now. Your {$Keywords.AttackSet} and ' ..
-			'{$Keywords.SpecialSet} deal more damage the more of your {!Icons.Mana} is Primed.',
+		Description = 'Your {$Keywords.AttackSet} and ' ..
+			'{$Keywords.SpecialSet} deal more damage the more of your {!Icons.Mana} is Primed.' ..
+			'The bonus is doubled if no {$Keywords.GodBoonNoTooltip} already boosts its damage.',
 		StatLines = {
 			SWuSpitefulStrengthManaStatDisplay = { Name = 'Magick Primed:', Index = 1 },
 			SWuSpitefulStrengthDamageStatDisplay = { Name = 'Bonus Damage at Full Prime:', Index = 2 },

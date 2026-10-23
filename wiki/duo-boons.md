@@ -19,7 +19,7 @@
 - **Golden Rule** (Hera × Poseidon) — Deal 0.05% more damage per Gold held, up to 100%. Earn 5% interest on your Gold whenever you leave a location.
 - **Hot Iron** (Hephaestus × Hestia) — Your weapon strikes gain bonuses from your Fireball effects from Hestia. Your fireball effects deal 30% more damage against foes with Glow.
 - **Ingenious Invention** (Apollo × Hephaestus) — Gain a random Hammer upgrade now, and another every 6 encounters.
-- **Intertwined Fate** (Aphrodite × Hera) — Every 1 second, a pulse Hitches nearby foes. Hitch shares 10% more damage for each Hitched foe, up to +200%.
+- **Intertwined Fate** (Aphrodite × Hera) — Nearby foes are Hitched while you fight, refreshed like Glamour Gain. Hitch shares 10% more damage for each Hitched foe, up to +200%.
 - **Kindled Spirit** (Aphrodite × Hestia) — Whenever you restore Health, inflict 20 Scorch per point restored on nearby foes. Restore 3 Health after taking damage.
 - **Land Mine** (Hephaestus × Ares) — When a foe steps into your Cast, spend 50 Magick to prime your Omega Cast, then erupt in a Hephaestus blast for 500 damage. Re-arms after 8 seconds.
 - **Orbital Ring** (Apollo × Hera) — When you Cast, every Hitched foe is pulled into the binding circle. Foes held in a Cast take 30% more damage.
@@ -30,7 +30,7 @@
 - **Royal Banquet** (Hera × Demeter) — Your boons are one rarity higher tonight, repeat this effect whenever one gains a Pom level.
 - **Solar Eclipse** (Apollo × Ares) — Move and strike 10% faster for each Dazed foe, up to 50%. If all foes are Dazed, go Dark and deal double damage for 5 seconds (30 second recharge).
 - **Solar Flare** (Apollo × Hestia) — While you channel an Omega move, a ring of fire expands around you, inflicting 90 Scorch every second. Inflict 50% more Scorch from all sources.
-- **Spiteful Strength** (Hera × Hephaestus) — Prime 50 Magick now. Your weapon strikes deal more damage for the share of your Magick that is Primed, up to +100% at all of it.
+- **Spiteful Strength** (Hera × Hephaestus) — Prime 60 Magick now. Your weapon strikes deal more damage for the share of your Magick that is Primed, up to +100% at all of it. Bonus is doubled for an Attack or Special with no percentage-damage boon on it (none, Zeus, Poseidon, Hestia, Hephaestus).
 - **Storm Front** (Zeus × Demeter) — Demeter's Gusts are larger and throw chain lightning at foes they strike. 
 - **Tectonic Cycle** (Hephaestus × Poseidon) — Every 40 seconds, your start-of-encounter effects fire again. Optionally (`Options.TectonicCycleResetsCooldowns` in config, off by default), each cycle also resets most boon cooldowns.
 - **Tipped Scales** (Poseidon × Zeus) — Gain 10% Favor, which is added to every chance-based effect. Each miss adds 3% more, up to 100% (reset on a success).

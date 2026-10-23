@@ -100,7 +100,7 @@ function intertwined_fate_pulse(sourceId, caught)
 		end
 	end
 
-	if mod.tuning.IntertwinedFate.PulseFx and fresh > 0 then
+	if mod.tuning.IntertwinedFate.PulseDecal and mod.tuning.IntertwinedFate.PulseFx and fresh > 0 then
 		game.CreateAnimation({
 			Name = mod.tuning.IntertwinedFate.PulseFx,
 			DestinationId = sourceId,
@@ -155,6 +155,16 @@ function intertwined_fate_ripple(sourceId)
 end
 
 
+function intertwined_fate_combat_active()
+	local run = game.CurrentRun
+	local encounter = run and run.CurrentRoom and run.CurrentRoom.Encounter
+	return game.IsCombatEncounterActive(run)
+		or not encounter
+		or (encounter.DelayedStart and encounter.StartTime)
+		or not game.IsEmpty(game.MapState.AggroedUnits)
+end
+
+
 function mod.IntertwinedFateBind(_hero, args)
 	local interval = (args and args.Interval) or mod.tuning.IntertwinedFate.BindInterval
 
@@ -171,7 +181,13 @@ function mod.IntertwinedFateBind(_hero, args)
 		if not duo_on('IntertwinedFate') then return end
 
 		if mod.tuning.IntertwinedFate.NearbyOnly and not INTERTWINED_FATE_ALT then
-			game.thread(intertwined_fate_ripple, game.CurrentRun.Hero.ObjectId)
+			if intertwined_fate_combat_active() then
+				if mod.tuning.IntertwinedFate.Ripple then
+					game.thread(intertwined_fate_ripple, game.CurrentRun.Hero.ObjectId)
+				else
+					intertwined_fate_pulse(game.CurrentRun.Hero.ObjectId, {})
+				end
+			end
 		else
 			for _, unit in pairs(game.ShallowCopyTable(game.ActiveEnemies or {})) do
 				if intertwined_fate_bindable(unit) then

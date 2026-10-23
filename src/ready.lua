@@ -17,7 +17,7 @@ end
 
 
 modutil.mod.Path.Wrap("CalculateDamageMultipliers", function(base, attacker, victim, weaponData, triggerArgs)
-	spiteful_strength_refresh(attacker)
+	spiteful_strength_refresh(attacker, triggerArgs)
 	orbital_ring_refresh(attacker, victim)
 	untouchable_glow_refresh(attacker, victim, triggerArgs)
 	local multipliers = base(attacker, victim, weaponData, triggerArgs)
