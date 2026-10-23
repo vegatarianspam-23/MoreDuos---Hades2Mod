@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.9] - 2026-10-23
+
 ### Changed
 
 - Intertwined Fate: Hitch now refreshes on nearby foes every 0.3s during combat, like Glamour Gain, instead of a 1-second pulse; the Hera ring decal is off by default (`PulseDecal`)
@@ -71,7 +73,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[unreleased]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.8...HEAD
+[unreleased]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.9...HEAD
+[1.0.9]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.8...1.0.9
 [1.0.8]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.7...1.0.8
 [1.0.7]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.6...1.0.7
 [1.0.6]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.5...1.0.6
