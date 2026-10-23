@@ -6,7 +6,7 @@ schemaVersion = "0.0.1"
 namespace = "SWu"
 name = "MoreDuosMod"
 versionNumber = "1.0.0"
-description = "Adds new Duo Boons to Hades II."
+description = "Adds new Duo Boons to Hades II. Companion mod to BoonEdits (highly recommended)."
 websiteUrl = "https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod"
 containsNsfwContent = false
 
@@ -45,4 +45,4 @@ repository = "https://thunderstore.io"
 communities = [ "hades-ii", ]
 
 [publish.categories]
-hades-ii = [ "mods", ]
+hades-ii = [ "mods", "gameplay", "ai-generated", ]

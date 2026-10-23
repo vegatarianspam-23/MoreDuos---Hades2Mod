@@ -1,7 +1,7 @@
 {
   "namespace": "SWu",
   "name": "MoreDuosMod",
-  "description": "Adds new Duo Boons to Hades II.",
+  "description": "Adds new Duo Boons to Hades II. Companion mod to BoonEdits (highly recommended).",
   "version_number": "1.0.0",
   "dependencies": [
     "Hell2Modding-Hell2Modding-1.0.119",
