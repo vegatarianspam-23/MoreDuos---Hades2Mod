@@ -60,6 +60,32 @@ register_duo({
 })
 
 
+function mod.AirControlStretchFuse(args)
+	if not args or not args.Name then return args end
+
+	local multiplier = args.SpeedMultiplier
+	if type(multiplier) ~= 'number' or multiplier <= 0 or multiplier >= 1 then return args end
+	if not game.Contains(mod.tuning.AirControl.StretchFuseProjectiles, args.Name) then return args end
+	if not duo_on('AirControl') or not game.HeroHasTrait(duo_traits.AirControl) then return args end
+
+	local properties = game.ShallowCopyTable(args.DataProperties or {})
+	local fuse = properties.Fuse or game.GetBaseDataValue({ Type = 'Projectile', Name = args.Name, Property = 'Fuse' })
+	if type(fuse) ~= 'number' or fuse <= 0 then return args end
+
+	properties.Fuse = fuse / multiplier
+	local stretched = game.ShallowCopyTable(args)
+	stretched.DataProperties = properties
+	return stretched
+end
+
+
+once('AirControlStretchFuse', function()
+	modutil.mod.Path.Wrap('CreateProjectileFromUnit', function(base, args)
+		return base(mod.AirControlStretchFuse(args))
+	end)
+end)
+
+
 local AIR_CONTROL_GUARD = mod.tuning.AirControl.GuardProjectile
 local airControlChannelId = nil
 local airControlSprintId = nil

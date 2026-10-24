@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### Changed
+
+- Air Control: foes' ranged shots now travel at 50% speed (was 25%)
+
+### Fixed
+
+- Air Control: Chronos' slowed scythe throws now finish their spin instead of vanishing partway
+
 ## [1.0.11] - 2026-10-24
 
 ### Changed

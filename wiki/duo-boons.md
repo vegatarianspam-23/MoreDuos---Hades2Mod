@@ -1,6 +1,6 @@
 # Duo Boons
 
-- **Air Control** (Hestia × Zeus) — Foes' ranged shots travel at 25% speed. Your Cast, Sprint and channelled Omega destroy them and strike the attacker back with lightning.
+- **Air Control** (Hestia × Zeus) — Foes' ranged shots travel at 50% speed. Your Cast, Sprint and channelled Omega destroy them and strike the attacker back with lightning.
 - **Bitter End** (Ares × Demeter) — Your weapon strikes that hit deal 50% more damage when inflicting Wounds or Freeze.
 - **Bleeding Heart** (Ares × Aphrodite) — Inflicting Wounds on a Weak foe creates a falling blade. Falling blades deal 50% more damage to Weak foes.
 - **Blinding Smite** (Apollo × Zeus) — When a Dazed foe misses its attack, 1–5 lightning bolts strike it . Lightning from Zeus deals 30% more damage to Dazed foes.

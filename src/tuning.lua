@@ -677,7 +677,16 @@ mod.tuning = {
 
 		PollInterval = 0.02,
 
-		ProjectileSpeed = 0.25,
+		ProjectileSpeed = 0.5,
+
+		StretchFuseProjectiles = {
+			'ChronosScytheThrow',
+			'ChronosScytheThrowReverse',
+			'ChronosScytheThrowLarge',
+			'ChronosScytheThrowClose',
+			'ChronosScytheThrowMid',
+			'ChronosScytheThrowFar',
+		},
 	},
 	TippedScales = {
 		FavorPerMiss = 0.03,
