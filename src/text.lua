@@ -421,9 +421,7 @@ duo_text = {
 
 	HotIron = {
 		Name = 'Hot Iron',
-		Description = 'Your weapon strikes ' ..
-			(mod.tuning.HotIron.GlowOnly and 'against {$Keywords.DelayedKnockback}-afflicted foes ' or '') ..
-			'gain bonuses from your fireball effects from {#BoldFormatGraft}Hestia{#Prev}.',
+		Description = 'Your fireballs from {#BoldFormatGraft}Hestia{#Prev} apply {$Keywords.DelayedKnockback}, and your weapon strikes gain bonuses from your fireball effects from {#BoldFormatGraft}Hestia{#Prev}.',
 		StatLines = {
 			SWuHotIronStatDisplay = { Name = 'Bonus Fireball Damage vs. {$Keywords.DelayedKnockback}:', Index = 1 },
 		},

@@ -5,7 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+### Changed
+
+- Hot Iron: Hestia's fireballs now apply Glow; bonus fireball damage against Glow lowered to 25% (was 30%). No longer gates weapon bonuses on glowing foes, and fixed compatibility with various boons (Burning Meteor, Scalding Vapor)
+
 
 ## [1.0.10] - 2026-10-23
 
@@ -81,7 +84,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[unreleased]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.10...HEAD
 [1.0.10]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.9...1.0.10
 [1.0.9]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.8...1.0.9
 [1.0.8]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.7...1.0.8

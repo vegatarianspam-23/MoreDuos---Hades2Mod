@@ -41,11 +41,32 @@ jobs:
         with:
           lfs: true
 
-      - name: Rotate unreleased section in changelog
-        uses: baynezy/ChangeLogger.Action@6e3ad430f08e13698bb01027a13ba4349b0143cc
-        with:
-          tag: ${{ inputs.tag }}
-          log-path: ${{ env.changelog }}
+      - name: Stamp pending changes with the version in changelog
+        env:
+          TAG: ${{ inputs.tag }}
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+        run: |
+          python3 - <<'EOF'
+          import datetime, os, re, sys
+          path = os.environ['changelog']
+          tag = os.environ['TAG']
+          url = os.environ['REPO_URL']
+          with open(path, encoding='utf-8', newline='') as f:
+              text = f.read()
+          first = re.search(r'^## \[(\d+\.\d+\.\d+)\]', text, re.M)
+          if first is None:
+              sys.exit('no previous release heading')
+          pending = re.search(r'^(### |- )', text[:first.start()], re.M)
+          if pending is None:
+              sys.exit('no pending changes above the last release')
+          prev = first.group(1)
+          heading = f'## [{tag}] - {datetime.date.today().isoformat()}\n\n'
+          text = text[:pending.start()] + heading + text[pending.start():]
+          link = re.search(rf'^\[{re.escape(prev)}\]:', text, re.M)
+          text = text[:link.start()] + f'[{tag}]: {url}/compare/{prev}...{tag}\n' + text[link.start():]
+          with open(path, 'w', encoding='utf-8', newline='') as f:
+              f.write(text)
+          EOF
 
       - name: Rotate version in Thunderstore CLI config
         run: |

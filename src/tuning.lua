@@ -630,8 +630,7 @@ mod.tuning = {
 		DamagePerCast = 0.30,
 	},
 	HotIron = {
-		GlowMultiplier = 1.30,
-		GlowOnly = true,
+		GlowMultiplier = 1.25,
 	},
 	GlowingBrand = {
 		GlowPotency = 2.0,

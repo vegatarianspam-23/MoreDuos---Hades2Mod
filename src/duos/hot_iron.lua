@@ -16,11 +16,21 @@ register_duo({
 	ExtraFields = {
 		SWuGlowMultiplier = mod.tuning.HotIron.GlowMultiplier,
 
+		OnEnemyDamagedAction = {
+			ValidProjectiles = fireball_projectiles(),
+			ValidProjectilesLookup = fireball_lookup(),
+			EffectName = GLOW,
+		},
+
 		AddOutgoingDamageModifiers = {
 			ValidProjectiles = fireball_projectiles(),
 			ValidProjectilesLookup = fireball_lookup(),
 			ValidActiveEffects = { GLOW },
 			ValidWeaponMultiplier = mod.tuning.HotIron.GlowMultiplier,
+		},
+
+		OnProjectileCreationFunction = {
+			Name = _PLUGIN.guid .. '.HotIronSize',
 		},
 	},
 })
@@ -37,9 +47,6 @@ local function hot_iron_strike(victim, attacker, triggerArgs)
 	if FIREBALLS[triggerArgs.SourceProjectile] then return nil end
 	if not attacker or not game.CurrentRun or attacker ~= game.CurrentRun.Hero then return nil end
 	if not hot_iron_held() then return nil end
-	if mod.tuning.HotIron.GlowOnly and not (victim and victim.ActiveEffects and victim.ActiveEffects[GLOW]) then
-		return nil
-	end
 
 	local weapon = triggerArgs.SourceWeapon
 	if not weapon then return nil end
@@ -176,4 +183,44 @@ function hot_iron_on_damaged(base, victim, attacker, args)
 	restore_traits(hero, original, reordered)
 	if not ok then error(result, 0) end
 	return result
+end
+
+
+local weapon_projectiles
+
+
+local function strike_projectiles()
+	if weapon_projectiles then return weapon_projectiles end
+
+	local lookup = {}
+	for _, set in ipairs({ game.WeaponSets.HeroPrimaryWeapons, game.WeaponSets.HeroSecondaryWeapons }) do
+		for _, name in ipairs(game.AddLinkedWeapons(set)) do
+			lookup[name] = true
+			local data = game.WeaponData[name]
+			if data and data.ProjectileName then lookup[data.ProjectileName] = true end
+		end
+	end
+	for name in pairs(FIREBALLS) do lookup[name] = nil end
+
+	weapon_projectiles = lookup
+	return lookup
+end
+
+
+---@diagnostic disable-next-line: unused-local
+function mod.HotIronSize(triggerArgs, _args)
+	if not hot_iron_held() then return end
+	if not triggerArgs or not triggerArgs.ProjectileId or not triggerArgs.name then return end
+	if FIREBALLS[triggerArgs.name] or not strike_projectiles()[triggerArgs.name] then return end
+	if not game.HeroHasTrait('BurnSprintBoon') then return end
+
+	local creation = game.TraitData.BurnSprintBoon and game.TraitData.BurnSprintBoon.OnProjectileCreationFunction
+	local mult = creation and creation.Args and creation.Args.AreaMultiplier
+	if not mult then return end
+
+	game.SetDamageRadiusMultiplier({
+		Id = triggerArgs.ProjectileId,
+		Fraction = mult,
+		Duration = 0,
+	})
 end
