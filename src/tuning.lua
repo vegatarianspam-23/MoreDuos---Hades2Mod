@@ -749,7 +749,7 @@ mod.tuning = {
 
 	},
 	RoomTemperature = {
-		FrozenBonusDamage = 200,
+		FrozenBonusDamage = 100,
 
 		ClearFreeze = true,
 		ThawSeconds = 4,
