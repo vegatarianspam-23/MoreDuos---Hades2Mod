@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Air Control: Chronos' slowed scythe throws now finish their spin instead of vanishing partway
+- Air Control: the ring on your Cast now grows with Cast area boons like Super Nova
 
 ## [1.0.11] - 2026-10-24
 

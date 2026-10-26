@@ -267,6 +267,10 @@ function mod.AirControlCast(_weaponData, _args, triggerArgs)
 	})
 
 	if guardId then
+		local baseDuration = game.GetBaseDataValue({ Type = 'Projectile', Name = 'ProjectileCast', Property = 'FuseStart' })
+		for _, modifiers in pairs(game.GetHeroTraitValues('CastProjectileModifiers')) do
+			game.SetDamageRadiusMultiplier({ Id = guardId, Fraction = modifiers.AreaIncrease, Duration = baseDuration })
+		end
 		table.insert(airControlCastGuards, { Guard = guardId, Anchor = anchorId, Cast = triggerArgs.ProjectileId })
 	elseif anchorId then
 		game.Destroy({ Id = anchorId })

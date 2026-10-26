@@ -120,29 +120,54 @@ end
 function sjson_HestiaAnimations(data)
 	if not data or not data.Animations then return end
 
-	local name = mod.tuning.SolarFlare.RingFx
-	if not name then return end
+	local existing = {}
 	for _, animation in ipairs(data.Animations) do
-		if animation.Name == name then return end
+		existing[animation.Name] = true
 	end
 
-	table.insert(data.Animations, sjson.to_object({
-		Name = name,
-		InheritFrom = 'HestiaCastDefenseCircleA',
-		ScaleRadius = mod.tuning.SolarFlare.Radius,
-		Scale = mod.tuning.SolarFlare.RingFxScale,
+	local air = mod.tuning.AirControl
+	local flames = air.FlameFx and {
+		{ Name = air.FlameFx .. 'A', InheritFrom = 'HestiaCastDefenseParticleA', RadialOffsetScaleRadius = air.RingRadius },
+		{ Name = air.FlameFx .. 'B', InheritFrom = 'HestiaCastDefenseParticleB', RadialOffsetScaleRadius = air.RingRadius },
+		{ Name = air.FlameFx .. 'Pick', Random = {
+			sjson.to_object({ Name = air.FlameFx .. 'A' }, { 'Name' }),
+			sjson.to_object({ Name = air.FlameFx .. 'B' }, { 'Name' }),
+		} },
+		{ Name = air.FlameFx, InheritFrom = 'HestiaCastDefenseParticleSpawner', VisualFx = air.FlameFx .. 'Pick' },
+	} or {}
 
-		Loop = true,
-		Duration = 3600,
-		RandomDurationMin = 3600,
-		RandomDurationMax = 3600,
-		StartAlpha = 1,
-		EndAlpha = 1,
-		EaseIn = 0,
-		EaseOut = 0,
+	for _, flame in ipairs(flames) do
+		if not existing[flame.Name] then
+			table.insert(data.Animations, sjson.to_object(flame, { 'Name', 'InheritFrom' }))
+		end
+	end
 
-		CreateAnimation = 'HestiaCastDefenseParticleSpawner',
-	}, { 'Name', 'InheritFrom' }))
+	local rings = {
+		{ Name = mod.tuning.SolarFlare.RingFx, Radius = mod.tuning.SolarFlare.Radius, Scale = mod.tuning.SolarFlare.RingFxScale },
+		{ Name = air.RingFx, Radius = air.RingRadius, Scale = 1.0, Flames = air.FlameFx },
+	}
+
+	for _, ring in ipairs(rings) do
+		if ring.Name and not existing[ring.Name] then
+			table.insert(data.Animations, sjson.to_object({
+				Name = ring.Name,
+				InheritFrom = 'HestiaCastDefenseCircleA',
+				ScaleRadius = ring.Radius,
+				Scale = ring.Scale,
+
+				Loop = true,
+				Duration = 3600,
+				RandomDurationMin = 3600,
+				RandomDurationMax = 3600,
+				StartAlpha = 1,
+				EndAlpha = 1,
+				EaseIn = 0,
+				EaseOut = 0,
+
+				CreateAnimation = ring.Flames or 'HestiaCastDefenseParticleSpawner',
+			}, { 'Name', 'InheritFrom' }))
+		end
+	end
 end
 
 
@@ -295,7 +320,11 @@ function sjson_PlayerProjectiles(data)
 		{ Name = mod.tuning.VolcanicCrown.EmberProjectile, InheritFrom = 'HestiaSprintPuddle' },
 		{ Name = mod.tuning.VolcanicCrown.BlastProjectile, InheritFrom = 'MassiveSlamBlast' },
 		{ Name = mod.tuning.VolcanicCrown.FireballProjectile, InheritFrom = 'ProjectileFireball' },
-		{ Name = mod.tuning.AirControl.GuardProjectile, InheritFrom = 'HestiaSprintDefense' },
+		{
+			Name = mod.tuning.AirControl.GuardProjectile,
+			InheritFrom = 'HestiaSprintDefense',
+			Thing = sjson.to_object({ Graphic = mod.tuning.AirControl.RingFx }, { 'Graphic' }),
+		},
 
 		{
 			Name = mod.tuning.SolarFlare.RingProjectile,

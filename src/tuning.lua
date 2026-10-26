@@ -666,6 +666,9 @@ mod.tuning = {
 	},
 	AirControl = {
 		GuardProjectile = 'SWuAirControlGuard',
+		RingFx = 'SWuAirControlRingFx',
+		RingRadius = 430,
+		FlameFx = 'SWuAirControlFlames',
 
 		BoltDamage = 120,
 		BlockCooldown = 0,
