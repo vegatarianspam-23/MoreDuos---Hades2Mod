@@ -219,7 +219,7 @@ duo_text = {
 
 	BloodBorn = {
 		Name = 'Blood Born',
-		Description = 'You deal more damage for every foe you slay this {$Keywords.EncounterAlt}. ' ..
+		Description = 'You deal more damage for every foe you slay this {$Keywords.RoomAlt}. ' ..
 			'Whenever a foe is slain, {#BoldFormatGraft}' ..
 			'{$TooltipData.ExtractData.TooltipZombies} {#Prev}' ..
 			(mod.tuning.BloodBorn.Hitch and '{$Keywords.Link}-afflicted ' or '') ..
@@ -479,7 +479,7 @@ duo_text = {
 
 	AirControl = {
 		Name = 'Air Control',
-		Description = 'Most foes\' ranged shots are slower, and are destroyed by your {$Keywords.CastSet}, ' ..
+		Description = 'Foes\' ranged shots are slowed and  destroyed by your {$Keywords.CastSet}, ' ..
 			'your {$Keywords.Sprint}, and your {$Keywords.Omega} as you {$Keywords.HoldNoTooltip} them. ' ..
 			'Foes whose shots are destroyed are struck by lightning.',
 		StatLines = {

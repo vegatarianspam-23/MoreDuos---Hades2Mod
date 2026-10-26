@@ -1,10 +1,10 @@
 # Duo Boons
 
-- **Air Control** (Hestia × Zeus) — Foes' ranged shots travel at 50% speed. Your Cast, Sprint and channelled Omega destroy them and strike the attacker back with lightning.
+- **Air Control** (Hestia × Zeus) — Your Cast, Sprint and channelled Omega destroy foes' ranged shots and strike the attacker back with lightning. Shots that can't be destroyed, like Chronos' scythe, travel at 50% speed while inside them.
 - **Bitter End** (Ares × Demeter) — Your weapon strikes that hit deal 50% more damage when inflicting Wounds or Freeze.
 - **Bleeding Heart** (Ares × Aphrodite) — Inflicting Wounds on a Weak foe creates a falling blade. Falling blades deal 50% more damage to Weak foes.
 - **Blinding Smite** (Apollo × Zeus) — When a Dazed foe misses its attack, 1–5 lightning bolts strike it . Lightning from Zeus deals 30% more damage to Dazed foes.
-- **Blood Born** (Hera × Ares) — Whenever a foe is slain, 5 Shamblers rise to take its place (capped at 25). Deal 2% more damage for every foe slain this encounter, up to 100%.
+- **Blood Born** (Hera × Ares) — Whenever a foe is slain, 5 Shamblers rise to take its place (capped at 10). Deal 3% more damage for every foe slain this location, up to 100%.
 - **Boiling Blood** (Ares × Hestia) — Plasma restores 1 Health on pickup. Deal 10% more damage for every hit you take this location, up to 100%.
 - **Bubbling Cauldron** (Hestia × Poseidon) — Froth is twice as likely to trigger, and can proc more frequently against Scorched foes.
 - **Burnt Offering** (Hera × Hestia) — Give up a boon now for 500 bonus Gold, and for the rest of the night you may purge rewards for more. Gaining 20% of any Gold gained this way as Max Magick and Health.

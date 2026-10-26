@@ -26,11 +26,6 @@ register_duo({
 	ExtraFields = {
 		SWuBoltDamage = mod.tuning.AirControl.BoltDamage,
 
-		EnemyProjectileSpeedMultiplier = {
-			BaseValue = mod.tuning.AirControl.ProjectileSpeed,
-			SourceIsMultiplier = true,
-		},
-
 		OnBlockDamageFunction = {
 			Name = _PLUGIN.guid .. '.AirControlBlock',
 			Args = {
@@ -58,32 +53,6 @@ register_duo({
 		},
 	},
 })
-
-
-function mod.AirControlStretchFuse(args)
-	if not args or not args.Name then return args end
-
-	local multiplier = args.SpeedMultiplier
-	if type(multiplier) ~= 'number' or multiplier <= 0 or multiplier >= 1 then return args end
-	if not game.Contains(mod.tuning.AirControl.StretchFuseProjectiles, args.Name) then return args end
-	if not duo_on('AirControl') or not game.HeroHasTrait(duo_traits.AirControl) then return args end
-
-	local properties = game.ShallowCopyTable(args.DataProperties or {})
-	local fuse = properties.Fuse or game.GetBaseDataValue({ Type = 'Projectile', Name = args.Name, Property = 'Fuse' })
-	if type(fuse) ~= 'number' or fuse <= 0 then return args end
-
-	properties.Fuse = fuse / multiplier
-	local stretched = game.ShallowCopyTable(args)
-	stretched.DataProperties = properties
-	return stretched
-end
-
-
-once('AirControlStretchFuse', function()
-	modutil.mod.Path.Wrap('CreateProjectileFromUnit', function(base, args)
-		return base(mod.AirControlStretchFuse(args))
-	end)
-end)
 
 
 local AIR_CONTROL_GUARD = mod.tuning.AirControl.GuardProjectile
@@ -289,10 +258,31 @@ function mod.AirControlCastEnd(_projectile, _args, _triggerArgs)
 end
 
 
+local function air_control_block_fx(triggerArgs)
+	local tuning = mod.tuning.AirControl
+	if not tuning.BlockVfx or not triggerArgs.ProjectileX or not triggerArgs.ProjectileY then return end
+
+	local spotId = game.SpawnObstacle({
+		Name = 'InvisibleTarget',
+		LocationX = triggerArgs.ProjectileX,
+		LocationY = triggerArgs.ProjectileY,
+	})
+	if not spotId then return end
+
+	game.CreateAnimation({ Name = tuning.BlockVfx, DestinationId = spotId })
+	if tuning.BlockSound then
+		game.PlaySound({ Name = tuning.BlockSound, Id = spotId, ManagerCap = 46 })
+	end
+	game.Destroy({ Id = spotId })
+end
+
+
 ---@diagnostic disable-next-line: unused-local
 function mod.AirControlBlock(_victim, functionArgs, triggerArgs)
 	if not duo_on('AirControl') then return end
 	if not triggerArgs or triggerArgs.BlockingProjectileName ~= functionArgs.ProjectileName then return end
+
+	air_control_block_fx(triggerArgs)
 
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	local attacker = triggerArgs.Attacker

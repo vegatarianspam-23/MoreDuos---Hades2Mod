@@ -16,6 +16,13 @@ register_duo({
 		SWuDamagePerHit = mod.tuning.BoilingBlood.DamagePerHit,
 		SWuMaxBonus = mod.tuning.BoilingBlood.MaxBonus,
 
+		ShowInHUD = true,
+		CustomLabel = {
+			DisplayType = 'RoomValue',
+			Key = 'SWuBoilingBloodPercent',
+			Text = 'UI_TimedKillBuff',
+		},
+
 		OnSelfDamagedFunction = { Name = _PLUGIN.guid .. '.BoilingBloodHit' },
 
 		SetupFunction = {
@@ -36,7 +43,9 @@ end
 
 
 local function boiling_blood_apply()
-	duo_set_multiplier('BoilingBlood', 1 + boiling_blood_bonus())
+	local bonus = boiling_blood_bonus()
+	duo_set_multiplier('BoilingBlood', 1 + bonus)
+	duo_show_percent(duo_traits.BoilingBlood, 'SWuBoilingBloodPercent', bonus)
 end
 
 

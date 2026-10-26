@@ -7,12 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Air Control: foes' ranged shots now travel at 50% speed (was 25%)
+- Air Control: no longer slows all foes' ranged shots. Instead, shots that can't be destroyed, like Chronos' scythe throws, travel at 50% speed while inside projectile destruction circles
+- Blood Born: 3% more damage per foe slain (was 2%), and the bonus now lasts per location instead of encounter
+- Blood Born, Boiling Blood: current damage bonus now shows on the boon's HUD icon
 
 ### Fixed
 
-- Air Control: Chronos' slowed scythe throws now finish their spin instead of vanishing partway
-- Air Control: the ring on your Cast now grows with Cast area boons like Super Nova
+- Air Control: the ring on your Cast now grows with Super Nova
+- Air Control: added vfx from Fire Away to destroyed projectiles
 
 ## [1.0.11] - 2026-10-24
 

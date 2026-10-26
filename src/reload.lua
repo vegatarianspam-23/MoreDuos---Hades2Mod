@@ -324,6 +324,7 @@ function sjson_PlayerProjectiles(data)
 			Name = mod.tuning.AirControl.GuardProjectile,
 			InheritFrom = 'HestiaSprintDefense',
 			Thing = sjson.to_object({ Graphic = mod.tuning.AirControl.RingFx }, { 'Graphic' }),
+			SpeedMultiplierOfEnemyProjectilesInside = mod.tuning.AirControl.InsideProjectileSpeed,
 		},
 
 		{
@@ -778,6 +779,19 @@ DUO_SCOPE_OLYMPIAN_PROJECTILES = {
 DUO_SCOPE_OLYMPIAN_EFFECTS = {
 	ValidEffects = game.WeaponSets.OlympianEffectNames,
 }
+
+
+function duo_show_percent(traitName, key, bonus)
+	local room = game.CurrentRun and game.CurrentRun.CurrentRoom
+	if not room then return end
+
+	local percent = math.floor(bonus * 100 + 0.5)
+	if room[key] == percent then return end
+	room[key] = percent
+
+	local trait = game.GetHeroTrait(traitName)
+	if trait then game.UpdateTraitNumber(trait) end
+end
 
 
 function duo_set_multiplier(key, multiplier, scope)

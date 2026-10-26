@@ -27,6 +27,13 @@ register_duo({
 
 		LoadPackages = mod.tuning.BloodBorn.ZombiePackages,
 
+		ShowInHUD = true,
+		CustomLabel = {
+			DisplayType = 'RoomValue',
+			Key = 'SWuBloodBornPercent',
+			Text = 'UI_TimedKillBuff',
+		},
+
 		OnEnemyDeathFunction = {
 			Name = _PLUGIN.guid .. '.BloodBornSlain',
 		},
@@ -43,9 +50,7 @@ function mod.BloodBornSetup()
 	game.LoadPackages({ Names = mod.tuning.BloodBorn.ZombiePackages })
 
 	local room = game.CurrentRun and game.CurrentRun.CurrentRoom
-	if room then room.SWuBloodBornKills = 0 end
-
-	blood_born_set_bonus(0)
+	blood_born_set_bonus((room and room.SWuBloodBornKills) or 0)
 end
 
 
@@ -168,5 +173,7 @@ function blood_born_set_bonus(kills)
 	end
 
 	local tuning = mod.tuning.BloodBorn
-	entry.ValidWeaponMultiplier = 1 + math.min(kills * tuning.DamagePerKill, tuning.MaxBonus)
+	local bonus = math.min(kills * tuning.DamagePerKill, tuning.MaxBonus)
+	entry.ValidWeaponMultiplier = 1 + bonus
+	duo_show_percent(duo_traits.BloodBorn, 'SWuBloodBornPercent', bonus)
 end

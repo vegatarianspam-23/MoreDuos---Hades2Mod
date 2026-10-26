@@ -477,7 +477,7 @@ mod.tuning = {
 
 		MaxAlive = 10,
 
-		DamagePerKill = 0.02,
+		DamagePerKill = 0.03,
 		MaxBonus = 1.00,
 	},
 	RazorShoals = {
@@ -672,6 +672,8 @@ mod.tuning = {
 
 		BoltDamage = 120,
 		BlockCooldown = 0,
+		BlockVfx = 'HestiaFlameParticleDefense',
+		BlockSound = '/SFX/BurnDamageSizzle',
 
 		CastStartDelay = 0.1,
 
@@ -680,16 +682,7 @@ mod.tuning = {
 
 		PollInterval = 0.02,
 
-		ProjectileSpeed = 0.5,
-
-		StretchFuseProjectiles = {
-			'ChronosScytheThrow',
-			'ChronosScytheThrowReverse',
-			'ChronosScytheThrowLarge',
-			'ChronosScytheThrowClose',
-			'ChronosScytheThrowMid',
-			'ChronosScytheThrowFar',
-		},
+		InsideProjectileSpeed = 0.50,
 	},
 	TippedScales = {
 		FavorPerMiss = 0.03,
