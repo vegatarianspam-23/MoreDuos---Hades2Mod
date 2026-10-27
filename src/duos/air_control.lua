@@ -61,6 +61,35 @@ local airControlSprintId = nil
 local airControlSprintLeft = 0
 
 airControlCastGuards = {}
+airControlZones = airControlZones or {}
+
+
+local function air_control_spawn(spec)
+	local guardId = game.CreateProjectileFromUnit(spec)
+	if not guardId then return nil end
+
+	local zone = mod.tuning.AirControl.SlowZoneProjectile
+	if zone then
+		local zoneSpec = game.ShallowCopyTable(spec)
+		zoneSpec.Name = zone
+		zoneSpec.DataProperties = spec.DataProperties and game.ShallowCopyTable(spec.DataProperties)
+		airControlZones[guardId] = game.CreateProjectileFromUnit(zoneSpec)
+	end
+
+	return guardId
+end
+
+
+local function air_control_expire(guardId)
+	if not guardId then return end
+
+	local ids = { guardId }
+	if airControlZones[guardId] then
+		table.insert(ids, airControlZones[guardId])
+		airControlZones[guardId] = nil
+	end
+	game.ExpireProjectiles({ ProjectileIds = ids })
+end
 
 
 local function air_control_channelling()
@@ -79,7 +108,7 @@ local function air_control_raise()
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero then return end
 
-	airControlChannelId = game.CreateProjectileFromUnit({
+	airControlChannelId = air_control_spawn({
 		Name = AIR_CONTROL_GUARD,
 		Id = hero.ObjectId,
 		DestinationId = hero.ObjectId,
@@ -97,7 +126,7 @@ local function air_control_cast_guards_prune(all)
 	for i = #airControlCastGuards, 1, -1 do
 		local held = airControlCastGuards[i]
 		if all or (held.Cast and not game.ProjectileExists({ Id = held.Cast })) then
-			game.ExpireProjectiles({ ProjectileIds = { held.Guard } })
+			air_control_expire(held.Guard)
 			if held.Anchor then game.Destroy({ Id = held.Anchor }) end
 			table.remove(airControlCastGuards, i)
 		end
@@ -107,7 +136,7 @@ end
 
 local function air_control_drop()
 	if not airControlChannelId then return end
-	game.ExpireProjectiles({ ProjectileIds = { airControlChannelId } })
+	air_control_expire(airControlChannelId)
 	airControlChannelId = nil
 end
 
@@ -115,7 +144,7 @@ end
 local function air_control_sprint_drop()
 	if not airControlSprintId then return end
 
-	game.ExpireProjectiles({ ProjectileIds = { airControlSprintId } })
+	air_control_expire(airControlSprintId)
 	airControlSprintId = nil
 
 	local hero = game.CurrentRun and game.CurrentRun.Hero
@@ -133,7 +162,7 @@ local function air_control_sprint_guard()
 	airControlSprintLeft = mod.tuning.AirControl.SprintLinger
 	if airControlSprintId and game.ProjectileExists({ Id = airControlSprintId }) then return end
 
-	airControlSprintId = game.CreateProjectileFromUnit({
+	airControlSprintId = air_control_spawn({
 		Name = AIR_CONTROL_GUARD,
 		Id = hero.ObjectId,
 		DestinationId = hero.ObjectId,
@@ -223,7 +252,7 @@ function mod.AirControlCast(_weaponData, _args, triggerArgs)
 		LocationY = triggerArgs.ProjectileY,
 	})
 
-	local guardId = game.CreateProjectileFromUnit({
+	local guardId = air_control_spawn({
 		Name = AIR_CONTROL_GUARD,
 		Id = hero.ObjectId,
 		DestinationId = anchorId,
@@ -239,6 +268,9 @@ function mod.AirControlCast(_weaponData, _args, triggerArgs)
 		local baseDuration = game.GetBaseDataValue({ Type = 'Projectile', Name = 'ProjectileCast', Property = 'FuseStart' })
 		for _, modifiers in pairs(game.GetHeroTraitValues('CastProjectileModifiers')) do
 			game.SetDamageRadiusMultiplier({ Id = guardId, Fraction = modifiers.AreaIncrease, Duration = baseDuration })
+			if airControlZones[guardId] then
+				game.SetDamageRadiusMultiplier({ Id = airControlZones[guardId], Fraction = modifiers.AreaIncrease, Duration = baseDuration })
+			end
 		end
 		table.insert(airControlCastGuards, { Guard = guardId, Anchor = anchorId, Cast = triggerArgs.ProjectileId })
 	elseif anchorId then
@@ -250,7 +282,7 @@ end
 ---@diagnostic disable-next-line: unused-local
 function mod.AirControlCastEnd(_projectile, _args, _triggerArgs)
 	for _, held in ipairs(airControlCastGuards) do
-		game.ExpireProjectiles({ ProjectileIds = { held.Guard } })
+		air_control_expire(held.Guard)
 		if held.Anchor then game.Destroy({ Id = held.Anchor }) end
 	end
 

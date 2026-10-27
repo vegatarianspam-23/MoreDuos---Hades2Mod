@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### Changed
+
+- Razor Shoals: Wounds can be re-inflicted on Frothed foes after 0.01 seconds (was 0.1)
+
+### Fixed
+
+- Air Control: the slow inside your rings now uses the same zone as Demeter's Sprint gusts. With BoonEdits installed, this also slows Chronos' spinning scythe throws
+
 ## [1.0.12] - 2026-10-26
 
 ### Changed

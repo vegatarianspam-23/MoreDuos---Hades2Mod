@@ -324,6 +324,14 @@ function sjson_PlayerProjectiles(data)
 			Name = mod.tuning.AirControl.GuardProjectile,
 			InheritFrom = 'HestiaSprintDefense',
 			Thing = sjson.to_object({ Graphic = mod.tuning.AirControl.RingFx }, { 'Graphic' }),
+		},
+		{
+			Name = mod.tuning.AirControl.SlowZoneProjectile,
+			InheritFrom = 'DemeterSprintDefense',
+			DamageRadius = mod.tuning.AirControl.RingRadius,
+			DamageRadiusScaleX = 1.0,
+			DamageRadiusScaleY = 0.5,
+			TotalFuse = 3600,
 			SpeedMultiplierOfEnemyProjectilesInside = mod.tuning.AirControl.InsideProjectileSpeed,
 		},
 

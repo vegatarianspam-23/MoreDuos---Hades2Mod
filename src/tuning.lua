@@ -481,7 +481,7 @@ mod.tuning = {
 		MaxBonus = 1.00,
 	},
 	RazorShoals = {
-		RefreshDelay = 0.1,
+		RefreshDelay = 0.01,
 	},
 	StormFront = {
 		BlitzDamage = 80,
@@ -683,6 +683,7 @@ mod.tuning = {
 		PollInterval = 0.02,
 
 		InsideProjectileSpeed = 0.50,
+		SlowZoneProjectile = 'SWuAirControlSlowZone',
 	},
 	TippedScales = {
 		FavorPerMiss = 0.03,

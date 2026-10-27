@@ -1,6 +1,6 @@
 # Duo Boons
 
-- **Air Control** (Hestia × Zeus) — Your Cast, Sprint and channelled Omega destroy foes' ranged shots and strike the attacker back with lightning. Shots that can't be destroyed, like Chronos' scythe, travel at 50% speed while inside them.
+- **Air Control** (Hestia × Zeus) — Your Cast, Sprint and channelled Omega destroy foes' ranged shots and strike the attacker back with lightning. Shots that can't be destroyed travel at 50% speed while inside them (Chronos' spinning scythes need BoonEdits for this).
 - **Bitter End** (Ares × Demeter) — Your weapon strikes that hit deal 50% more damage when inflicting Wounds or Freeze.
 - **Bleeding Heart** (Ares × Aphrodite) — Inflicting Wounds on a Weak foe creates a falling blade. Falling blades deal 50% more damage to Weak foes.
 - **Blinding Smite** (Apollo × Zeus) — When a Dazed foe misses its attack, 1–5 lightning bolts strike it . Lightning from Zeus deals 30% more damage to Dazed foes.

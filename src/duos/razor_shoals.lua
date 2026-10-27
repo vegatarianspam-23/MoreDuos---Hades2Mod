@@ -6,7 +6,7 @@ register_duo({
 
 	StatLines = { 'SWuRazorShoalsStatDisplay' },
 	ExtractValues = with_keyword_extracts({
-		{ Key = 'SWuRefreshDelay', ExtractAs = 'TooltipRefreshDelay', DecimalPlaces = 1 },
+		{ Key = 'SWuRefreshDelay', ExtractAs = 'TooltipRefreshDelay' },
 	}, 'Rend', 'KnockbackAmplify'),
 
 	ExtraFields = {
