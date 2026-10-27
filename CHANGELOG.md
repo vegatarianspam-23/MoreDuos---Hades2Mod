@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.13] - 2026-10-27
+
 ### Changed
 
 - Razor Shoals: Wounds can be re-inflicted on Frothed foes after 0.01 seconds (was 0.1)
@@ -107,6 +109,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
+[1.0.13]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.12...1.0.13
 [1.0.12]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.11...1.0.12
 [1.0.11]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.10...1.0.11
 [1.0.10]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.9...1.0.10
