@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Air Control: the slow inside your rings now uses the same zone as Demeter's Sprint gusts. With BoonEdits installed, this also slows Chronos' spinning scythe throws
+- Air Control: added slowdown fix to Chronos scythe throws when BoonEdits is installed
 
 ## [1.0.12] - 2026-10-26
 
