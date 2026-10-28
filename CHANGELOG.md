@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.14] - 2026-10-28
+
 ### Added
 
 - Untouchable Glow Alt (experimental, `UntouchableGlowAlt`): +10% chance to Dodge, and all your damage to nearby foes is increased by your Dodge + Daze
@@ -126,6 +128,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
+[1.0.14]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.13...1.0.14
 [1.0.13]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.12...1.0.13
 [1.0.12]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.11...1.0.12
 [1.0.11]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.0.10...1.0.11
