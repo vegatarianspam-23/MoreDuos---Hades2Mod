@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### Added
+
+- Untouchable Glow Alt (experimental, `UntouchableGlowAlt`): +10% chance to Dodge, and all your damage to nearby foes is increased by your Dodge + Daze
+- Solar Eclipse Alt (experimental, `SolarEclipseAlt`): the previous Solar Eclipse, now swapped to Alt
+
+### Changed
+
+- Solar Eclipse: reworked. You move and strike 5% faster for each Dazed foe (was 10%), up to 50%, and all your damage is increased by half of your bonus move speed, including the extra speed while Sprinting. Now requires an Apollo Daze boon and an Ares Plasma boon
+- Cold Hearted: bonus power against Frozen foes starts at +10 (was +50). Freeze now lasts twice as long on Weak foes, instead of a flat +4 seconds
+- Untouchable Glow: every 0.3 seconds near foes now gives 1% more Weapon damage, no longer only against nearby foes (was every 1 second) and also 1% less damage taken, both up to 100% after 30 seconds. The bonus resets whenever an attack that deals damage hits you (5 second buffer between resets). At 100% damage reduction, any damage taken is floored to 1, and the bonus is reset.
+
+### Fixed
+
+- Pop-up text over Melinoe and foes (like Perfect Image or Untouchable Glow being lost) now stacks upward instead of overlapping when several show at once
+- Bleeding Heart: fixed damage meter
+- Solar Eclipse: now also raises sprint speed
+
 ## [1.0.13] - 2026-10-27
 
 ### Changed

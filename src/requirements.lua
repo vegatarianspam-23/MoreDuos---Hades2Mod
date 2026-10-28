@@ -91,6 +91,14 @@ duo_requirements = {
 		}
 	},
 
+	UntouchableGlowAlt = {
+		Gods = { 'Apollo', 'Aphrodite' },
+		OneFromEachSet = {
+			{ "AphroditeWeaponBoon", "AphroditeSpecialBoon", "AphroditeManaBoon" },
+			game.LinkedTraitData.ApolloBlindTraits,
+		}
+	},
+
 	ColdHearted = {
 		Gods = { 'Aphrodite', 'Demeter' },
 		OneFromEachSet = {
@@ -259,6 +267,14 @@ duo_requirements = {
 	},
 
 	SolarEclipse = {
+		Gods = { 'Apollo', 'Ares' },
+		OneFromEachSet = {
+			game.LinkedTraitData.ApolloBlindTraits,
+			game.LinkedTraitData.AresBloodDropTraits,
+		},
+	},
+
+	SolarEclipseAlt = {
 		Gods = { 'Apollo', 'Ares' },
 		OneFromEachSet = {
 			{ "ApolloCastBoon", "ApolloSprintBoon", "BlindChanceBoon", "ApolloRetaliateBoon" },

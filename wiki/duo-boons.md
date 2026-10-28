@@ -1,14 +1,14 @@
 # Duo Boons
 
 - **Air Control** (Hestia × Zeus) — Your Cast, Sprint and channelled Omega destroy foes' ranged shots and strike the attacker back with lightning. Shots that can't be destroyed travel at 50% speed while inside them (Chronos' spinning scythes need BoonEdits for this).
-- **Bitter End** (Ares × Demeter) — Your weapon strikes that hit deal 50% more damage when inflicting Wounds or Freeze.
+- **Bitter End** (Ares × Demeter) — Your weapon strikes deal 50% more damage when inflicting Wounds or Freeze.
 - **Bleeding Heart** (Ares × Aphrodite) — Inflicting Wounds on a Weak foe creates a falling blade. Falling blades deal 50% more damage to Weak foes.
 - **Blinding Smite** (Apollo × Zeus) — When a Dazed foe misses its attack, 1–5 lightning bolts strike it . Lightning from Zeus deals 30% more damage to Dazed foes.
 - **Blood Born** (Hera × Ares) — Whenever a foe is slain, 5 Shamblers rise to take its place (capped at 10). Deal 3% more damage for every foe slain this location, up to 100%.
 - **Boiling Blood** (Ares × Hestia) — Plasma restores 1 Health on pickup. Deal 10% more damage for every hit you take this location, up to 100%.
 - **Bubbling Cauldron** (Hestia × Poseidon) — Froth is twice as likely to trigger, and can proc more frequently against Scorched foes.
-- **Burnt Offering** (Hera × Hestia) — Give up a boon now for 500 bonus Gold, and for the rest of the night you may purge rewards for more. Gaining 20% of any Gold gained this way as Max Magick and Health.
-- **Cold Hearted** (Aphrodite × Demeter) — Your Attack and Special gain more power against Frozen foes (+10 power per second Frozen). Weak foes stay Frozen 4 seconds longer.
+- **Burnt Offering** (Hera × Hestia) — Give up a boon now for 500 bonus Gold, and for the rest of the night you may purge rewards for more. Gain 20% of any Gold gained this way as Max Magick and Health.
+- **Cold Hearted** (Aphrodite × Demeter) — Your Attack and Special gain more power against Frozen foes (+10 power per second Frozen). Freeze lasts twice as long on Weak foes.
 - **Discerning Taste** (Aphrodite × Zeus) — Most choices can be rerolled, including Hammers and Hexes, and the first reroll of each is free. Gain 5 rerolls now.
 - **Energy Overflow** (Apollo × Poseidon) — Restore 30% more Magick. Magick restored past your limit raises it for the rest of the location, up to 999.
 - **Explosive Sparks** (Hephaestus × Zeus) — Hammer strikes from Hephaestus have a 30% chance to set off a massive blast where it lands.
@@ -25,15 +25,15 @@
 - **Orbital Ring** (Apollo × Hera) — When you Cast, every Hitched foe is pulled into the binding circle. Foes held in a Cast take 30% more damage.
 - **Permafrost Shield** (Demeter × Hephaestus) — You cannot take more than 35 damage from a single hit.
 - **Plasmic Capacitor** (Ares × Zeus) — Plasma is 20% more effective, caps at 120, and chain lightning deals 0.5 more damage for every Plasma you hold.
-- **Razor Shoals** (Ares × Poseidon) — Wounds can be re-inflicted on Frothed foes more quickly.
+- **Razor Shoals** (Ares × Poseidon) — Wounds can be re-inflicted on Frothed foes.
 - **Room Temperature** (Hestia × Demeter) — Hestia's fireballs thaw Frozen foes (so that they can be Frozen again), and deal 200 more damage to them.
 - **Royal Banquet** (Hera × Demeter) — Your boons are one rarity higher tonight, repeat this effect whenever one gains a Pom level.
-- **Solar Eclipse** (Apollo × Ares) — Move and strike 10% faster for each Dazed foe, up to 50%. If all foes are Dazed, go Dark and deal double damage for 5 seconds (40 second recharge).
+- **Solar Eclipse** (Apollo × Ares) — Move and strike 5% faster for each Dazed foe, up to 50%. All damage you deal is increased by half your bonus move speed (including Sprinting).
 - **Solar Flare** (Apollo × Hestia) — While you channel an Omega move, a ring of fire expands around you, inflicting 90 Scorch every second. Inflict 50% more Scorch from all sources.
 - **Spiteful Strength** (Hera × Hephaestus) — Prime 60 Magick now. Your weapon strikes deal more damage for the share of your Magick that is Primed, up to +100% at all of it. Bonus is doubled for an Attack or Special with no percentage-damage boon on it (none, Zeus, Poseidon, Hestia, Hephaestus).
 - **Storm Front** (Zeus × Demeter) — Demeter's Gusts are larger and throw chain lightning at foes they strike. 
 - **Tectonic Cycle** (Hephaestus × Poseidon) — Every 40 seconds, your start-of-encounter effects fire again. Optionally (`Options.TectonicCycleResetsCooldowns` in config, off by default), each cycle also resets most boon cooldowns.
 - **Tipped Scales** (Poseidon × Zeus) — Gain 10% Favor, which is added to every chance-based effect. Each miss adds 3% more, up to 100% (reset on a success).
-- **Untouchable Glow** (Apollo × Aphrodite) — Your Weapon strikes deal 1% more damage to nearby foes for every second you go without losing Health, up to 100%.
+- **Untouchable Glow** (Apollo × Aphrodite) — For every 0.3 seconds you spend near foes, your Weapon strikes deal 1% more damage and you take 1% less damage, both up to 100% (30 seconds). The bonus resets whenever an attack that deals damage hits you, and can't reset again for 5 seconds.
 - **Winter Solstice** (Apollo × Demeter) — While channelling Omega moves, a Squall rapidly damages and Chills nearby foes. Hold for 2 seconds to slow time for 2 seconds.
-- **Wishing Well** (Aphrodite × Poseidon) — A fountain room is offered whenever possible. Drinking from any fountain offers a reward from a random ally tonight, and take one now. Zagreus' Journey allies are experimental and off by default (`Experimental.ZagreusJourney` in config).
+- **Wishing Well** (Aphrodite × Poseidon) — A fountain room is offered whenever possible (marked by an Aromatic Phial icon on the location reward). Drinking from any fountain offers a reward from a random ally tonight, and take one now. Zagreus' Journey allies are experimental and off by default (`Experimental.ZagreusJourney` in config).

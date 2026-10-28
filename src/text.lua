@@ -74,10 +74,22 @@ duo_text = {
 
 	UntouchableGlow = {
 		Name = 'Untouchable Glow',
-		Description = 'Your {$Keywords.AttackSet} and {$Keywords.SpecialSet} deal more damage to nearby foes ' ..
-			'for every {#BoldFormatGraft}1 Sec. {#Prev}you go without losing {!Icons.Health}.',
+		Description = 'For every {#BoldFormatGraft}{$TooltipData.ExtractData.TooltipInterval} Sec. {#Prev}you spend ' ..
+			'near foes, your {$Keywords.AttackSet} and {$Keywords.SpecialSet} deal more damage, ' ..
+			'and you take less damage. The bonus resets whenever you are hit.',
 		StatLines = {
-			SWuUntouchableGlowMaxStatDisplay = { Name = 'Max Bonus Damage:', Index = 2 },
+			SWuUntouchableGlowMaxStatDisplay = { Name = 'Max Bonus Damage & Resistance:', Index = 1 },
+		},
+		CombatText = {
+			SWuUntouchableGlowExpired = '{!Icons.DownArrow} {#AltPenaltyFormat}Untouchable Glow{#Prev}!',
+		},
+	},
+	UntouchableGlowAlt = {
+		Name = 'Untouchable Glow Alt',
+		Description = 'You have a greater chance to {$Keywords.Dodge}. You deal more damage to nearby foes ' ..
+			'based on your chance to avoid their attacks, including {$Keywords.Blind}.',
+		StatLines = {
+			SWuUntouchableGlowAltDodgeStatDisplay = { Name = 'Bonus {$Keywords.Dodge} Chance:', Index = 1 },
 		},
 	},
 
@@ -85,11 +97,9 @@ duo_text = {
 		Name = 'Cold Hearted',
 		Description = 'Your {$Keywords.WeaponSet} strikes grow in {$Keywords.BaseDamage} against ' ..
 			'{$Keywords.Root}-afflicted foes, and your {$Keywords.Root} effects last ' ..
-			'{#BoldFormatGraft}{$TooltipData.ExtractData.TooltipFreezeExtension} Sec. {#Prev}longer on ' ..
-			'{$Keywords.Weak}-afflicted foes.',
+			'twice as long on {$Keywords.Weak}-afflicted foes.',
 		StatLines = {
-			SWuColdHeartedStatDisplay = { Name = 'Bonus Power vs. {$Keywords.Root}:', Index = 1 },
-			SWuColdHeartedPerSecondStatDisplay = { Name = 'Bonus Power per Second:', Index = 2 },
+			SWuColdHeartedPerSecondStatDisplay = { Name = 'Bonus Power per Second:', Index = 1 },
 		},
 	},
 
@@ -276,6 +286,14 @@ duo_text = {
 
 	SolarEclipse = {
 		Name = 'Solar Eclipse',
+		Description = 'You move and strike faster for each {$Keywords.Blind}-afflicted foe. All damage you deal ' ..
+			'is increased by your bonus movement and sprint speed.',
+		StatLines = {
+			SWuSolarEclipseRushStatDisplay = { Name = 'Bonus Speed per Foe:', Index = 1 },
+		},
+	},
+	SolarEclipseAlt = {
+		Name = 'Solar Eclipse Alt',
 		Description = 'You move and strike faster for each {$Keywords.Blind}-afflicted foe. While they all ' ..
 			'are, go {$Keywords.Invisible} and deal more damage for a few seconds.',
 		StatLines = {

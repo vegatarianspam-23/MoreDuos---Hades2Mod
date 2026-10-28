@@ -770,6 +770,42 @@ function duo_live_foe(unit)
 end
 
 
+local COMBAT_TEXT_SPACING = 60
+local COMBAT_TEXT_DEFAULT_OFFSET = -140
+
+function combat_text_stack(args)
+	if type(args) ~= 'table' or args.SWuTextStacked then return args end
+	if args.UseProgressiveStack or args.ScreenSpace or args.SkipRise then return args end
+
+	local targetId = args.TargetId
+	if args.TargetHero and game.CurrentRun and game.CurrentRun.Hero then
+		targetId = game.CurrentRun.Hero.ObjectId
+	end
+	if not targetId or targetId <= 0 then return args end
+
+	local stacks = game.SWuCombatTextStacks or {}
+	game.SWuCombatTextStacks = stacks
+	local slots = stacks[targetId] or {}
+	stacks[targetId] = slots
+
+	local start = (game._worldTime or 0) + (args.PreDelay or 0)
+	local finish = start + (args.Duration or 0.4) + (args.FadeDuration or 0.3)
+
+	local slot = 0
+	while slots[slot] and slots[slot] > start do
+		slot = slot + 1
+	end
+	slots[slot] = finish
+
+	local stacked = game.ShallowCopyTable(args)
+	stacked.SWuTextStacked = true
+	if slot > 0 then
+		stacked.OffsetY = (args.OffsetY or COMBAT_TEXT_DEFAULT_OFFSET) - slot * COMBAT_TEXT_SPACING
+	end
+	return stacked
+end
+
+
 local DUO_WEAPON_NAMES = game.AddLinkedWeapons(game.WeaponSets.HeroPrimarySecondaryWeapons)
 
 DUO_SCOPE_WEAPON = {
@@ -934,21 +970,6 @@ function hero_live()
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero then return false end
 	return not hero.IsDead or training_grounds()
-end
-
-
-function movement_speed_cap(unit)
-	local hero = game.CurrentRun and game.CurrentRun.Hero
-	if not hero or unit ~= hero or not hero.ObjectId then return end
-	if hero.ActiveEffects and hero.ActiveEffects.CastGripEffect then return end
-
-	local cap = mod.tuning.MovementSpeed and mod.tuning.MovementSpeed.Cap
-	if type(cap) ~= 'number' then return end
-
-	local base = game.GetBaseDataValue({ Type = 'Unit', Name = '_PlayerUnit', Property = 'Speed' })
-	if type(base) ~= 'number' or base <= 0 then return end
-
-	game.SetUnitProperty({ DestinationId = hero.ObjectId, Property = 'MaxSpeed', Value = base * (1 + cap) })
 end
 
 
@@ -1177,7 +1198,9 @@ local POST_HASTE = 'SlowProjectileBoon'
 local function duo_recharge_traits()
 	local traits = {}
 	for _, key in ipairs({ 'LandMine', 'SolarEclipse', 'WinterSolstice' }) do
-		if duo_on(key) and duo_traits[key] and not (key == 'WinterSolstice' and (duo_alt(key) or not mod.tuning.WinterSolstice.SlowCooldownEnabled)) then
+		local noRecharge = (key == 'SolarEclipse' and not duo_alt(key))
+			or (key == 'WinterSolstice' and (duo_alt(key) or not mod.tuning.WinterSolstice.SlowCooldownEnabled))
+		if duo_on(key) and duo_traits[key] and not noRecharge then
 			table.insert(traits, duo_traits[key])
 		end
 	end

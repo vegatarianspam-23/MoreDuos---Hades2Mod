@@ -1,47 +1,78 @@
 ---@meta _
 
 
-register_duo({
-	key = 'SolarEclipse',
+local SOLAR_ECLIPSE_SPEED = not duo_alt('SolarEclipse')
 
-	StatLines = { 'SWuSolarEclipseStatDisplay', 'SWuSolarEclipseSpeedStatDisplay' },
-	ExtractValues = with_keyword_extracts({
-		{ Key = 'SWuEclipseDamage', ExtractAs = 'TooltipEclipseDamage', Format = 'PercentDelta' },
-		{ Key = 'SWuSpeedPerDazed', ExtractAs = 'TooltipSpeedPerDazed', Format = 'Percent' },
-		{ Key = 'SWuEclipseDuration', ExtractAs = 'TooltipEclipseDuration', SkipAutoExtract = true },
-		{ Key = 'SWuEclipseDuration', ExtractAs = 'Duration', SkipAutoExtract = true },
-		{ Key = 'SWuEclipseCooldown', ExtractAs = 'Cooldown', SkipAutoExtract = true },
-	}, 'Blind'),
 
-	ExtraFields = {
-		SWuEclipseDamage = mod.tuning.SolarEclipse.DamageMultiplier,
-		SWuSpeedPerDazed = mod.tuning.SolarEclipse.SpeedPerDazed,
-		SWuEclipseDuration = mod.tuning.SolarEclipse.Duration,
-		SWuEclipseCooldown = 0,
+if SOLAR_ECLIPSE_SPEED then
+	register_duo({
+		key = 'SolarEclipse',
 
-		ShowInHUD = true,
-		CustomLabel = {
-			DisplayType = 'RoomValue',
-			Key = 'SWuEclipseSpeedPercent',
-			Text = 'UI_TimedKillBuff',
-		},
+		StatLines = { 'SWuSolarEclipseRushStatDisplay' },
+		ExtractValues = with_keyword_extracts({
+			{ Key = 'SWuSpeedPerDazed', ExtractAs = 'TooltipSpeedPerDazed', Format = 'Percent' },
+		}, 'Blind'),
 
-		AddOutgoingDamageModifiers = {
-			RequiredSelfEffectsMultiplier = {
-				BaseValue = mod.tuning.SolarEclipse.DamageMultiplier,
-				SourceIsMultiplier = true,
+		ExtraFields = {
+			SWuSpeedPerDazed = mod.tuning.SolarEclipse.SpeedPerDazed,
+			SWuEclipseSpeedDamage = 1,
+
+			AddOutgoingDamageModifiers = {
+				UseTraitValue = 'SWuEclipseSpeedDamage',
+				IsMultiplier = true,
 			},
-			RequiredEffects = { 'HadesInvisible' },
-		},
 
-		SetupFunction = {
-			Threaded = true,
-			Name = _PLUGIN.guid .. '.SolarEclipse',
-			RepeatOnEncounterStart = true,
-			Args = { Interval = mod.tuning.SolarEclipse.PollInterval },
+			SetupFunction = {
+				Threaded = true,
+				Name = _PLUGIN.guid .. '.SolarEclipse',
+				RepeatOnEncounterStart = true,
+				Args = { Interval = mod.tuning.SolarEclipse.PollInterval },
+			},
 		},
-	},
-})
+	})
+else
+	register_duo({
+		key = 'SolarEclipse',
+
+		StatLines = { 'SWuSolarEclipseStatDisplay', 'SWuSolarEclipseSpeedStatDisplay' },
+		ExtractValues = with_keyword_extracts({
+			{ Key = 'SWuEclipseDamage', ExtractAs = 'TooltipEclipseDamage', Format = 'PercentDelta' },
+			{ Key = 'SWuSpeedPerDazed', ExtractAs = 'TooltipSpeedPerDazed', Format = 'Percent' },
+			{ Key = 'SWuEclipseDuration', ExtractAs = 'TooltipEclipseDuration', SkipAutoExtract = true },
+			{ Key = 'SWuEclipseDuration', ExtractAs = 'Duration', SkipAutoExtract = true },
+			{ Key = 'SWuEclipseCooldown', ExtractAs = 'Cooldown', SkipAutoExtract = true },
+		}, 'Blind'),
+
+		ExtraFields = {
+			SWuEclipseDamage = mod.tuning.SolarEclipse.DamageMultiplier,
+			SWuSpeedPerDazed = mod.tuning.SolarEclipse.AltSpeedPerDazed,
+			SWuEclipseDuration = mod.tuning.SolarEclipse.Duration,
+			SWuEclipseCooldown = 0,
+
+			ShowInHUD = true,
+			CustomLabel = {
+				DisplayType = 'RoomValue',
+				Key = 'SWuEclipseSpeedPercent',
+				Text = 'UI_TimedKillBuff',
+			},
+
+			AddOutgoingDamageModifiers = {
+				RequiredSelfEffectsMultiplier = {
+					BaseValue = mod.tuning.SolarEclipse.DamageMultiplier,
+					SourceIsMultiplier = true,
+				},
+				RequiredEffects = { 'HadesInvisible' },
+			},
+
+			SetupFunction = {
+				Threaded = true,
+				Name = _PLUGIN.guid .. '.SolarEclipse',
+				RepeatOnEncounterStart = true,
+				Args = { Interval = mod.tuning.SolarEclipse.PollInterval },
+			},
+		},
+	})
+end
 
 
 local DAZE = 'BlindEffect'
@@ -94,8 +125,9 @@ local function solar_eclipse_speed(count)
 	local tuning = mod.tuning.SolarEclipse
 	if not hero or not weapons or not weapons.DefaultWeaponValues then return 0 end
 
-	local bonus = math.min(count * tuning.SpeedPerDazed, tuning.MaxSpeedBonus)
-	if hero.Invisible then bonus = math.max(bonus, tuning.DarkSpeedBonus) end
+	local perDazed = SOLAR_ECLIPSE_SPEED and tuning.SpeedPerDazed or tuning.AltSpeedPerDazed
+	local bonus = math.min(count * perDazed, tuning.MaxSpeedBonus)
+	if hero.Invisible and not SOLAR_ECLIPSE_SPEED then bonus = math.max(bonus, tuning.DarkSpeedBonus) end
 	local total = 1 / (1 + bonus)
 
 	local state = game.SessionMapState
@@ -127,9 +159,9 @@ local function solar_eclipse_speed(count)
 
 	table.insert(changes, { UnitProperty = 'Speed', ChangeType = 'Multiply', ChangeValue = 1 / step })
 	table.insert(changes, { WeaponNames = { 'WeaponSprint' }, WeaponProperty = 'SelfVelocity',
-		ChangeValue = 1100 * (1 - step), ChangeType = 'Add', ExcludeLinked = true })
+		ChangeValue = 1 / step, ChangeType = 'Multiply', ExcludeLinked = true })
 	table.insert(changes, { WeaponNames = { 'WeaponSprint' }, WeaponProperty = 'SelfVelocityCap',
-		ChangeValue = 740 * (1 - step), ChangeType = 'Add', ExcludeLinked = true })
+		ChangeValue = 1 / step, ChangeType = 'Multiply', ExcludeLinked = true })
 
 	if state then state.SWuEclipseLastSpeed = total end
 	game.SetPlayerAttackSpecialChargeSpeed(SPEED_KEY, total)
@@ -150,6 +182,74 @@ local function solar_eclipse_show(bonus)
 
 	local trait = game.GetHeroTrait(duo_traits.SolarEclipse)
 	if trait then game.UpdateTraitNumber(trait) end
+end
+
+
+local function solar_eclipse_speeds(hero)
+	return {
+		Run = game.GetUnitDataValue({ Id = hero.ObjectId, Property = 'Speed' }),
+		Sprint = game.GetWeaponDataValue({ Id = hero.ObjectId, WeaponName = 'WeaponSprint', Property = 'SelfVelocityCap' }),
+	}
+end
+
+
+local SOLAR_ECLIPSE_CLAMPED = { Run = 'SWuClampedRun', Sprint = 'SWuClampedSprint' }
+
+function solar_eclipse_clamp_snapshot(hero)
+	local current = game.CurrentRun and game.CurrentRun.Hero
+	if not hero or hero ~= current or not hero.ObjectId then return nil end
+	return solar_eclipse_speeds(hero)
+end
+
+function solar_eclipse_clamp_record(hero, before)
+	local state = game.SessionMapState
+	if not before or not state then return end
+
+	local after = solar_eclipse_speeds(hero)
+	for key, field in pairs(SOLAR_ECLIPSE_CLAMPED) do
+		local was, now = before[key], after[key]
+		if type(was) == 'number' and type(now) == 'number' and now > 0 and was > now then
+			state[field] = (state[field] or 1) * (was / now)
+		end
+	end
+end
+
+
+function solar_eclipse_move_bonus()
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	if not hero or not hero.ObjectId then return 0 end
+
+	local base = game.GetBaseDataValue({ Type = 'Unit', Name = '_PlayerUnit', Property = 'Speed' })
+	if type(base) ~= 'number' or base <= 0 then return 0 end
+
+	local state = game.SessionMapState or {}
+	local key = state.SprintActive and 'Sprint' or 'Run'
+	local current = solar_eclipse_speeds(hero)[key]
+	if type(current) ~= 'number' then return 0 end
+
+	current = current * (state[SOLAR_ECLIPSE_CLAMPED[key]] or 1)
+	return math.max(0, current / base - 1)
+end
+
+
+function solar_eclipse_speed_damage_bonus()
+	return solar_eclipse_move_bonus() * mod.tuning.SolarEclipse.DamagePerSpeed
+end
+
+
+function solar_eclipse_refresh(attacker)
+	if not SOLAR_ECLIPSE_SPEED then return end
+
+	local trait = duo_traits.SolarEclipse and game.GetHeroTrait(duo_traits.SolarEclipse)
+	if not trait then return end
+
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	if not duo_on('SolarEclipse') or not hero or attacker ~= hero then
+		trait.SWuEclipseSpeedDamage = 1
+		return
+	end
+
+	trait.SWuEclipseSpeedDamage = 1 + solar_eclipse_speed_damage_bonus()
 end
 
 
@@ -254,7 +354,9 @@ function mod.SolarEclipse(_hero, args)
 	if not loop then return end
 
 	while duo_running(duo_traits.SolarEclipse) do
-		if duo_on('SolarEclipse') then
+		if duo_on('SolarEclipse') and SOLAR_ECLIPSE_SPEED then
+			solar_eclipse_speed(solar_eclipse_dazed())
+		elseif duo_on('SolarEclipse') then
 			solar_eclipse_ready_announce()
 			solar_eclipse_show(solar_eclipse_speed(solar_eclipse_dazed()))
 

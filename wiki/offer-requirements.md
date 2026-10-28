@@ -88,7 +88,7 @@ Each duo needs one boon from every group (sub-bullet). Boons marked *(BoonEdits)
   - Ice Strike, Ice Flourish, Arctic Ring, Frigid Rush, Tranquil Gain
 - **Solar Eclipse**
   - Solar Ring, Blinding Rush, Dazzling Display, Light Smite
-  - Grievous Blow, Mutual Destruction, Blood Spree
+  - Grisly Gain, Visceral Impact, Meat Grinder *(BoonEdits)*, Profuse Bleeding *(BoonEdits)*
 - **Solar Flare**
   - Flame Strike, Flame Flourish, Smolder Ring
   - Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, Lucid Gain

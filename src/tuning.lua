@@ -21,10 +21,6 @@ mod.tuning = {
 		},
 	},
 
-	MovementSpeed = {
-		Cap = 1.00,
-	},
-
 	Pandemonium = {
 		RarityBonus = 0.10,
 		OfferChance = 0.10,
@@ -354,15 +350,24 @@ mod.tuning = {
 		BoltInterval = 0.12,
 	},
 	UntouchableGlow = {
-		PercentPerSecond = 0.01,
+		StepInterval = 0.3,
+		PercentPerStep = 0.01,
 		MaxPercent = 1.00,
+		DefensePerStep = 0.01,
+		MaxDefense = 1.00,
+		IncludeTraps = true,
 		Radius = 430,
 		NearbyExclusionBoon = 'AllCloseBoon',
+		ExpireSound = '/SFX/WrathOver',
+		ResetGrace = 5,
+
+		AltDodgeBonus = 0.10,
+		AltDamagePerDodge = 1.0,
 	},
 	ColdHearted = {
-		Power = 50,
+		Power = 10,
 		PowerPerSecond = 10,
-		FreezeExtension = 4,
+		FreezeMultiplier = 2,
 	},
 	BoilingBlood = {
 		HealPerPlasma = 1,
@@ -396,6 +401,7 @@ mod.tuning = {
 	},
 	BleedingHeart = {
 		Blade = 'ProjectileAresSwordCast',
+		MeterSource = 'SWuBleedingHeartBlade',
 
 		BladeDamage = 200,
 		WeakMultiplier = 1.50,
@@ -510,12 +516,14 @@ mod.tuning = {
 		PlasmaCeiling = 120,
 	},
 	SolarEclipse = {
+		SpeedPerDazed = 0.05,
+		MaxSpeedBonus = 0.50,
+		DamagePerSpeed = 0.5,
+
+		AltSpeedPerDazed = 0.10,
 		DamageMultiplier = 2.00,
 		Duration = 5,
 		Recharge = 40,
-
-		SpeedPerDazed = 0.10,
-		MaxSpeedBonus = 0.50,
 		DarkSpeedBonus = 0.50,
 
 		PollInterval = 0.15,

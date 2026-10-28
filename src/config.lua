@@ -57,7 +57,11 @@ local config = {
 
     PlasmicCapacitorAlt = false;
 
+    SolarEclipseAlt = false;
+
     StormFrontAlt = false;
+
+    UntouchableGlowAlt = false;
 
     WinterSolsticeAlt = false;
 
@@ -70,9 +74,9 @@ local config = {
     ZagreusJourney = false;
   };
 
-  -- resets all timed cooldowns (like Volcanic Strike, Unseen Ire, etc.) at the start of each encounter
-  -- cd resets are picked up by tectonic cycle
   Options = {
+    -- resets all timed cooldowns (like Volcanic Strike, Unseen Ire, etc.) at the start of each encounter
+    -- cd resets are picked up by tectonic cycle
     TectonicCycleResetsCooldowns = false;
   };
 }

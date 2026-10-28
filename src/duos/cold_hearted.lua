@@ -4,17 +4,17 @@
 register_duo({
 	key = 'ColdHearted',
 
-	StatLines = { 'SWuColdHeartedStatDisplay', 'SWuColdHeartedPerSecondStatDisplay' },
+	StatLines = { 'SWuColdHeartedPerSecondStatDisplay' },
 	ExtractValues = with_keyword_extracts({
-		{ Key = 'SWuColdHeartedPower', ExtractAs = 'TooltipPower' },
+		{ Key = 'SWuColdHeartedPower', ExtractAs = 'TooltipPower', SkipAutoExtract = true },
 		{ Key = 'SWuColdHeartedPerSecond', ExtractAs = 'TooltipPerSecond' },
-		{ Key = 'SWuFreezeExtension', ExtractAs = 'TooltipFreezeExtension', SkipAutoExtract = true },
+		{ Key = 'SWuFreezeMultiplier', ExtractAs = 'TooltipFreezeMultiplier', SkipAutoExtract = true },
 	}, 'Root', 'Weak'),
 
 	ExtraFields = {
 		SWuColdHeartedPower = mod.tuning.ColdHearted.Power,
 		SWuColdHeartedPerSecond = mod.tuning.ColdHearted.PowerPerSecond,
-		SWuFreezeExtension = mod.tuning.ColdHearted.FreezeExtension,
+		SWuFreezeMultiplier = mod.tuning.ColdHearted.FreezeMultiplier,
 	},
 })
 
@@ -51,12 +51,23 @@ function cold_hearted_root_args(victim, functionArgs)
 	end
 
 	local effectName = functionArgs and functionArgs.EffectName
-	local base = effectName and game.EffectData[effectName]
-	base = base and base.EffectData and base.EffectData.ExpiringTimeThreshold
-	if not base then return functionArgs end
+	local effect = effectName and game.EffectData[effectName]
+	local data = effect and effect.EffectData
+	if not data then return functionArgs end
 
+	local effectArgs = functionArgs.EffectArgs or {}
+	local duration = effectArgs.Duration or data.Duration
+	local threshold = effectArgs.ExpiringTimeThreshold or data.ExpiringTimeThreshold
+	if type(duration) ~= 'number' or type(threshold) ~= 'number' then return functionArgs end
+
+	local extension = 0
+	if game.HeroHasTrait('RootDurationBoon') then
+		extension = game.GetTotalHeroTraitValue('RootDurationExtension')
+	end
+
+	local held = (duration - threshold + extension) * mod.tuning.ColdHearted.FreezeMultiplier
 	local scaled = game.ShallowCopyTable(functionArgs)
-	scaled.EffectArgs = game.ShallowCopyTable(functionArgs.EffectArgs or {})
-	scaled.EffectArgs.ExpiringTimeThreshold = base - mod.tuning.ColdHearted.FreezeExtension
+	scaled.EffectArgs = game.ShallowCopyTable(effectArgs)
+	scaled.EffectArgs.ExpiringTimeThreshold = math.max(extension, duration - held + extension)
 	return scaled
 end

@@ -20,6 +20,7 @@ modutil.mod.Path.Wrap("CalculateDamageMultipliers", function(base, attacker, vic
 	spiteful_strength_refresh(attacker, triggerArgs)
 	orbital_ring_refresh(attacker, victim)
 	untouchable_glow_refresh(attacker, victim, triggerArgs)
+	solar_eclipse_refresh(attacker)
 	local multipliers = base(attacker, victim, weaponData, triggerArgs)
 	if bitter_end_applies(attacker, victim, triggerArgs) then
 		multipliers = multipliers * mod.tuning.BitterEnd.InflictMultiplier
@@ -29,7 +30,9 @@ end)
 
 
 modutil.mod.Path.Wrap("Damage", function(base, victim, triggerArgs)
-	return hot_iron_damage(base, victim, triggerArgs)
+	return hot_iron_damage(function(...)
+		return bleeding_heart_meter(base, ...)
+	end, victim, triggerArgs)
 end)
 
 modutil.mod.Path.Wrap("CheckOnDamagedPowers", function(base, victim, attacker, args)
@@ -237,15 +240,10 @@ modutil.mod.Path.Wrap("AddTraitToHero", function(base, args)
 end)
 
 
-modutil.mod.Path.Wrap("ApplyUnitPropertyChanges", function(base, unit, ...)
-	local result = base(unit, ...)
-	movement_speed_cap(unit)
-	return result
-end)
-
-modutil.mod.Path.Wrap("CastGripEffectClear", function(base, triggerArgs)
-	base(triggerArgs)
-	movement_speed_cap(game.CurrentRun and game.CurrentRun.Hero)
+modutil.mod.Path.Wrap("ClampSprintSpeed", function(base, hero)
+	local before = solar_eclipse_clamp_snapshot(hero)
+	base(hero)
+	solar_eclipse_clamp_record(hero, before)
 end)
 
 
@@ -274,10 +272,23 @@ for _, roomName in ipairs({ 'F_Reprieve01', 'G_Reprieve01', 'I_Reprieve01', 'O_R
 end
 
 
+modutil.mod.Path.Wrap("InCombatTextArgs", function(base, args)
+	return base(combat_text_stack(args))
+end)
+
+
+modutil.mod.Path.Wrap("SetLifeProperty", function(base, args)
+	untouchable_glow_track_dodge(args)
+	return base(args)
+end)
+
+
 modutil.mod.Path.Wrap("DamageHero", function(base, victim, triggerArgs)
 	wrathful_hubris_taken(victim, triggerArgs)
 	intertwined_fate_last_word(victim, triggerArgs)
-	return base(victim, triggerArgs)
+	local result = base(victim, triggerArgs)
+	untouchable_glow_struck(victim, triggerArgs)
+	return result
 end)
 
 
