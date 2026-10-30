@@ -91,7 +91,7 @@ duo_requirements = {
 		}
 	},
 
-	UntouchableGlowAlt = {
+	DifferentLeague = {
 		Gods = { 'Apollo', 'Aphrodite' },
 		OneFromEachSet = {
 			{ "AphroditeWeaponBoon", "AphroditeSpecialBoon", "AphroditeManaBoon" },

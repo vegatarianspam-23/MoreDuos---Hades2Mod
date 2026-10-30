@@ -84,12 +84,12 @@ duo_text = {
 			SWuUntouchableGlowExpired = '{!Icons.DownArrow} {#AltPenaltyFormat}Untouchable Glow{#Prev}!',
 		},
 	},
-	UntouchableGlowAlt = {
-		Name = 'Untouchable Glow Alt',
-		Description = 'You have a greater chance to {$Keywords.Dodge}. You deal more damage to nearby foes ' ..
-			'based on your chance to avoid their attacks, including {$Keywords.Blind}.',
+	DifferentLeague = {
+		Name = 'Different League',
+		Description = 'You have a greater chance to {$Keywords.Dodge} attacks from nearby foes. You deal more ' ..
+			'damage to each foe based on your chance to avoid its attacks, including {$Keywords.Blind}.',
 		StatLines = {
-			SWuUntouchableGlowAltDodgeStatDisplay = { Name = 'Bonus {$Keywords.Dodge} Chance:', Index = 1 },
+			SWuDifferentLeagueDodgeStatDisplay = { Name = 'Bonus {$Keywords.Dodge} Chance vs. Nearby Foes:', Index = 1 },
 		},
 	},
 
@@ -430,10 +430,13 @@ duo_text = {
 
 	DistressCall = {
 		Name = 'Distress Call',
-		Description = 'After you take damage, summon an ally to the fight for a few seconds.',
+		Description = mod.tuning.DistressCall.OnEncounterStart
+			and 'At the start of each {$Keywords.EncounterAlt}, summon an ally to the fight for a few seconds.'
+			or 'After you take damage, summon an ally to the fight for a few seconds.',
 		Flavour = '',
 		StatLines = {
 			SWuDistressCallCooldownStatDisplay = { Name = 'Distress Call Cooldown:', Index = 1, Suffix = ' Sec.' },
+			SWuDistressCallDurationStatDisplay = { Name = 'Ally Duration:', Index = 1, Suffix = ' Sec.' },
 		},
 	},
 

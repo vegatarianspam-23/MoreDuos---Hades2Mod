@@ -105,6 +105,11 @@ mod.tuning = {
 		Duration = 8,
 		Cooldown = 40,
 
+		OnEncounterStart = true,
+		EncounterStartDelay = 0.5,
+		EncounterFoeWait = 15,
+		SwingLimit = 2.5,
+
 		NominalHealth = 1,
 
 		AllowInBoss = true,
@@ -128,6 +133,20 @@ mod.tuning = {
 				Packages = { 'Heracles' },
 				Voice = { Bank = 'Heracles' },
 				Greet = true,
+				Entrance = {
+					Animation = 'Heracles_Combat_Taunt',
+					Height = 2500,
+					Delay = 0.3,
+					Force = 3500,
+					Land = 0.5,
+					Sound = '/SFX/Enemy Sounds/Heracles/EmotePowerCharging',
+					LandFx = 'HydraTouchdownFx',
+					LandSounds = {
+						'/SFX/Enemy Sounds/Heracles/EmotePowerAttacking',
+						'/SFX/Enemy Sounds/Polyphemus/PolyphemusGroundSlam',
+					},
+					LandShake = true,
+				},
 				Exit = {
 					Animation = 'Heracles_Combat_LeapExit',
 					Voice = true,
@@ -146,6 +165,15 @@ mod.tuning = {
 				Packages = { 'Nemesis' },
 				Voice = { Bank = 'Nemesis' },
 				Greet = true,
+				Entrance = {
+					Animation = 'Nemesis_Combat_Entrance',
+					Height = 1500,
+					Delay = 0.3,
+					Force = 2000,
+					Land = 0.6,
+					Sound = '/SFX/Player Sounds/MelWhooshDropIn',
+					Shake = true,
+				},
 				Exit = {
 					Animation = 'Nemesis_Hub_Exit',
 					Voice = true,
@@ -317,15 +345,159 @@ mod.tuning = {
 				Key = 'Thanatos',
 				Unit = 'NPC_Thanatos_Field_01',
 				Requires = 'NikkelM-Zagreus_Journey',
-				Packages = { 'Thanatos' },
+				Packages = { 'Thanatos', 'ModsNikkelMHadesBiomesFxOriginal', 'NikkelM-HadesBiomesFxModded' },
+				Voice = { Bank = { 'Thanatos', 'ThanatosField' } },
 				NoBoss = true,
 				WakeDelay = 0,
 				Greet = true,
+				GreetLines = 'EntranceVoiceLines',
+				TargetReach = 1000,
+				Weapons = {
+					ThanatosDeathCurseAoE = {
+						ForceFirst = true,
+						MinAttacksBetweenUse = 0,
+						Requirements = { MinAttacksBetweenUse = 0 },
+					},
+				},
+				Entrance = {
+					Fx = 'ThanatosTeleport',
+					Delay = 0.2,
+					FadeIn = 0.3,
+					Sound = '/SFX/ThanatosEntranceSound',
+					Land = 0.5,
+				},
 				Exit = {
 					Animation = 'NPCThanatosExit',
 					Fx = 'ThanatosTeleport',
 					Wind = 0.1,
 					Fade = 0.35,
+				},
+			},
+			{
+				Key = 'Megaera',
+				Unit = 'Harpy',
+				Requires = 'NikkelM-Zagreus_Journey',
+				Traitor = true,
+				DamageMultiplier = 30,
+				Packages = { 'TartarusModsNikkelMHadesBiomes', 'ModsNikkelMHadesBiomesFxOriginal', 'NikkelM-HadesBiomesFxModded' },
+				Voice = { Bank = 'MegaeraField' },
+				BlockedIn = { 'BossHarpy1' },
+				WakeDelay = 0,
+				Greet = true,
+				Clear = {
+					'IsBoss', 'UseBossHealthBar', 'AIStages', 'AdditionalEnemySetupFunctionName',
+					'OnDeathFunctionName', 'OnDeathFunctionArgs', 'KillEnemyEvents', 'FightStartGlobalVoiceLines',
+					'BossPresentationUltraSuperPriorityIntroTextLineSets', 'BossPresentationIntroTextLineSets',
+					'BossPresentationTextLineSets', 'ShrineMetaUpgradeName', 'ShrineDataOverwrites', 'DreamBiomeData',
+					'SpawnOptions', 'SupportAIWeaponSetOptions', 'SupportUnitName',
+				},
+				Data = {
+					AIOptions = { 'AttackerAI' },
+					WeaponOptions = { 'HarpyLunge', 'HarpyWhipWhirl', 'HarpyLightning' },
+					HideHealthBar = true,
+					EncounterStartVoiceLines = {
+						RandomRemaining = true,
+						PreLineWait = 0.6,
+						{ Cue = '/VO/MegaeraField_0401' },
+						{ Cue = '/VO/MegaeraField_0085' },
+						{ Cue = '/VO/MegaeraField_0086' },
+						{ Cue = '/VO/MegaeraField_0114' },
+						{ Cue = '/VO/MegaeraField_0116' },
+					},
+					ExitVoiceLines = {
+						RandomRemaining = true,
+						{ Cue = '/VO/MegaeraField_0662' },
+						{ Cue = '/VO/MegaeraField_0133' },
+						{ Cue = '/VO/MegaeraField_0296' },
+					},
+				},
+				Entrance = {
+					Animation = 'MegaeraMultiFurySkyDive',
+					Height = 1500,
+					Delay = 0.3,
+					Force = 2500,
+					Land = 0.5,
+					LandShake = true,
+				},
+				Exit = {
+					Animation = 'MegaeraMultiFuryTakeOff',
+					Voice = true,
+					Wind = 0.4,
+					Rise = 1500,
+					RiseTime = 0.2,
+					Fade = 0.1,
+				},
+			},
+			{
+				Key = 'Bouldy',
+				Unit = 'NPC_Bouldy_01',
+				Requires = 'NikkelM-Zagreus_Journey',
+				Packages = { 'Bouldy', 'BiomeI' },
+				Voice = { Bank = 'Sisyphus' },
+				Weight = 0.5,
+
+				Callout = {
+					Speaker = 'NPC_Sisyphus_01',
+					SubtitleColor = { 109, 185, 116, 255 },
+					Sets = {
+						{
+							Rooms = { 'A_Boss01', 'A_Boss02', 'A_Boss03' },
+							Cues = { 'Sisyphus_0290', 'Sisyphus_0291', 'Sisyphus_0292', 'Sisyphus_0293', 'Sisyphus_0294', 'Sisyphus_0295' },
+						},
+						{
+							Units = { 'Hecate', 'Eris' },
+							Cues = { 'Sisyphus_0290', 'Sisyphus_0291', 'Sisyphus_0293', 'Sisyphus_0294', 'Sisyphus_0295' },
+						},
+						{
+							Units = { 'NPC_Thanatos_Field_01' },
+							Cues = { 'Sisyphus_0296', 'Sisyphus_0297', 'Sisyphus_0298', 'Sisyphus_0299', 'Sisyphus_0300' },
+						},
+						{
+							Rooms = { 'D_Boss01' },
+							Cues = { 'Sisyphus_0302', 'Sisyphus_0303', 'Sisyphus_0304', 'Sisyphus_0305', 'Sisyphus_0306', 'Sisyphus_0307' },
+						},
+						{
+							Rooms = { 'CharonFight01' },
+							Cues = { 'Sisyphus_0447', 'Sisyphus_0448', 'Sisyphus_0449', 'Sisyphus_0450', 'Sisyphus_0451', 'Sisyphus_0452' },
+						},
+						{
+							Cues = {
+								'Sisyphus_0268', 'Sisyphus_0269', 'Sisyphus_0272', 'Sisyphus_0273', 'Sisyphus_0274',
+								'Sisyphus_0275', 'Sisyphus_0276', 'Sisyphus_0277', 'Sisyphus_0279', 'Sisyphus_0280',
+								'Sisyphus_0282', 'Sisyphus_0283', 'Sisyphus_0284', 'Sisyphus_0285', 'Sisyphus_0310',
+								'Sisyphus_0313', 'Sisyphus_0314', 'Sisyphus_0315',
+							},
+						},
+					},
+				},
+
+				Drop = {
+					Damage = 4000,
+					Radius = 700,
+					Reach = 900,
+
+					Scale = 0.5,
+					Height = 1000,
+					Fall = 0.45,
+					FallSound = '/Leftovers/SFX/MeteorStrikeQuiet',
+					LandFx = 'UnitUnfrozen',
+					LandSound = '/SFX/Explosion1',
+
+					Delay = 2.5,
+
+					LootDelay = 0,
+					LootRange = 150,
+					LootForceMin = 200,
+					LootForceMax = 350,
+					LootScale = 0.6,
+					Loot = {
+						{ Name = 'RoomMoneyTinyDrop', Count = 5, Overrides = { DropMoney = 10 } },
+						{ Name = 'MetaCurrencyDrop', Count = 5, Overrides = { AddResources = { MetaCurrency = 20 } } },
+						{ Name = 'HealDropMinor', Count = 5, Overrides = { HealFixed = 10 } },
+					},
+
+					Linger = 0,
+					Fade = 0.15,
 				},
 			},
 		},
@@ -360,9 +532,14 @@ mod.tuning = {
 		NearbyExclusionBoon = 'AllCloseBoon',
 		ExpireSound = '/SFX/WrathOver',
 		ResetGrace = 5,
-
-		AltDodgeBonus = 0.10,
-		AltDamagePerDodge = 1.0,
+	},
+	DifferentLeague = {
+		DodgeBonus = 0.15,
+		DamagePerDodge = 1.0,
+		MissInterval = 0.25,
+		MissDuration = 0.5,
+		Radius = 430,
+		NearbyExclusionBoon = 'AllCloseBoon',
 	},
 	ColdHearted = {
 		Power = 10,
@@ -470,7 +647,7 @@ mod.tuning = {
 	},
 	FamilyTrade = {
 		Choices = 3,
-		ExchangeLevelBonus = 4,
+		ExchangeLevelBonus = 3,
 		AcquireDelay = 0.3,
 	},
 	BloodBorn = {
@@ -517,10 +694,11 @@ mod.tuning = {
 	},
 	SolarEclipse = {
 		SpeedPerDazed = 0.05,
-		MaxSpeedBonus = 0.50,
+		MaxSpeedBonus = nil,
 		DamagePerSpeed = 0.5,
 
 		AltSpeedPerDazed = 0.10,
+		AltMaxSpeedBonus = 0.50,
 		DamageMultiplier = 2.00,
 		Duration = 5,
 		Recharge = 40,

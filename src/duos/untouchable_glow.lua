@@ -1,83 +1,50 @@
 ---@meta _
 
 
-local UNTOUCHABLE_GLOW_ALT = duo_alt('UntouchableGlow')
+register_duo({
+	key = 'UntouchableGlow',
 
+	StatLines = { 'SWuUntouchableGlowMaxStatDisplay' },
+	ExtractValues = {
+		{ Key = 'SWuMaxBonus', ExtractAs = 'TooltipMaxBonus', Format = 'Percent', IncludeSigns = true },
+		{ Key = 'SWuStepInterval', ExtractAs = 'TooltipInterval', SkipAutoExtract = true },
+	},
 
-if UNTOUCHABLE_GLOW_ALT then
-	register_duo({
-		key = 'UntouchableGlow',
+	ExtraFields = {
+		SWuMaxBonus = mod.tuning.UntouchableGlow.MaxPercent,
+		SWuStepInterval = mod.tuning.UntouchableGlow.StepInterval,
+		SWuUntouchableMultiplier = 1,
+		SWuUntouchableDefense = 1,
 
-		StatLines = { 'SWuUntouchableGlowAltDodgeStatDisplay' },
-		ExtractValues = {
-			{ Key = 'SWuDodgeBonus', ExtractAs = 'TooltipDodgeBonus', Format = 'Percent', IncludeSigns = true },
+		AddOutgoingDamageModifiers = {
+			ValidWeapons = DUO_SCOPE_WEAPON.ValidWeapons,
+			ValidWeaponsLookup = DUO_SCOPE_WEAPON.ValidWeaponsLookup,
+			UseTraitValue = 'SWuUntouchableMultiplier',
+			IsMultiplier = true,
 		},
 
-		ExtraFields = {
-			SWuDodgeBonus = mod.tuning.UntouchableGlow.AltDodgeBonus,
-			SWuUntouchableMultiplier = 1,
-
-			PropertyChanges = {
-				{
-					LifeProperty = 'DodgeChance',
-					ChangeValue = mod.tuning.UntouchableGlow.AltDodgeBonus,
-					ChangeType = 'Add',
-					DataValue = false,
-				},
-			},
-
-			AddOutgoingDamageModifiers = {
-				UseTraitValue = 'SWuUntouchableMultiplier',
-				IsMultiplier = true,
-			},
-		},
-	})
-else
-	register_duo({
-		key = 'UntouchableGlow',
-
-		StatLines = { 'SWuUntouchableGlowMaxStatDisplay' },
-		ExtractValues = {
-			{ Key = 'SWuMaxBonus', ExtractAs = 'TooltipMaxBonus', Format = 'Percent', IncludeSigns = true },
-			{ Key = 'SWuStepInterval', ExtractAs = 'TooltipInterval', SkipAutoExtract = true },
+		AddIncomingDamageModifiers = {
+			UseTraitValue = 'SWuUntouchableDefense',
+			IsMultiplier = true,
+			IncludeObstacleDamage = mod.tuning.UntouchableGlow.IncludeTraps,
 		},
 
-		ExtraFields = {
-			SWuMaxBonus = mod.tuning.UntouchableGlow.MaxPercent,
-			SWuStepInterval = mod.tuning.UntouchableGlow.StepInterval,
-			SWuUntouchableMultiplier = 1,
-			SWuUntouchableDefense = 1,
+		ShowInHUD = true,
 
-			AddOutgoingDamageModifiers = {
-				ValidWeapons = DUO_SCOPE_WEAPON.ValidWeapons,
-				ValidWeaponsLookup = DUO_SCOPE_WEAPON.ValidWeaponsLookup,
-				UseTraitValue = 'SWuUntouchableMultiplier',
-				IsMultiplier = true,
-			},
-
-			AddIncomingDamageModifiers = {
-				UseTraitValue = 'SWuUntouchableDefense',
-				IsMultiplier = true,
-				IncludeObstacleDamage = mod.tuning.UntouchableGlow.IncludeTraps,
-			},
-
-			ShowInHUD = true,
-
-			CustomLabel = {
-				DisplayType = 'RoomValue',
-				Key = 'SWuUntouchedPercent',
-				Text = 'UI_TimedKillBuff',
-			},
-
-			SetupFunction = {
-				Threaded = true,
-				Name = _PLUGIN.guid .. '.UntouchableGlow',
-				RepeatOnEncounterStart = true,
-				Args = { Interval = mod.tuning.UntouchableGlow.StepInterval },
-			},
+		CustomLabel = {
+			DisplayType = 'RoomValue',
+			Key = 'SWuUntouchedPercent',
+			Text = 'UI_TimedKillBuff',
 		},
-	})
-end
+
+		SetupFunction = {
+			Threaded = true,
+			Name = _PLUGIN.guid .. '.UntouchableGlow',
+			RepeatOnEncounterStart = true,
+			Args = { Interval = mod.tuning.UntouchableGlow.StepInterval },
+		},
+	},
+})
 
 
 local function untouchable_glow_bonus(run)
@@ -107,12 +74,14 @@ local function untouchable_glow_show(run)
 end
 
 
-local UNTOUCHABLE_UNLIMITED_RANGE = 3000
-
-
 local function untouchable_glow_everywhere()
 	local boon = mod.tuning.UntouchableGlow.NearbyExclusionBoon
 	return boon and game.HeroHasTrait(boon)
+end
+
+
+local function untouchable_glow_foe(enemy)
+	return enemy ~= nil and not enemy.IsDead and not duo_ignores(enemy)
 end
 
 
@@ -120,19 +89,25 @@ local function untouchable_glow_foes_near()
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero then return false end
 
+	if untouchable_glow_everywhere() then
+		for _, enemy in pairs(game.ActiveEnemies or {}) do
+			if untouchable_glow_foe(enemy) then return true end
+		end
+		return false
+	end
+
 	local nearby = game.GetClosestIds({
 		Id = hero.ObjectId,
 		DestinationName = 'EnemyTeam',
 		IgnoreInvulnerable = true,
 		IgnoreHomingIneligible = true,
 		IgnoreSelf = true,
-		Distance = untouchable_glow_everywhere() and UNTOUCHABLE_UNLIMITED_RANGE or mod.tuning.UntouchableGlow.Radius,
+		Distance = mod.tuning.UntouchableGlow.Radius,
 		PreciseCollision = true,
 	})
 
 	for _, id in pairs(nearby or {}) do
-		local enemy = game.ActiveEnemies[id]
-		if enemy and not enemy.IsDead and not duo_ignores(enemy) then return true end
+		if untouchable_glow_foe(game.ActiveEnemies[id]) then return true end
 	end
 
 	return false
@@ -193,7 +168,7 @@ end
 
 
 function untouchable_glow_struck(victim, triggerArgs)
-	if UNTOUCHABLE_GLOW_ALT or not duo_on('UntouchableGlow') then return end
+	if not duo_on('UntouchableGlow') then return end
 	if not game.HeroHasTrait(duo_traits.UntouchableGlow) then return end
 	if not untouchable_glow_attack(victim, triggerArgs) then return end
 
@@ -227,87 +202,9 @@ local function untouchable_glow_multiplier(attacker, victim, triggerArgs)
 end
 
 
-untouchableGlowDodge = untouchableGlowDodge or { Id = nil, Value = 0 }
-
-
-function untouchable_glow_track_dodge(args)
-	if not args or args.Property ~= 'DodgeChance' or type(args.Value) ~= 'number' then return end
-
-	local hero = game.CurrentRun and game.CurrentRun.Hero
-	if not hero or not hero.ObjectId or args.DestinationId ~= hero.ObjectId then return end
-
-	local dodge = untouchableGlowDodge
-	if dodge.Id ~= hero.ObjectId then
-		dodge.Id = hero.ObjectId
-		dodge.Value = 0
-	end
-
-	local change = args.ValueChangeType
-	if change == 'Add' then
-		dodge.Value = dodge.Value + args.Value
-	elseif change == 'Multiply' then
-		dodge.Value = dodge.Value * args.Value
-	else
-		dodge.Value = args.Value
-	end
-end
-
-
-local function untouchable_glow_hero_dodge()
-	local hero = game.CurrentRun and game.CurrentRun.Hero
-	local dodge = untouchableGlowDodge
-	if not hero or dodge.Id ~= hero.ObjectId then return 0 end
-	return math.max(0, math.min(dodge.Value, 1))
-end
-
-
-local function untouchable_glow_effect_miss(effectName)
-	local effect = game.EffectData[effectName]
-	if not effect then return 0 end
-
-	local data = effect.EffectData or effect.DataProperties
-	local miss = data and data.MissChance
-	if type(miss) ~= 'number' then return 0 end
-	return math.max(0, math.min(miss, 1))
-end
-
-
-function untouchable_glow_dodge_against(foe)
-	local through = 1 - untouchable_glow_hero_dodge()
-
-	for effectName in pairs((foe and foe.ActiveEffects) or {}) do
-		through = through * (1 - untouchable_glow_effect_miss(effectName))
-	end
-
-	return 1 - through
-end
-
-
-local function untouchable_glow_alt_multiplier(attacker, victim)
-	if not duo_on('UntouchableGlow') then return 1 end
-
-	local hero = game.CurrentRun and game.CurrentRun.Hero
-	if not hero or attacker ~= hero then return 1 end
-	if not game.HeroHasTrait(duo_traits.UntouchableGlow) then return 1 end
-	if not victim or not victim.ObjectId then return 1 end
-
-	if not untouchable_glow_everywhere() then
-		local distance = game.GetDistance({ Id = hero.ObjectId, DestinationId = victim.ObjectId })
-		if not distance or distance > mod.tuning.UntouchableGlow.Radius then return 1 end
-	end
-
-	return 1 + untouchable_glow_dodge_against(victim) * mod.tuning.UntouchableGlow.AltDamagePerDodge
-end
-
-
 function untouchable_glow_refresh(attacker, victim, triggerArgs)
 	local trait = duo_traits.UntouchableGlow and game.GetHeroTrait(duo_traits.UntouchableGlow)
 	if not trait then return end
-
-	if UNTOUCHABLE_GLOW_ALT then
-		trait.SWuUntouchableMultiplier = untouchable_glow_alt_multiplier(attacker, victim)
-		return
-	end
 
 	trait.SWuUntouchableMultiplier = untouchable_glow_multiplier(attacker, victim, triggerArgs)
 

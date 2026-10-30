@@ -173,7 +173,7 @@ function mod.TectonicCycle(_hero, _args)
 	local interval = mod.tuning.TectonicCycle.Interval
 
 	while duo_running(duo_traits.TectonicCycle) and generation == mod.TectonicCycleGeneration do
-		game.wait(interval, game.RoomThreadName)
+		game.wait(duo_recharge(interval), game.RoomThreadName)
 		if generation ~= mod.TectonicCycleGeneration then return end
 		if not duo_running(duo_traits.TectonicCycle) then return end
 		if duo_on('TectonicCycle') then

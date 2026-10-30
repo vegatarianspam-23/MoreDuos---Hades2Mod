@@ -303,7 +303,7 @@ end
 
 
 function winter_solstice_recharge()
-	return duo_recharge(mod.tuning.WinterSolstice.SlowCooldown)
+	return mod.tuning.WinterSolstice.SlowCooldown
 end
 
 

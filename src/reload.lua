@@ -52,6 +52,7 @@ function prefix_SetupMap()
 	reload_config()
 	load_icon_package()
 	duo_meter_apply()
+	hot_iron_sync_size()
 	wishing_well_keep_reprieve_offered()
 	discerning_taste_sync()
 	golden_rule_apply()
@@ -363,6 +364,49 @@ function sjson_PlayerProjectiles(data)
 	end
 
 	sjson_StormFrontCopies(data)
+	sjson_AirControlHadesProjectiles(data)
+end
+
+
+function sjson_AirControlHadesProjectiles(data)
+	local ok, zagreus = pcall(function() return rom.mods['NikkelM-Zagreus_Journey'] end)
+	local names = ok and zagreus and zagreus.HadesSjsonProjectilesTable
+	if not names then return end
+
+	local byName = {}
+	for _, projectile in ipairs(data.Projectiles) do
+		byName[projectile.Name] = projectile
+	end
+
+	local settled = {
+		['1_BaseEnemyProjectileUndestroyable'] = true,
+		['1_BaseEnemyProjectileUnblockable'] = true,
+		['1_BaseEnemyProjectileReflectable'] = true,
+	}
+
+	local function blockable(name)
+		local seen = {}
+		local current = name
+		while current and not seen[current] do
+			seen[current] = true
+			if settled[current] then return false end
+
+			local projectile = byName[current]
+			if not projectile then return true end
+			if projectile.CanBeProjectileDefenseDestroyedByLayer ~= nil then return false end
+			if projectile.CanBeProjectileDefenseDestroyedByName2 == 'null' then return false end
+
+			current = projectile.InheritFrom
+		end
+		return true
+	end
+
+	for name in pairs(names) do
+		local projectile = byName[name]
+		if projectile and blockable(name) then
+			projectile.CanBeProjectileDefenseDestroyedByLayer = 'BoonDefense'
+		end
+	end
 end
 
 
@@ -1128,6 +1172,7 @@ import 'duos/bubbling_cauldron.lua'
 import 'duos/bitter_end.lua'
 import 'duos/blinding_smite.lua'
 import 'duos/untouchable_glow.lua'
+import 'duos/different_league.lua'
 import 'duos/cold_hearted.lua'
 import 'duos/golden_rule.lua'
 import 'duos/boiling_blood.lua'
@@ -1197,14 +1242,13 @@ local POST_HASTE = 'SlowProjectileBoon'
 
 local function duo_recharge_traits()
 	local traits = {}
-	for _, key in ipairs({ 'LandMine', 'SolarEclipse', 'WinterSolstice' }) do
-		local noRecharge = (key == 'SolarEclipse' and not duo_alt(key))
-			or (key == 'WinterSolstice' and (duo_alt(key) or not mod.tuning.WinterSolstice.SlowCooldownEnabled))
+	for _, key in ipairs({ 'LandMine', 'SolarEclipse', 'TectonicCycle' }) do
+		local noRecharge = key == 'SolarEclipse' and not duo_alt(key)
 		if duo_on(key) and duo_traits[key] and not noRecharge then
 			table.insert(traits, duo_traits[key])
 		end
 	end
-	if distress_call_on() then table.insert(traits, DISTRESS_CALL_TRAIT) end
+	if distress_call_on() and not distress_call_on_encounter_start() then table.insert(traits, DISTRESS_CALL_TRAIT) end
 	return traits
 end
 

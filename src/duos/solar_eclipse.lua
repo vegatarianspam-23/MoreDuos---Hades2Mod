@@ -126,7 +126,10 @@ local function solar_eclipse_speed(count)
 	if not hero or not weapons or not weapons.DefaultWeaponValues then return 0 end
 
 	local perDazed = SOLAR_ECLIPSE_SPEED and tuning.SpeedPerDazed or tuning.AltSpeedPerDazed
-	local bonus = math.min(count * perDazed, tuning.MaxSpeedBonus)
+	local bonus = count * perDazed
+	local cap = tuning.AltMaxSpeedBonus
+	if SOLAR_ECLIPSE_SPEED then cap = tuning.MaxSpeedBonus end
+	if cap then bonus = math.min(bonus, cap) end
 	if hero.Invisible and not SOLAR_ECLIPSE_SPEED then bonus = math.max(bonus, tuning.DarkSpeedBonus) end
 	local total = 1 / (1 + bonus)
 

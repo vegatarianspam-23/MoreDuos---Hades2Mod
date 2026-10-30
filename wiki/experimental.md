@@ -21,6 +21,9 @@ Each entry can be switched on in the config, under `Experimental`.
 - **Glowing Brand** (Hephaestus × Hestia) — Hestia's fireballs inflict Glow. Your Glow is twice as potent and lasts twice as long.
   - Furnace Blast, Anvil Ring *(BoonEdits)*, Smithy Rush *(BoonEdits)*
   - Glowing Coal, Controlled Burn, Volcanic Crown *(BoonEdits)*
+- **Untouchable Glow** (Apollo × Aphrodite) · `UntouchableGlow` — For every 0.3 seconds you spend near foes, your Weapon strikes deal 1% more damage and you take 1% less damage, both up to 100% (30 seconds). The bonus resets whenever an attack that deals damage hits you, and can't reset again for 5 seconds.
+  - Flutter Strike, Flutter Flourish, Glamour Gain
+  - Super Nova, Perfect Image, Extra Dose
 
 ## Alternate versions
 
@@ -38,9 +41,6 @@ Turning one of these on replaces the regular duo in the pool.
 - **Storm Front Alt** (Zeus × Demeter) · `StormFrontAlt` — Demeter's Gusts are larger and rapidly inflict Blitz instead of throwing chain lightning. Blitz internal cooldown reduced.
   - Arctic Gale, Frigid Rush
   - Heaven Strike, Heaven Flourish
-- **Untouchable Glow Alt** (Apollo × Aphrodite) · `UntouchableGlowAlt` — +10% chance to Dodge. All your damage to nearby foes is increased by your chance to avoid their attacks, counting your Dodge chance and their Daze (30% chance → 30% more damage).
-  - Flutter Strike, Flutter Flourish, Glamour Gain
-  - Solar Ring, Blinding Rush, Dazzling Display, Light Smite
 - **Winter Solstice Alt** (Apollo × Demeter) · `WinterSolsticeAlt` — Channelling Omega moves creates a large Gust that Chills foes, and your Freeze and Chill effects make foes 50% slower.
   - Ice Strike, Ice Flourish, Arctic Ring, Frigid Rush, Tranquil Gain
   - Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, Lucid Gain
@@ -48,4 +48,4 @@ Turning one of these on replaces the regular duo in the pool.
 ## Other Boons
 
 - **Pandemonium** (Chaos Legendary) · `Pandemonium` — ???
-- **Distress Call** (Hermes Legendary) · `Distress Call` — after you take damage, summon an ally to fight for you for 8 seconds. 40 second cooldown, reset at the start of each location.
+- **Distress Call** (Hermes Legendary) · `DistressCall` — at the start of each encounter, summon an ally to fight for you for 8 seconds. With Zagreus' Journey, Thanatos, Megaera and Bouldy can answer too; Bouldy drops onto a foe for 4000 damage and scatters Gold, Bones and Health. Setting `DistressCall.OnEncounterStart` to false in tuning switches back to summoning after you take damage (40 second cooldown, reset at the start of each location).

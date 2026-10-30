@@ -9,11 +9,12 @@
 - **Bubbling Cauldron** (Hestia × Poseidon) — Froth is twice as likely to trigger, and can proc more frequently against Scorched foes.
 - **Burnt Offering** (Hera × Hestia) — Give up a boon now for 500 bonus Gold, and for the rest of the night you may purge rewards for more. Gain 20% of any Gold gained this way as Max Magick and Health.
 - **Cold Hearted** (Aphrodite × Demeter) — Your Attack and Special gain more power against Frozen foes (+10 power per second Frozen). Freeze lasts twice as long on Weak foes.
+- **Different League** (Apollo × Aphrodite) — +15% chance to Dodge attacks from nearby foes. All your damage to a foe is increased by your chance to avoid its attacks (includes Daze)
 - **Discerning Taste** (Aphrodite × Zeus) — Most choices can be rerolled, including Hammers and Hexes, and the first reroll of each is free. Gain 5 rerolls now.
 - **Energy Overflow** (Apollo × Poseidon) — Restore 30% more Magick. Magick restored past your limit raises it for the rest of the location, up to 999.
 - **Explosive Sparks** (Hephaestus × Zeus) — Hammer strikes from Hephaestus have a 30% chance to set off a massive blast where it lands.
 - **Family Reunion** (Hera × Zeus) — Gain a boon from every Olympian you have yet seen tonight. Legendary and Duo boons are 10% more likely to be offered for the rest of the night.
-- **Family Trade** (Hera × Zeus) — Sacrifice boons gain 4 extra Pom levels, and are offered whenever possible. Taking one keeps the original boon instead of replacing it, and choose from 3 boons now (prioritizes Hera / Zeus Sacrifices first).
+- **Family Trade** (Hera × Zeus) — Sacrifice boons gain 3 extra Pom levels, and are offered whenever possible. Taking one keeps the original boon instead of replacing it, and choose from 3 boons now (prioritizes Hera / Zeus Sacrifices first).
 - **Gentle Caress** (Hephaestus × Aphrodite) — Excess healing converts to Armor, up to your Max Health. The first hit each encounter restores that much Health instead.
 - **Glacial Advance** (Poseidon × Demeter) — Poseidon's waves Freeze foes and deal 30 more damage.
 - **Golden Rule** (Hera × Poseidon) — Deal 0.05% more damage per Gold held, up to 100%. Earn 5% interest on your Gold whenever you leave a location.
@@ -28,12 +29,11 @@
 - **Razor Shoals** (Ares × Poseidon) — Wounds can be re-inflicted on Frothed foes.
 - **Room Temperature** (Hestia × Demeter) — Hestia's fireballs thaw Frozen foes (so that they can be Frozen again), and deal 200 more damage to them.
 - **Royal Banquet** (Hera × Demeter) — Your boons are one rarity higher tonight, repeat this effect whenever one gains a Pom level.
-- **Solar Eclipse** (Apollo × Ares) — Move and strike 5% faster for each Dazed foe, up to 50%. All damage you deal is increased by half your bonus move speed (including Sprinting).
+- **Solar Eclipse** (Apollo × Ares) — Move and strike 5% faster for each Dazed foe. All damage you deal is increased by half your bonus move speed (including Sprinting).
 - **Solar Flare** (Apollo × Hestia) — While you channel an Omega move, a ring of fire expands around you, inflicting 90 Scorch every second. Inflict 50% more Scorch from all sources.
 - **Spiteful Strength** (Hera × Hephaestus) — Prime 60 Magick now. Your weapon strikes deal more damage for the share of your Magick that is Primed, up to +100% at all of it. Bonus is doubled for an Attack or Special with no percentage-damage boon on it (none, Zeus, Poseidon, Hestia, Hephaestus).
 - **Storm Front** (Zeus × Demeter) — Demeter's Gusts are larger and throw chain lightning at foes they strike. 
 - **Tectonic Cycle** (Hephaestus × Poseidon) — Every 40 seconds, your start-of-encounter effects fire again. Optionally (`Options.TectonicCycleResetsCooldowns` in config, off by default), each cycle also resets most boon cooldowns.
 - **Tipped Scales** (Poseidon × Zeus) — Gain 10% Favor, which is added to every chance-based effect. Each miss adds 3% more, up to 100% (reset on a success).
-- **Untouchable Glow** (Apollo × Aphrodite) — For every 0.3 seconds you spend near foes, your Weapon strikes deal 1% more damage and you take 1% less damage, both up to 100% (30 seconds). The bonus resets whenever an attack that deals damage hits you, and can't reset again for 5 seconds.
 - **Winter Solstice** (Apollo × Demeter) — While channelling Omega moves, a Squall rapidly damages and Chills nearby foes. Hold for 2 seconds to slow time for 2 seconds.
 - **Wishing Well** (Aphrodite × Poseidon) — A fountain room is offered whenever possible (marked by an Aromatic Phial icon on the location reward). Drinking from any fountain offers a reward from a random ally tonight, and take one now. Zagreus' Journey allies are experimental and off by default (`Experimental.ZagreusJourney` in config).

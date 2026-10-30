@@ -30,6 +30,9 @@ Each duo needs one boon from every group (sub-bullet). Boons marked *(BoonEdits)
 - **Cold Hearted**
   - Rapture Ring, Passion Rush, Glamour Gain
   - Ice Strike, Ice Flourish, Arctic Ring
+- **Different League**
+  - Flutter Strike, Flutter Flourish, Glamour Gain
+  - Solar Ring, Blinding Rush, Dazzling Display, Light Smite
 - **Discerning Taste** — not offered during Fates' Whim.
   - Shameless Attitude, Secret Crush, Spiritual Affirmation
   - Divine Vengeance, Power Surge, Lightning Lance
@@ -106,9 +109,6 @@ Each duo needs one boon from every group (sub-bullet). Boons marked *(BoonEdits)
 - **Tipped Scales**
   - Sea Star, Buried Treasure
   - Divine Vengeance, Power Surge, Lightning Lance
-- **Untouchable Glow**
-  - Flutter Strike, Flutter Flourish, Glamour Gain
-  - Super Nova, Perfect Image, Extra Dose
 - **Winter Solstice**
   - Ice Strike, Ice Flourish, Arctic Ring, Frigid Rush, Tranquil Gain
   - Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, Lucid Gain

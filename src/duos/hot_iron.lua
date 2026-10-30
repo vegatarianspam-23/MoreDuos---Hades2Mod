@@ -28,10 +28,6 @@ register_duo({
 			ValidActiveEffects = { GLOW },
 			ValidWeaponMultiplier = mod.tuning.HotIron.GlowMultiplier,
 		},
-
-		OnProjectileCreationFunction = {
-			Name = _PLUGIN.guid .. '.HotIronSize',
-		},
 	},
 })
 
@@ -42,6 +38,22 @@ local function hot_iron_held()
 end
 
 
+local strike_weapons
+
+
+local function hot_iron_strike_weapons()
+	if strike_weapons then return strike_weapons end
+
+	local lookup = {}
+	for _, set in ipairs({ game.WeaponSets.HeroPrimaryWeapons, game.WeaponSets.HeroSecondaryWeapons }) do
+		for _, name in ipairs(game.AddLinkedWeapons(set)) do lookup[name] = true end
+	end
+
+	strike_weapons = lookup
+	return lookup
+end
+
+
 local function hot_iron_strike(victim, attacker, triggerArgs)
 	if not triggerArgs or triggerArgs.EffectName or not triggerArgs.SourceProjectile then return nil end
 	if FIREBALLS[triggerArgs.SourceProjectile] then return nil end
@@ -49,11 +61,7 @@ local function hot_iron_strike(victim, attacker, triggerArgs)
 	if not hot_iron_held() then return nil end
 
 	local weapon = triggerArgs.SourceWeapon
-	if not weapon then return nil end
-	local sets = game.WeaponSets
-	if not (game.Contains(sets.HeroPrimaryWeapons, weapon) or game.Contains(sets.HeroSecondaryWeapons, weapon)) then
-		return nil
-	end
+	if not weapon or not hot_iron_strike_weapons()[weapon] then return nil end
 
 	return triggerArgs.SourceProjectile
 end
@@ -105,39 +113,46 @@ local function hot_iron_lookups(hero)
 end
 
 
-local function fireballs_first(traits)
-	local first, rest = {}, {}
-	for _, trait in ipairs(traits) do
+local function hot_iron_fireball_actions(victim, args)
+	local hero = game.CurrentRun.Hero
+	if not victim.TriggersOnDamageEffects or victim.IsPolymorphed then return end
+
+	local alive = victim.Health ~= nil
+		and ((victim.HealthBuffer and victim.HealthBuffer > 0) or victim.Health > 0 or game.HasLastStand(victim))
+	local luck = game.GetTotalHeroTraitValue('LuckMultiplier', { IsMultiplier = true })
+
+	for _, trait in ipairs(hero.Traits or {}) do
 		local action = trait.OnEnemyDamagedAction
-		if action and fireball_keyed(action.ValidProjectilesLookup) then
-			table.insert(first, trait)
-		else
-			table.insert(rest, trait)
+		if action and not action.ValidEffectName and fireball_keyed(action.ValidProjectilesLookup) then
+			if action.FunctionName and (not action.FirstHitOnly
+				or not game.ProjectileHasUnitHit(args.ProjectileId, action.FunctionName))
+			then
+				game.ProjectileRecordUnitHit(args.ProjectileId, action.FunctionName)
+				local actionArgs = game.ShallowCopyTable(action.Args) or {}
+				actionArgs.VictimWillBeAlive = alive
+				game.thread(game.CallFunctionName, action.FunctionName, victim, actionArgs, args)
+			end
+
+			local chance = action.Chance == nil or game.RandomChance(action.Chance * luck)
+			if (action.EffectName or action.EffectNames) and alive and chance then
+				local names = game.ShallowCopyTable(action.EffectNames) or {}
+				local effectArgs = game.ShallowCopyTable(action.Args) or {}
+				if action.EffectName then
+					table.insert(names, action.EffectName)
+					table.insert(effectArgs, action.Args or {})
+				end
+				for i, name in pairs(names) do
+					game.ApplyEffect({
+						DestinationId = victim.ObjectId,
+						Id = hero.ObjectId,
+						EffectName = name,
+						ImpactAngle = args.ImpactAngle and math.rad(args.ImpactAngle),
+						DataProperties = game.MergeTables(game.EffectData[name].EffectData, effectArgs[i]),
+					})
+				end
+			end
 		end
 	end
-	if #first == 0 then return nil end
-
-	for _, trait in ipairs(rest) do table.insert(first, trait) end
-	return first
-end
-
-
-local function restore_traits(hero, original, reordered)
-	if hero.Traits ~= reordered then return end
-
-	local kept = game.ToLookup(reordered)
-	local merged = {}
-	for _, trait in ipairs(original) do
-		if kept[trait] then table.insert(merged, trait) end
-	end
-	local listed = game.ToLookup(merged)
-	for _, trait in ipairs(reordered) do
-		if not listed[trait] then table.insert(merged, trait) end
-	end
-
-	for i = #original, 1, -1 do original[i] = nil end
-	for i, trait in ipairs(merged) do original[i] = trait end
-	hero.Traits = original
 end
 
 
@@ -170,57 +185,61 @@ end
 
 
 function hot_iron_on_damaged(base, victim, attacker, args)
-	local projectile = hot_iron_strike(victim, attacker, args)
-	if not projectile then return base(victim, attacker, args) end
-
-	local hero = game.CurrentRun.Hero
-	local original = hero.Traits
-	local reordered = original and fireballs_first(original)
-	if not reordered then return as_fireball(projectile, base, victim, attacker, args) end
-
-	hero.Traits = reordered
-	local ok, result = pcall(as_fireball, projectile, base, victim, attacker, args)
-	restore_traits(hero, original, reordered)
-	if not ok then error(result, 0) end
-	return result
-end
-
-
-local weapon_projectiles
-
-
-local function strike_projectiles()
-	if weapon_projectiles then return weapon_projectiles end
-
-	local lookup = {}
-	for _, set in ipairs({ game.WeaponSets.HeroPrimaryWeapons, game.WeaponSets.HeroSecondaryWeapons }) do
-		for _, name in ipairs(game.AddLinkedWeapons(set)) do
-			lookup[name] = true
-			local data = game.WeaponData[name]
-			if data and data.ProjectileName then lookup[data.ProjectileName] = true end
-		end
+	if hot_iron_strike(victim, attacker, args) and not args.SkipOnDamagedPowers then
+		hot_iron_fireball_actions(victim, args)
 	end
-	for name in pairs(FIREBALLS) do lookup[name] = nil end
-
-	weapon_projectiles = lookup
-	return lookup
+	return base(victim, attacker, args)
 end
 
 
----@diagnostic disable-next-line: unused-local
-function mod.HotIronSize(triggerArgs, _args)
-	if not hot_iron_held() then return end
-	if not triggerArgs or not triggerArgs.ProjectileId or not triggerArgs.name then return end
-	if FIREBALLS[triggerArgs.name] or not strike_projectiles()[triggerArgs.name] then return end
-	if not game.HeroHasTrait('BurnSprintBoon') then return end
+local SIZE_PROPERTIES = { 'ProjectileScaleMultiplier', 'BlastRadiusMultiplier' }
 
+
+local function hot_iron_size_multiplier()
+	if not duo_on('HotIron') then return 1 end
 	local creation = game.TraitData.BurnSprintBoon and game.TraitData.BurnSprintBoon.OnProjectileCreationFunction
 	local mult = creation and creation.Args and creation.Args.AreaMultiplier
-	if not mult then return end
+	return type(mult) == 'number' and mult or 1
+end
 
-	game.SetDamageRadiusMultiplier({
-		Id = triggerArgs.ProjectileId,
-		Fraction = mult,
-		Duration = 0,
-	})
+
+local function hot_iron_size_changes(trait, mult)
+	trait.PropertyChanges = trait.PropertyChanges or {}
+	local found = {}
+	for _, change in ipairs(trait.PropertyChanges) do
+		if change.SWuHotIronSize then
+			change.ChangeValue = mult
+			found[change.WeaponProperty] = true
+		end
+	end
+
+	local weapons = game.ConcatTableValues(
+		game.ShallowCopyTable(game.WeaponSets.HeroPrimaryWeapons),
+		game.WeaponSets.HeroSecondaryWeapons)
+	for _, property in ipairs(SIZE_PROPERTIES) do
+		if not found[property] then
+			table.insert(trait.PropertyChanges, {
+				SWuHotIronSize = true,
+				TraitName = 'BurnSprintBoon',
+				WeaponNames = weapons,
+				WeaponProperty = property,
+				ChangeValue = mult,
+				ChangeType = 'Multiply',
+			})
+		end
+	end
+end
+
+
+function hot_iron_sync_size()
+	local name = duo_traits.HotIron
+	if not name or not game.TraitData[name] then return end
+
+	local mult = hot_iron_size_multiplier()
+	hot_iron_size_changes(game.TraitData[name], mult)
+
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	for _, trait in ipairs(hero and hero.Traits or {}) do
+		if trait.Name == name then hot_iron_size_changes(trait, mult) end
+	end
 end

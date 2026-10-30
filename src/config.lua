@@ -12,6 +12,7 @@ local config = {
     BubblingCauldron = true;
     BurntOffering = true;
     ColdHearted = true;
+    DifferentLeague = true;
     DiscerningTaste = true;
     EnergyOverflow = true;
     ExplosiveSparks = true;
@@ -37,7 +38,6 @@ local config = {
     StormFront = true;
     TectonicCycle = true;
     TippedScales = true;
-    UntouchableGlow = true;
     WinterSolstice = true;
     WishingWell = true;
   };
@@ -46,6 +46,8 @@ local config = {
     ConvectiveVortex = false;
 
     GlowingBrand = false;
+
+    UntouchableGlow = false;
 
     GoddessSpite = false;
 
@@ -60,8 +62,6 @@ local config = {
     SolarEclipseAlt = false;
 
     StormFrontAlt = false;
-
-    UntouchableGlowAlt = false;
 
     WinterSolsticeAlt = false;
 

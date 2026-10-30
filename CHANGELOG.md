@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### Added
+
+- Different League (Apollo × Aphrodite): replaces Untouchable Glow as the Apollo × Aphrodite duo. +15% chance to Dodge attacks from nearby foes, and all your damage to a foe is increased by your chance to avoid its attacks, including its Daze. Replaces Untouchable Glow Alt, so `UntouchableGlowAlt` is removed from the config
+- Untouchable Glow: moved to Experimental (`Experimental.UntouchableGlow`, off by default). If your config was made before this version, it still has `Duos.UntouchableGlow = true`, which keeps it on; set that to false to turn it off
+- Distress Call (experimental): adds Megaera and Bouldy as possible summons, when Zagreus' Journey is installed + enabled in the config
+
+### Changed
+
+- Solar Eclipse: speed bonus from Dazed foes is no longer capped at 50% (still 5% per Dazed foe)
+- Family Trade: Sacrifice boons gain 3 extra Pom levels (was 4)
+- Winter Solstice: no longer recharges faster with Post Haste, and no longer counts toward Post Haste's offer requirements
+- Tectonic Cycle: cycles faster with Post Haste, and now counts toward Post Haste's offer requirements
+- Distress Call (experimental): now summons an ally at the start of each encounter instead of after you take damage. The old trigger can be switched back on with `DistressCall.OnEncounterStart` in tuning. Athena now strikes as the 8 seconds end, instead of right away
+
+### Fixed
+
+- Distress Call (experimental): fixed various entry/exit animations and voicelines, and targeting behavior for Thanatos
+- Distress Call (experimental): fixed issue with Artemis preview decal lingering, and summons finish their attack cycle fully before exiting
+- Air Control: with Zagreus' Journey, the ring now slows and destroys Hades I projectiles too, including traps and Satyr darts
+- Hot Iron: fixed various interactions with Fourth Degree and Burning Meteor, and Omega attacks / specials not getting bonuses
+
 ## [1.0.14] - 2026-10-28
 
 ### Added

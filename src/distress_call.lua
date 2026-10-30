@@ -596,12 +596,27 @@ function distress_call_revel_end()
 end
 
 
+local function distress_call_foes_remain()
+	for _, enemy in pairs(game.RequiredKillEnemies or {}) do
+		if enemy and not enemy.IsDead then return true end
+	end
+	for _, enemy in pairs(game.ActiveEnemies or {}) do
+		if enemy and enemy.IsAggroed and not enemy.IsDead and not is_allied_summon(enemy) then return true end
+	end
+	return false
+end
+
+
 function distress_call_smite(ally, source)
 	local smite = ally.Smite
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero then return end
 
 	distress_call_load(ally)
+
+	game.wait(mod.tuning.DistressCall.Duration - smite.Descend - 0.1, game.RoomThreadName)
+	hero = game.CurrentRun and game.CurrentRun.Hero
+	if not hero or hero.IsDead or not distress_call_foes_remain() then return end
 
 	local athena = game.DeepCopyTable(source)
 	local spawnPointId = game.SelectSpawnPoint(game.CurrentRun.CurrentRoom, athena, {
@@ -630,8 +645,6 @@ function distress_call_smite(ally, source)
 	})
 	game.IgnoreGravity({ Id = athena.ObjectId })
 
-	game.thread(game.PlayVoiceLines, athena.EncounterStartVoiceLines, nil, athena)
-
 	game.AdjustColorGrading({ Name = 'Gold', Duration = 2.5 })
 	game.BloomRequestStart({
 		SourceName = 'SWuDistressAthena', BloomType = 'AthenaDivineInterventionBloom', Duration = 2.5,
@@ -654,6 +667,7 @@ function distress_call_smite(ally, source)
 
 	game.CreateProjectileFromUnit({ Name = smite.Nova, Id = athena.ObjectId })
 	game.ShakeScreen({ Speed = 500, Distance = 4, FalloffSpeed = 1000, Duration = 0.75 })
+	game.thread(game.PlayVoiceLines, athena.EncounterStartVoiceLines, nil, athena)
 
 	game.AdjustRadialBlurDistance({ Fraction = 0, Duration = 0.25 })
 	game.AdjustRadialBlurStrength({ Fraction = 0, Duration = 0.25 })
@@ -668,9 +682,9 @@ function distress_call_smite(ally, source)
 		ExcludeNames = game.WeaponSets.ExpireProjectileExcludeProjectileNames,
 	})
 	game.PlaySound({ Name = smite.Sound, Id = athena.ObjectId })
-	game.thread(game.PlayVoiceLines, athena.EncounterEndVoiceLines, nil, athena)
 
 	game.wait(smite.Linger, game.RoomThreadName)
+	game.thread(game.PlayVoiceLines, athena.EncounterEndVoiceLines, nil, athena)
 
 	game.SetAnimation({ Name = smite.Departure, DestinationId = athena.ObjectId })
 	game.wait(0.45, game.RoomThreadName)
@@ -710,6 +724,151 @@ function distress_call_strike(enemy, smite)
 end
 
 
+function distress_call_drop_target(hero, drop)
+	local id = game.GetClosest({
+		Id = hero.ObjectId, DestinationName = 'EnemyTeam',
+		IgnoreInvulnerable = true, IgnoreHomingIneligible = true, Distance = drop.Reach,
+	})
+	if not id or id == 0 then return hero.ObjectId end
+	return id
+end
+
+
+function distress_call_drop_hit(hero, spot, drop)
+	for _, enemy in pairs(game.ShallowCopyTable(game.ActiveEnemies or {})) do
+		if enemy.ObjectId and not enemy.IsDead and not is_allied_summon(enemy) and not duo_ignores(enemy)
+			and not game.IsInvulnerable({ Id = enemy.ObjectId })
+		then
+			local distance = game.GetDistance({ Id = spot, DestinationId = enemy.ObjectId })
+			if distance and distance <= drop.Radius then
+				game.Damage(enemy, {
+					AttackerTable = hero,
+					AttackerId = hero.ObjectId,
+					EffectName = 'SWuDistressBouldy',
+					DamageAmount = drop.Damage,
+					PureDamage = true,
+				})
+			end
+		end
+	end
+end
+
+
+local function distress_call_callout_matches(set)
+	if set.Rooms then
+		local room = game.CurrentRun and game.CurrentRun.CurrentRoom
+		if not room or not game.Contains(set.Rooms, room.Name) then return false end
+	end
+	if set.Units then
+		local ids = game.GetIdsByType({ Names = set.Units })
+		if not ids or next(ids) == nil then return false end
+	end
+	return true
+end
+
+
+function distress_call_callout(callout)
+	if not callout then return end
+
+	for _, set in ipairs(callout.Sets or {}) do
+		if distress_call_callout_matches(set) then
+			if not set.SWuLines then
+				set.SWuLines = {
+					RandomRemaining = true,
+					Source = { LineHistoryName = callout.Speaker, SubtitleColor = callout.SubtitleColor },
+				}
+				for _, cue in ipairs(set.Cues) do
+					table.insert(set.SWuLines, { Cue = '/VO/' .. cue })
+				end
+			end
+			game.thread(game.PlayVoiceLines, set.SWuLines, true, nil, { IgnoreMute = true, Queue = 'Interrupt' })
+			return
+		end
+	end
+end
+
+
+function distress_call_drop(ally)
+	local drop = ally.Drop
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	if not hero then return end
+
+	distress_call_load(ally)
+
+	game.wait(drop.Delay or 0, game.RoomThreadName)
+	hero = game.CurrentRun and game.CurrentRun.Hero
+	if not hero or hero.IsDead then return end
+
+	local spot = game.SpawnObstacle({
+		Name = 'BlankObstacle', Group = 'Standing', DestinationId = distress_call_drop_target(hero, drop),
+	})
+	local bouldy = game.SpawnUnit({ Name = ally.Unit, Group = 'Standing', DestinationId = spot })
+	if not bouldy then
+		game.Destroy({ Id = spot })
+		return
+	end
+
+	game.UseableOff({ Id = bouldy })
+	game.SetUnitProperty({ DestinationId = bouldy, Property = 'CollideWithUnits', Value = false })
+	game.SetThingProperty({ DestinationId = bouldy, Property = 'StopsProjectiles', Value = false })
+	game.SetScale({ Id = bouldy, Fraction = drop.Scale })
+	game.SetAlpha({ Id = bouldy, Fraction = 0, Duration = 0 })
+	game.AdjustZLocation({ Id = bouldy, Distance = drop.Height })
+	game.IgnoreGravity({ Id = bouldy })
+
+	distress_call_callout(ally.Callout)
+	game.PlaySound({ Name = drop.FallSound, Id = spot })
+	game.SetAlpha({ Id = bouldy, Fraction = 1.0, Duration = 0.1 })
+	game.AdjustZLocation({ Id = bouldy, Distance = -drop.Height, Duration = drop.Fall })
+	game.wait(drop.Fall, game.RoomThreadName)
+
+	game.CreateAnimation({ Name = drop.LandFx, DestinationId = spot })
+	game.PlaySound({ Name = drop.LandSound, Id = spot })
+	game.ShakeScreen({ Speed = 500, Distance = 6, FalloffSpeed = 1000, Duration = 0.5 })
+
+	hero = game.CurrentRun and game.CurrentRun.Hero
+	if hero and not hero.IsDead then distress_call_drop_hit(hero, spot, drop) end
+
+	game.thread(distress_call_drop_loot, spot, drop)
+
+	if drop.Linger > 0 then game.waitUnmodified(drop.Linger) end
+	game.SetAlpha({ Id = bouldy, Fraction = 0, Duration = drop.Fade })
+	game.waitUnmodified(drop.Fade)
+	game.Destroy({ Id = bouldy })
+end
+
+
+function distress_call_drop_loot(spot, drop)
+	game.wait(drop.LootDelay, game.RoomThreadName)
+
+	local options = {}
+	for _, loot in ipairs(drop.Loot) do
+		for _ = 1, loot.Count or 1 do
+			table.insert(options, { Name = loot.Name, Chance = 1, Overrides = loot.Overrides })
+		end
+	end
+
+	game.GiveRandomConsumables({
+		DestinationId = spot,
+		NotRequiredPickup = true,
+		RunProgressUpgradeEligible = true,
+		Range = drop.LootRange,
+		ForceMin = drop.LootForceMin,
+		ForceMax = drop.LootForceMax,
+		LootOptions = game.DeepCopyTable(options),
+		DropFunctionName = _PLUGIN.guid .. '.DistressCallLootScale',
+		SWuLootScale = drop.LootScale,
+	})
+	game.Destroy({ Id = spot })
+end
+
+
+function mod.DistressCallLootScale(consumable, args)
+	if not consumable or not consumable.ObjectId or not args or not args.SWuLootScale then return end
+	game.SetScale({ Id = consumable.ObjectId, Fraction = args.SWuLootScale })
+end
+
+
 function distress_call_conceal(summoned, ally)
 	if not ally.Invisible or not summoned.ObjectId then return end
 
@@ -721,6 +880,53 @@ function distress_call_conceal(summoned, ally)
 			Property = 'Graphic', Value = ally.Invisible, DestinationId = summoned.ObjectId,
 		})
 	end
+end
+
+
+function distress_call_entrance(summoned, entrance)
+	game.wait(entrance.Delay or 0, game.RoomThreadName)
+	if not summoned.ObjectId or summoned.IsDead or summoned.Exiting then return end
+
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	if hero then game.AngleTowardTarget({ Id = summoned.ObjectId, DestinationId = hero.ObjectId }) end
+
+	if entrance.Height then
+		game.ObeyGravity({ Id = summoned.ObjectId })
+		game.ApplyUpwardForce({ Id = summoned.ObjectId, Speed = -(entrance.Force or 0) })
+		game.SetAlpha({ Id = summoned.ObjectId, Fraction = 1.0, Duration = 0.2 })
+	end
+	if entrance.FadeIn then
+		game.SetAlpha({ Id = summoned.ObjectId, Fraction = 1.0, Duration = entrance.FadeIn })
+	end
+	if entrance.Animation then
+		game.SetAnimation({ DestinationId = summoned.ObjectId, Name = entrance.Animation })
+	end
+	if entrance.Sound then game.PlaySound({ Name = entrance.Sound, Id = summoned.ObjectId }) end
+	if entrance.Shake then
+		game.ShakeScreen({ Speed = 500, Distance = 4, FalloffSpeed = 1000, Duration = 0.75 })
+	end
+
+	game.wait(entrance.Land or 0, game.RoomThreadName)
+	if not summoned.ObjectId or summoned.IsDead or summoned.Exiting then return end
+
+	if entrance.LandFx then game.CreateAnimation({ Name = entrance.LandFx, DestinationId = summoned.ObjectId }) end
+	for _, sound in ipairs(entrance.LandSounds or {}) do
+		game.PlaySound({ Name = sound, Id = summoned.ObjectId })
+	end
+	if entrance.LandShake then
+		game.ShakeScreen({ Speed = 500, Distance = 4, FalloffSpeed = 1000, Duration = 1.0 })
+	end
+
+	distress_call_greet(summoned)
+	game.thread(game.SetupAI, summoned)
+end
+
+
+function distress_call_greet(summoned)
+	local lines = summoned.SWuGreetLines
+	if not lines then return end
+
+	game.thread(game.PlayVoiceLines, lines, nil, summoned, { IgnoreMute = true, Queue = 'Interrupt' })
 end
 
 
@@ -750,6 +956,19 @@ function distress_call_fighter(ally, source, generation)
 	data.OnUsedFunctionName = nil
 	data.PostCombatAI = nil
 
+	for _, field in ipairs(ally.Clear or {}) do
+		data[field] = nil
+	end
+	if ally.Data then game.OverwriteTableKeys(data, game.DeepCopyTable(ally.Data)) end
+
+	if ally.Traitor then
+		data.AlwaysTraitor = true
+		data.AddToEnemyTeam = false
+		data.RequiredKill = false
+		data.BlocksLootInteraction = false
+		data.DefaultAIData.TargetClosest = true
+	end
+
 	if ally.WakeDelay ~= nil then
 		data.AIWakeDelay = ally.WakeDelay
 	end
@@ -757,6 +976,7 @@ function distress_call_fighter(ally, source, generation)
 	distress_call_voice(ally, data)
 	distress_call_hasten(ally)
 	distress_call_focus(data, generation)
+	if ally.TargetReach then data.DefaultAIData.TargetMaxDistance = ally.TargetReach end
 
 	local anchor, temporary = distress_call_spawn_point(ally, hero)
 	if not anchor then return false end
@@ -771,15 +991,42 @@ function distress_call_fighter(ally, source, generation)
 
 	game.SetupUnit(summoned, game.CurrentRun, { IgnoreAI = true, IgnorePackages = true })
 	game.UseableOff({ Id = summoned.ObjectId })
-	game.thread(game.SetupAI, summoned)
 
-	summoned.Charmed = false
+	if ally.DamageMultiplier then
+		game.AddOutgoingDamageModifier(summoned, { NonPlayerMultiplier = ally.DamageMultiplier })
+	end
+
+	if ally.Traitor then
+		game.AddOutgoingDamageModifier(summoned, { PlayerMultiplier = 0, Multiplicative = true })
+		game.RemoveAutoLockTarget({ Id = summoned.ObjectId })
+	end
+
+	if ally.Greet then
+		summoned.SWuGreetLines = summoned[ally.GreetLines or 'EncounterStartVoiceLines']
+	end
+
+	if ally.Entrance then
+		if ally.Entrance.Height then
+			game.AdjustZLocation({ Id = summoned.ObjectId, Distance = ally.Entrance.Height })
+			game.IgnoreGravity({ Id = summoned.ObjectId })
+		end
+		if ally.Entrance.Height or ally.Entrance.FadeIn then
+			game.SetAlpha({ Id = summoned.ObjectId, Fraction = 0, Duration = 0 })
+		end
+		if ally.Entrance.Fx then
+			game.CreateAnimation({ Name = ally.Entrance.Fx, DestinationId = summoned.ObjectId })
+		end
+		game.thread(distress_call_entrance, summoned, ally.Entrance)
+	else
+		distress_call_greet(summoned)
+		game.thread(game.SetupAI, summoned)
+	end
+
+	summoned.Charmed = ally.Traitor == true
+	summoned.SWuDistressAlly = true
 	summoned.RequiredRoomInteraction = nil
 	summoned.SWuCycleStart = #(summoned.WeaponHistory or {})
 
-	if ally.Greet and summoned.EncounterStartVoiceLines then
-		game.thread(game.PlayVoiceLines, summoned.EncounterStartVoiceLines, nil, summoned)
-	end
 
 	distress_call_conceal(summoned, ally)
 
@@ -827,10 +1074,72 @@ function distress_call_finish(ally, exit)
 end
 
 
+function distress_call_expire_projectiles(ally)
+	if not ally or not ally.ObjectId then return end
+
+	local expire = {}
+	for projectileId, ownerId in pairs(game.SessionMapState.ProjectileSpawnRecord or {}) do
+		if ownerId == ally.ObjectId then table.insert(expire, projectileId) end
+	end
+	if #expire > 0 then game.ExpireProjectiles({ ProjectileIds = expire }) end
+
+	local markers = ally.DestroyIdsOnDeath
+	if markers and #markers > 0 then
+		for _, id in ipairs(markers) do
+			if game.MapState.Reticles then game.MapState.Reticles[id] = nil end
+		end
+		game.Destroy({ Ids = markers })
+		ally.DestroyIdsOnDeath = nil
+	end
+end
+
+
+local function distress_call_span(aiData, field)
+	return aiData[field .. 'Max'] or aiData[field] or 0
+end
+
+
+function distress_call_attack_started(enemy, aiData)
+	if not enemy or not enemy.SWuDistressAlly or not aiData then return false end
+
+	if enemy.SWuLeaving then
+		game.wait(0.1, enemy.AIThreadName)
+		return true
+	end
+
+	local target = aiData.TargetId
+	if target and target ~= 0 and target ~= enemy.ObjectId then
+		game.AngleTowardTarget({ Id = enemy.ObjectId, DestinationId = target })
+	end
+
+	local swing = distress_call_span(aiData, 'PreAttackDuration')
+		+ distress_call_span(aiData, 'FireDuration')
+		+ distress_call_span(aiData, 'PostAttackDuration')
+	enemy.SWuSwingEnd = (game._worldTime or 0) + swing
+	return false
+end
+
+
+function distress_call_finish_swing(ally)
+	ally.SWuLeaving = true
+
+	local limit = mod.tuning.DistressCall.SwingLimit or 0
+	local waited = 0
+	while waited < limit and not ally.IsDead and ally.ObjectId
+		and ally.SWuSwingEnd and (game._worldTime or 0) < ally.SWuSwingEnd
+	do
+		game.wait(0.1, game.RoomThreadName)
+		waited = waited + 0.1
+	end
+end
+
+
 function distress_call_depart(ally, exit)
 	if exit.Finish or exit.Cycles then
 		distress_call_finish(ally, exit)
 	end
+
+	distress_call_finish_swing(ally)
 
 	if exit.Settle then
 		game.wait(exit.Settle, game.RoomThreadName)
@@ -840,6 +1149,7 @@ function distress_call_depart(ally, exit)
 
 	game.killTaggedThreads(ally.AIThreadName)
 	game.killWaitUntilThreads(ally.AINotifyName)
+	distress_call_expire_projectiles(ally)
 	game.UseableOff({ Id = ally.ObjectId })
 
 	game.SetUnitProperty({ DestinationId = ally.ObjectId, Property = 'CollideWithUnits', Value = false })
@@ -901,13 +1211,34 @@ function distress_call_dismiss(generation)
 	if ally.IsDead or not ally.ObjectId or ally.Exiting then return end
 
 	if not exit then
-		game.killTaggedThreads(ally.AIThreadName)
-		game.killWaitUntilThreads(ally.AINotifyName)
-		game.Destroy({ Id = ally.ObjectId })
+		game.thread(distress_call_vanish, ally)
 		return
 	end
 
 	game.thread(distress_call_depart, ally, exit)
+end
+
+
+function distress_call_vanish(ally)
+	distress_call_finish_swing(ally)
+	if ally.IsDead or not ally.ObjectId then return end
+
+	ally.Exiting = true
+	game.killTaggedThreads(ally.AIThreadName)
+	game.killWaitUntilThreads(ally.AINotifyName)
+	distress_call_expire_projectiles(ally)
+	game.Destroy({ Id = ally.ObjectId })
+end
+
+
+function distress_call_encounter_cleanup(base, currentRoom)
+	local ally = mod.DistressCallAlly
+	if not ally or not currentRoom or currentRoom.DestroyAssistUnitOnEncounterEndId ~= ally.ObjectId then
+		return base(currentRoom)
+	end
+
+	distress_call_dismiss()
+	game.MapState.RaiseDeadCount = nil
 end
 
 
@@ -959,6 +1290,7 @@ function distress_call_summon()
 	local ally = distress_call_pick()
 	if not ally then return end
 
+	mod.DistressCallActive = true
 	mod.DistressCallGeneration = (mod.DistressCallGeneration or 0) + 1
 	local generation = mod.DistressCallGeneration
 
@@ -967,34 +1299,61 @@ function distress_call_summon()
 		game.thread(distress_call_revel, ally, generation)
 	elseif ally.Grudge then
 		game.thread(distress_call_grudge, ally)
+	elseif ally.Drop then
+		game.thread(distress_call_drop, ally)
 	else
 		local source = game.EnemyData[ally.Unit]
-		if not source then return end
-
-		if ally.Smite then
+		if source and ally.Smite then
 			game.thread(distress_call_smite, ally, source)
-		else
+		elseif source then
 			started = distress_call_fighter(ally, source, generation)
+		else
+			started = false
 		end
 	end
 
 	if not started then
+		mod.DistressCallActive = nil
 		distress_call_restore()
 		return
 	end
 
-	mod.DistressCallActive = true
 	game.CheckCooldown('SWuDistressCall', distress_call_recharge())
 	game.thread(distress_call_expire, generation)
 end
 
 
+function distress_call_on_encounter_start()
+	return mod.tuning.DistressCall.OnEncounterStart == true
+end
+
+
 ---@diagnostic disable-next-line: unused-local
 function mod.DistressCallDamaged(_attacker, _args, triggerArgs)
+	if distress_call_on_encounter_start() then return end
+
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero then return end
 	if triggerArgs and triggerArgs.triggeredById and triggerArgs.triggeredById ~= hero.ObjectId then return end
 
+	distress_call_summon()
+end
+
+
+---@diagnostic disable-next-line: unused-local
+function mod.DistressCallEncounter(_hero, _args)
+	if not distress_call_on_encounter_start() then return end
+
+	local tuning = mod.tuning.DistressCall
+	local waited = 0
+	while not distress_call_foes_remain() and waited < tuning.EncounterFoeWait do
+		game.wait(0.1, game.RoomThreadName)
+		waited = waited + 0.1
+	end
+	if not distress_call_foes_remain() then return end
+
+	game.wait(tuning.EncounterStartDelay, game.RoomThreadName)
+	distress_call_reset_cooldown()
 	distress_call_summon()
 end
 
@@ -1023,15 +1382,17 @@ local function create_distress_call()
 		description = text.Description,
 		flavourText = text.Flavour,
 
-		StatLines = { 'SWuDistressCallCooldownStatDisplay' },
+		StatLines = { distress_call_on_encounter_start() and 'SWuDistressCallDurationStatDisplay' or 'SWuDistressCallCooldownStatDisplay' },
 		ExtractValues = {
-			{ Key = 'SWuDistressCallCooldown', ExtractAs = 'TooltipCooldown' },
+			{ Key = distress_call_on_encounter_start() and 'SWuDistressCallDuration' or 'SWuDistressCallCooldown', ExtractAs = 'TooltipCooldown' },
 		},
 
 		ExtraFields = {
 			SWuDistressCallCooldown = mod.tuning.DistressCall.Cooldown,
+			SWuDistressCallDuration = mod.tuning.DistressCall.Duration,
 
 			OnSelfDamagedFunction = { Name = _PLUGIN.guid .. '.DistressCallDamaged' },
+			OnEncounterStartFunction = { Name = _PLUGIN.guid .. '.DistressCallEncounter' },
 		},
 	})
 

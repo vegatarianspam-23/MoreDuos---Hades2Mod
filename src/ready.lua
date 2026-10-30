@@ -20,6 +20,7 @@ modutil.mod.Path.Wrap("CalculateDamageMultipliers", function(base, attacker, vic
 	spiteful_strength_refresh(attacker, triggerArgs)
 	orbital_ring_refresh(attacker, victim)
 	untouchable_glow_refresh(attacker, victim, triggerArgs)
+	different_league_refresh(attacker, victim)
 	solar_eclipse_refresh(attacker)
 	local multipliers = base(attacker, victim, weaponData, triggerArgs)
 	if bitter_end_applies(attacker, victim, triggerArgs) then
@@ -37,6 +38,12 @@ end)
 
 modutil.mod.Path.Wrap("CheckOnDamagedPowers", function(base, victim, attacker, args)
 	return hot_iron_on_damaged(base, victim, attacker, args)
+end)
+
+
+modutil.mod.Path.Wrap("DoAttack", function(base, enemy, aiData)
+	if distress_call_attack_started(enemy, aiData) then return true end
+	return base(enemy, aiData)
 end)
 
 
@@ -69,6 +76,7 @@ end)
 
 modutil.mod.Path.Wrap("ApplyEffect", function(base, args)
 	if args and args.EffectName == 'BurnEffect' and volcanic_crown_ember(args.TriggerArgs) then return end
+	different_league_record_miss(args)
 	return base(winter_solstice_frost(glowing_brand_glow(args)))
 end)
 
@@ -277,8 +285,19 @@ modutil.mod.Path.Wrap("InCombatTextArgs", function(base, args)
 end)
 
 
+modutil.mod.Path.Wrap("CleanupRaiseDeadEncounter", function(base, currentRoom)
+	return distress_call_encounter_cleanup(base, currentRoom)
+end)
+
+
+modutil.mod.Path.Wrap("SetupHeroObject", function(base, ...)
+	different_league_reset_dodge()
+	return base(...)
+end)
+
+
 modutil.mod.Path.Wrap("SetLifeProperty", function(base, args)
-	untouchable_glow_track_dodge(args)
+	different_league_track_dodge(args)
 	return base(args)
 end)
 
