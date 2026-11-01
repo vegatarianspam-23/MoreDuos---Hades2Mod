@@ -17,7 +17,9 @@ Hell2Modding, ENVY, Chalk, ReLoad, SJSON, ModUtil, GodsAPI, Droppable Gods, HexR
 
 ## Configuration
 
-Launch the game once to generate `ReturnOfModding/config/SWu-MoreDuosMod.cfg`, then configure (enable/disable) any duo boons. The easiest way is your mod manager's **Config editor** (Thunderstore Mod Manager or r2modman), or open the `.cfg` file directly.
+The easiest way is in game: press **Insert** to open the Hell2Modding menu, and use the **MoreDuos** window (also under MoreDuos in the menu bar). Every duo has a checkbox, listed under both of its gods, and is saved as soon as you click it.
+
+You can also edit `ReturnOfModding/config/SWu-MoreDuosMod.cfg` (created the first time you launch the game) with your mod manager's **Config editor** (Thunderstore Mod Manager or r2modman), or open the `.cfg` file directly.
 
 Don't edit the mod's `config.lua`: once the `.cfg` exists its values take priority, and `config.lua` is overwritten whenever the mod updates.
 

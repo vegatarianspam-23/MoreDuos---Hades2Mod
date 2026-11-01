@@ -1211,6 +1211,7 @@ import 'duos/wishing_well.lua'
 import 'duos/discerning_taste.lua'
 import 'duos/tipped_scales.lua'
 import 'distress_call.lua'
+import 'config_window.lua'
 
 function wait_for_screens(settle)
 	settle = settle or 0

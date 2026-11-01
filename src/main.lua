@@ -55,6 +55,20 @@ local function on_reload_late()
 	import 'reload_late.lua'
 end
 
+rom.gui.add_imgui(function()
+	if rom.ImGui.Begin('MoreDuos') and more_duos_draw_config then
+		more_duos_draw_config()
+	end
+	rom.ImGui.End()
+end)
+
+rom.gui.add_to_menu_bar(function()
+	if rom.ImGui.BeginMenu('MoreDuos') then
+		if more_duos_draw_config then more_duos_draw_config() end
+		rom.ImGui.EndMenu()
+	end
+end)
+
 local loader = reload.auto_multiple()
 
 modutil.once_loaded.game(function()

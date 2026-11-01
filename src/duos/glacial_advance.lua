@@ -9,9 +9,14 @@ local WAVES = {
 	'PoseidonCollisionBlast',
 }
 
-local BALL = 'ProjectileSprintBall'
+local CIRCLES = {
+	ProjectileSprintBall = { 'PoseidonSplashSprintBoon' },
+	PoseidonCastSplashSplinter = { 'PoseidonCastBoon', 'PoseidonExCastBoon', 'PoseidonSplashSprintBoon' },
+	PoseidonCastImpulse = { 'PoseidonExCastBoon' },
+}
 
-local STRUCK = game.ConcatTableValues(game.ShallowCopyTable(WAVES), { BALL })
+local STRUCK = game.ShallowCopyTable(WAVES)
+for name in pairs(CIRCLES) do table.insert(STRUCK, name) end
 
 
 register_duo({
@@ -47,24 +52,32 @@ register_duo({
 })
 
 
-function glacial_advance_ball_splashes()
+function glacial_advance_circle_splashes(projectileName)
+	local sources = CIRCLES[projectileName]
 	local group = game.LinkedTraitData.SWuSplashBonusTraits
-	return group ~= nil and game.Contains(group, 'PoseidonSplashSprintBoon')
+	if not sources or not group then return false end
+
+	for _, traitName in ipairs(sources) do
+		if game.Contains(group, traitName) then return true end
+	end
+	return false
 end
 
 
 function mod.GlacialAdvance(victim, args, triggerArgs)
 	if not duo_on('GlacialAdvance') then return end
-	if triggerArgs and triggerArgs.SourceProjectile == BALL and not glacial_advance_ball_splashes() then return end
+	local source = triggerArgs and triggerArgs.SourceProjectile
+	if CIRCLES[source] and not glacial_advance_circle_splashes(source) then return end
 	game.ApplyRoot(victim, args, triggerArgs)
 end
 
 
 function glacial_advance_power(attacker, triggerArgs)
 	if not duo_on('GlacialAdvance') then return 0 end
-	if not triggerArgs or triggerArgs.EffectName or triggerArgs.SourceProjectile ~= BALL then return 0 end
+	if not triggerArgs or triggerArgs.EffectName or not CIRCLES[triggerArgs.SourceProjectile] then return 0 end
 	if attacker ~= (game.CurrentRun and game.CurrentRun.Hero) then return 0 end
-	if not game.HeroHasTrait(duo_traits.GlacialAdvance) or not glacial_advance_ball_splashes() then return 0 end
+	if not game.HeroHasTrait(duo_traits.GlacialAdvance) then return 0 end
+	if not glacial_advance_circle_splashes(triggerArgs.SourceProjectile) then return 0 end
 
 	return mod.tuning.GlacialAdvance.BonusDamage
 end

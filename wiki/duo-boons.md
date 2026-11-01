@@ -16,7 +16,7 @@
 - **Family Reunion** (Hera × Zeus) — Gain a boon from every Olympian you have yet seen tonight. Legendary and Duo boons are 10% more likely to be offered for the rest of the night.
 - **Family Trade** (Hera × Zeus) — Sacrifice boons gain 3 extra Pom levels, and are offered whenever possible. Taking one keeps the original boon instead of replacing it, and choose from 3 boons now (prioritizes Hera / Zeus Sacrifices first).
 - **Gentle Caress** (Hephaestus × Aphrodite) — Excess healing converts to Armor, up to your Max Health. The first hit each encounter restores that much Health instead.
-- **Glacial Advance** (Poseidon × Demeter) — Poseidon's waves Freeze foes and deal 30 more damage.
+- **Glacial Advance** (Poseidon × Demeter) — Poseidon's splash effects Freeze foes and deal 30 more damage.
 - **Golden Rule** (Hera × Poseidon) — Deal 0.05% more damage per Gold held, up to 100%. Earn 5% interest on your Gold whenever you leave a location.
 - **Hot Iron** (Hephaestus × Hestia) — Your fireballs from Hestia apply Glow, and do 25% more damage against foes with Glow. Your weapon strikes gain bonuses from your fireball effects from Hestia.
 - **Ingenious Invention** (Apollo × Hephaestus) — Gain a random Hammer upgrade now, and another every 6 encounters.
