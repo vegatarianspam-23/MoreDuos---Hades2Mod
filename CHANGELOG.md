@@ -5,11 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### Added
+
+- In-game config window: open the Hell2Modding menu and toggle any duo with a Windowed checkbox, grouped by god, with each duo listed under both of its gods. Changes save right away.
+
+### Changed
+
+- Glacial Advance: now works with all of Poseidon's splash effects, including Tidal Ring and Geyser Spout when they count as splash effects (with BoonEdits), not just waves and Beach Ball
+
 ## [1.1.0] - 2026-10-30
 
 ### Added
 
-- In-game config window: open the Hell2Modding menu and toggle any change with a Windowed checkbox, grouped by god, with each duo listed under both of its gods and each legendary under its own. Changes save right away.
 - Different League (Apollo × Aphrodite): replaces Untouchable Glow as the Apollo × Aphrodite duo. +15% chance to Dodge attacks from nearby foes, and all your damage to a foe is increased by your chance to avoid its attacks, including its Daze. Replaces Untouchable Glow Alt, so `UntouchableGlowAlt` is removed from the config
 - Untouchable Glow: moved to Experimental (`Experimental.UntouchableGlow`, off by default). If your config was made before this version, it still has `Duos.UntouchableGlow = true`, which keeps it on; set that to false to turn it off
 - Distress Call (experimental): adds Megaera and Bouldy as possible summons, when Zagreus' Journey is installed + enabled in the config
