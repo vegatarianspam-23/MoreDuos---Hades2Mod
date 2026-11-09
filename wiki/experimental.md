@@ -9,7 +9,7 @@ Each entry can be switched on in the config, under `Experimental`.
 - **Convective Vortex** (Ares × Hestia) · `ConvectiveVortex` — Your Blade Rift lasts 50% longer and inflicts 25 Scorch per hit. Scorch on foes in the rift builds up instead of burning down.
   - Meat Grinder
   - Flame Strike, Flame Flourish, Smolder Ring
-- **Goddess Spite** (Aphrodite × Hera) · `GoddessSpite` — After you take damage from an attack, inflict the attacker with Hitch and deal more damage back to all foes with Hitch (up to 9999).
+- **Spiteful Goddess** (Aphrodite × Hera) · `GoddessSpite` — After you take damage from an attack, inflict Hitch on all foes and deal 200% of taken damage back to your attacker, or 1000% as much if it is nearby (up to 9999). Heinous Affront uses a flat 50 damage.
   - Dying Wish, Hereditary Bane, Rousing Reception *(BoonEdits)*
   - Flutter Strike, Flutter Flourish
 - **Volcanic Crown Alt** (Hephaestus × Hestia) · `VolcanicCrown` — Your Omega Cast erupts in a large Hepahestus blast and 6 fireballs, leaving burning embers behind.

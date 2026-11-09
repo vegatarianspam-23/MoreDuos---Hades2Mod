@@ -81,6 +81,7 @@ end
 
 
 local GENTLE_CARESS_SHIELD = 'FirstHitHealTrait'
+local GENTLE_CARESS_HEINOUS_HEAL = 50
 
 
 function mod.GentleCaress(_hero, _args)
@@ -114,14 +115,22 @@ function mod.GentleCaressRevenge(foe, _args, triggerArgs)
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero or not game.HeroHasTrait(GENTLE_CARESS_SHIELD) then return end
 
-	local dealt = heinous_affront_damage(foe, triggerArgs)
-	if type(dealt) ~= 'number' or dealt <= 0 then return end
-
-	game.RemoveTrait(hero, GENTLE_CARESS_SHIELD)
-	game.UpdateHeroTraitDictionary()
-
 	game.Heal(hero, {
-		HealAmount = game.round(dealt * game.CalculateHealingMultiplier()),
+		HealAmount = game.round(GENTLE_CARESS_HEINOUS_HEAL * game.CalculateHealingMultiplier()),
 		SourceName = 'SWuGentleCaress',
 	})
+
+	game.thread(game.InCombatTextArgs, {
+		TargetId = hero.ObjectId,
+		Text = 'SWuGentleCaress_CombatText',
+		PreDelay = 0.35,
+		Duration = 1.25,
+		Cooldown = 2.0,
+	})
+
+	game.UseTrait(hero, GENTLE_CARESS_SHIELD)
+	if game.HeroHasTrait(GENTLE_CARESS_SHIELD) then
+		game.UpdateTraitNumber(game.GetHeroTrait(GENTLE_CARESS_SHIELD))
+	end
+	game.UpdateHeroTraitDictionary()
 end

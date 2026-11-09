@@ -74,9 +74,8 @@ duo_text = {
 
 	UntouchableGlow = {
 		Name = 'Untouchable Glow',
-		Description = 'For every {#BoldFormatGraft}{$TooltipData.ExtractData.TooltipInterval} Sec. {#Prev}you spend ' ..
-			'near foes, your {$Keywords.AttackSet} and {$Keywords.SpecialSet} deal more damage, ' ..
-			'and you take less damage. The bonus resets whenever you are hit.',
+		Description = 'Your {$Keywords.WeaponSet} strikes deal more damage and you take less damage the longer ' ..
+			'you stay around nearby foes. The bonus resets whenever you are hit.',
 		StatLines = {
 			SWuUntouchableGlowMaxStatDisplay = { Name = 'Max Bonus Damage & Resistance:', Index = 1 },
 		},
@@ -339,11 +338,12 @@ duo_text = {
 		},
 	},
 	GoddessSpite = {
-		Name = 'Goddess Spite',
-		Description = 'After you take damage from an attack, inflict {$Keywords.Link} on the attacker and ' ..
-			'deal more damage back to all {$Keywords.Link}-afflicted foes.',
+		Name = 'Spiteful Goddess',
+		Description = 'After you take damage from an attack, inflict {$Keywords.Link} on all foes and deal damage ' ..
+			'back to your attacker, or {#BoldFormatGraft}{$TooltipData.ExtractData.TooltipNearbyMultiplier}x ' ..
+			'{#Prev}as much if it is nearby.',
 		StatLines = {
-			SWuGoddessSpiteStatDisplay = { Name = 'Damage Returned:', Index = 1, Suffix = 'x' },
+			SWuGoddessSpiteStatDisplay = { Name = 'Damage Returned:', Index = 1 },
 		},
 	},
 	WinterSolsticeAlt = {

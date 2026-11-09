@@ -176,7 +176,7 @@ duo_requirements = {
 		Gods = { 'Aphrodite', 'Hera' },
 		OneFromEachSet = {
 			{ "LinkedDeathDamageBoon", "DamageSharePotencyBoon", "SpawnCastDamageBoon" },
-			{ "AphroditeWeaponBoon", "AphroditeSpecialBoon"},
+			{ "AphroditeWeaponBoon", "AphroditeSpecialBoon", "AphroditeManaBoon" },
 		},
 		Counts = { SpawnCastDamageBoon = 'HeraLinkTraits' },
 	},
@@ -185,7 +185,7 @@ duo_requirements = {
 		Gods = { 'Aphrodite', 'Hera' },
 		OneFromEachSet = {
 			{ "LinkedDeathDamageBoon", "DamageSharePotencyBoon", "SpawnCastDamageBoon" },
-			{ "AphroditeWeaponBoon", "AphroditeSpecialBoon" },
+			{ "AphroditeWeaponBoon", "AphroditeSpecialBoon", "AphroditeManaBoon" },
 		},
 		Counts = { SpawnCastDamageBoon = 'HeraLinkTraits' },
 	},
@@ -194,7 +194,7 @@ duo_requirements = {
 		Gods = { 'Aphrodite', 'Hera' },
 		OneFromEachSet = {
 			{ "LinkedDeathDamageBoon", "DamageSharePotencyBoon", "SpawnCastDamageBoon" },
-			{ "AphroditeWeaponBoon", "AphroditeSpecialBoon" },
+			{ "AphroditeWeaponBoon", "AphroditeSpecialBoon", "AphroditeManaBoon" },
 		},
 		Counts = { SpawnCastDamageBoon = 'HeraLinkTraits' },
 	},

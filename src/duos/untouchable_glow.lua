@@ -7,12 +7,10 @@ register_duo({
 	StatLines = { 'SWuUntouchableGlowMaxStatDisplay' },
 	ExtractValues = {
 		{ Key = 'SWuMaxBonus', ExtractAs = 'TooltipMaxBonus', Format = 'Percent', IncludeSigns = true },
-		{ Key = 'SWuStepInterval', ExtractAs = 'TooltipInterval', SkipAutoExtract = true },
 	},
 
 	ExtraFields = {
 		SWuMaxBonus = mod.tuning.UntouchableGlow.MaxPercent,
-		SWuStepInterval = mod.tuning.UntouchableGlow.StepInterval,
 		SWuUntouchableMultiplier = 1,
 		SWuUntouchableDefense = 1,
 

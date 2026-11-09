@@ -48,8 +48,49 @@ function duo_reset_room_cooldowns()
 end
 
 
+local function duo_list_set(list, traitName, wanted)
+	if not list then return end
+
+	for i, name in ipairs(list) do
+		if name == traitName then
+			if not wanted then table.remove(list, i) end
+			return
+		end
+	end
+
+	if wanted then table.insert(list, traitName) end
+end
+
+local function duo_pool_set(lootName, traitName, wanted)
+	local loot = game.LootData[lootName]
+	if not loot then return end
+
+	loot.Traits = loot.Traits or {}
+	duo_list_set(loot.Traits, traitName, wanted)
+	duo_list_set(game.ScreenData.BoonInfo.TraitSortOrder[lootName], traitName, wanted)
+end
+
+function duo_sync_pool()
+	for key, traitName in pairs(duo_traits or {}) do
+		local spec = duo_requirements and duo_requirements[duo_variants[key] or key]
+		if spec and spec.Gods then
+			local wanted = duo_on(key)
+			local owner = spec.Gods[1] .. 'Upgrade'
+			if not game.LootData[owner] then
+				owner = _PLUGIN.guid .. '-' .. spec.Gods[1] .. 'Upgrade'
+			end
+
+			duo_pool_set(owner, traitName, wanted)
+			if spec.Gods[2] then
+				duo_pool_set(spec.Gods[2] .. 'Upgrade', traitName, wanted)
+			end
+		end
+	end
+end
+
 function prefix_SetupMap()
 	reload_config()
+	duo_sync_pool()
 	load_icon_package()
 	duo_meter_apply()
 	hot_iron_sync_size()
@@ -478,19 +519,21 @@ end
 
 function sjson_HelpText(data)
 	local keywords = {}
+	local keywordOwner = {}
 	for key, entry in pairs(duo_text) do
-		if duo_on(key) then
-			for id, keyword in pairs(entry.Keywords or {}) do
-				keywords[id] = keyword
-			end
+		for id, keyword in pairs(entry.Keywords or {}) do
+			keywords[id] = keyword
+			keywordOwner[id] = key
 		end
 	end
 
 	for _, entry in ipairs(data.Texts) do
 		local keyword = keywords[entry.Id]
 		if keyword then
-			if keyword.Description then entry.Description = keyword.Description end
-			if keyword.DisplayName then entry.DisplayName = keyword.DisplayName end
+			if duo_on(keywordOwner[entry.Id]) then
+				if keyword.Description then entry.Description = keyword.Description end
+				if keyword.DisplayName then entry.DisplayName = keyword.DisplayName end
+			end
 			keywords[entry.Id] = nil
 		end
 	end

@@ -258,6 +258,12 @@ end)
 modutil.mod.Path.Wrap("CheckChamberTraits", function(base, ...)
 	base(...)
 	ingenious_invention_check()
+	ingenious_invention_debug_hammers('encounter end')
+end)
+
+modutil.mod.Path.Wrap("RemoveTraitData", function(base, unit, trait, args)
+	ingenious_invention_debug_removed(unit, trait)
+	return base(unit, trait, args)
 end)
 
 
@@ -592,8 +598,6 @@ local function cross_list_duo(other, traitName)
 end
 
 function create_duo(spec)
-	if not duo_on(spec.key) then return nil end
-
 	local id = duo_variant(spec.key)
 	local text = duo_text[id]
 	local requirements = duo_requirements[id]

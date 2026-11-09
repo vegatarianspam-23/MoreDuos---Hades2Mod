@@ -163,7 +163,7 @@ end
 function more_duos_draw_config()
 	if not config then return end
 
-	rom.ImGui.TextWrapped('Changes are saved right away. Most duo changes only fully apply after restarting the game.')
+	rom.ImGui.TextWrapped('Changes are saved right away. Turning a duo on or off applies from the next room. Alternate versions and other experimental options need a restart.')
 	config_checkbox('Enable MoreDuos', 'enabled', config, 'enabled')
 	rom.ImGui.Separator()
 

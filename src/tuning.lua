@@ -628,8 +628,14 @@ mod.tuning = {
 		DamageTaken = 0.50,
 	},
 	GoddessSpite = {
-		ReflectMultiplier = 100,
+		HeinousAffrontDamage = 50,
+		ReflectMultiplier = 2,
+		NearbyMultiplier = 5,
 		ReflectCap = 9999,
+		ShareDelay = 0.05,
+
+		Radius = 430,
+		NearbyExclusionBoon = 'AllCloseBoon',
 
 		ReflectSource = 'SWuGoddessSpiteReflect',
 	},
@@ -805,6 +811,7 @@ mod.tuning = {
 	},
 	IngeniousInvention = {
 		EncountersPerHammer = 6,
+		Debug = true,
 	},
 	RoyalBanquet = {
 		PayHeroicPomLevels = false,
