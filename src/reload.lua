@@ -91,6 +91,7 @@ end
 function prefix_SetupMap()
 	reload_config()
 	duo_sync_pool()
+	intertwined_fate_alt_migrate()
 	load_icon_package()
 	duo_meter_apply()
 	hot_iron_sync_size()

@@ -934,8 +934,6 @@ mod.tuning = {
 		PulseFxAlpha = 0.5,
 
 		SharePerHitched = 0.10,
-		AltDamagePerHitched = 0.05,
-		AltMaxBonus = 1.00,
 		MaxBonus = 2.00,
 
 		BindSummons = true,

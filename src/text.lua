@@ -195,15 +195,6 @@ duo_text = {
 			SWuIntertwinedFateStatDisplay = { Name = 'Bonus {$Keywords.Link} Damage per Hitched Foe:', Index = 1 },
 		},
 	},
-	IntertwinedFateAlt = {
-		Name = 'Intertwined Fate Alt',
-		Description = 'All foes are {$Keywords.Link}-afflicted and share their {$Keywords.StatusPlural} with each ' ..
-			'other. You deal more damage for each {$Keywords.Link}-afflicted foe.',
-		StatLines = {
-			SWuIntertwinedFateAltStatDisplay = { Name = 'Extra Damage per Hitched Foe:', Index = 1 },
-		},
-	},
-
 	SpitefulStrength = {
 		Name = 'Spiteful Strength',
 		Description = 'Your {$Keywords.AttackSet} and ' ..

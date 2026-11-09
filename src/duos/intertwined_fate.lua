@@ -3,10 +3,7 @@
 
 local INTERTWINED_HITCH = 'DamageShareEffect'
 
-local INTERTWINED_FATE_ALT = duo_alt('IntertwinedFate')
 
-
-local intertwinedFateSpreading = false
 local intertwinedFatePulsedAt = {}
 local intertwinedFateCaughtAt = {}
 
@@ -30,15 +27,6 @@ local function intertwined_fate_fields()
 		},
 	}
 
-	if INTERTWINED_FATE_ALT then
-		fields.SWuAltDamagePerHitched = tuning.AltDamagePerHitched
-		fields.SWuIntertwinedDamageMultiplier = 1
-		fields.AddOutgoingDamageModifiers = {
-			UseTraitValue = 'SWuIntertwinedDamageMultiplier',
-			IsMultiplier = true,
-		}
-	end
-
 	if tuning.Revenge then
 		fields.OnSelfDamagedFunction = { Name = _PLUGIN.guid .. '.IntertwinedFateRevenge' }
 	end
@@ -50,15 +38,38 @@ end
 register_duo({
 	key = 'IntertwinedFate',
 
-	StatLines = { INTERTWINED_FATE_ALT and 'SWuIntertwinedFateAltStatDisplay' or 'SWuIntertwinedFateStatDisplay' },
-	ExtractValues = with_keyword_extracts(INTERTWINED_FATE_ALT and {
-		{ Key = 'SWuAltDamagePerHitched', ExtractAs = 'TooltipDamagePerHitched', Format = 'Percent' },
-	} or {
-		{ Key = 'SWuSharePerHitched', ExtractAs = 'TooltipSharePerHitched', Format = 'Percent' },
-	}, 'Link'),
+	StatLines = { 'SWuIntertwinedFateStatDisplay' },
+	ExtractValues = with_keyword_extracts({ { Key = 'SWuSharePerHitched', ExtractAs = 'TooltipSharePerHitched', Format = 'Percent' } }, 'Link'),
 
 	ExtraFields = intertwined_fate_fields(),
 })
+
+
+local INTERTWINED_FATE_ALT_TRAIT = gods.GetInternalBoonName('IntertwinedFateAltBoon')
+
+if duo_traits.IntertwinedFate and game.TraitData[duo_traits.IntertwinedFate]
+	and not game.TraitData[INTERTWINED_FATE_ALT_TRAIT]
+then
+	local legacy = game.DeepCopyTable(game.TraitData[duo_traits.IntertwinedFate])
+	legacy.Name = INTERTWINED_FATE_ALT_TRAIT
+	game.TraitData[INTERTWINED_FATE_ALT_TRAIT] = legacy
+end
+
+
+function intertwined_fate_alt_migrate()
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	if not hero or not duo_traits.IntertwinedFate then return end
+
+	local legacy = game.GetHeroTrait(INTERTWINED_FATE_ALT_TRAIT)
+	if not legacy then return end
+
+	local rarity = legacy.Rarity
+	game.RemoveTrait(hero, INTERTWINED_FATE_ALT_TRAIT)
+	if not game.HeroHasTrait(duo_traits.IntertwinedFate) then
+		game.AddTraitToHero({ TraitName = duo_traits.IntertwinedFate, Rarity = rarity })
+	end
+	game.UpdateHeroTraitDictionary()
+end
 
 
 local INTERTWINED_UNLIMITED_RANGE = 3000
@@ -168,7 +179,6 @@ end
 function mod.IntertwinedFateBind(_hero, args)
 	local interval = (args and args.Interval) or mod.tuning.IntertwinedFate.BindInterval
 
-	intertwinedFateSpreading = false
 	intertwinedFatePulsedAt = {}
 	intertwinedFateCaughtAt = {}
 	intertwined_fate_set_share()
@@ -180,7 +190,7 @@ function mod.IntertwinedFateBind(_hero, args)
 
 		if not duo_on('IntertwinedFate') then return end
 
-		if mod.tuning.IntertwinedFate.NearbyOnly and not INTERTWINED_FATE_ALT then
+		if mod.tuning.IntertwinedFate.NearbyOnly then
 			if intertwined_fate_combat_active() then
 				if mod.tuning.IntertwinedFate.Ripple then
 					game.thread(intertwined_fate_ripple, game.CurrentRun.Hero.ObjectId)
@@ -211,15 +221,11 @@ function mod.IntertwinedFateApply(victim, args, triggerArgs)
 	if effectName == INTERTWINED_HITCH then
 		return intertwined_fate_chain(victim)
 	end
-
-	if INTERTWINED_FATE_ALT then
-		return mod.IntertwinedFateSpread(victim, args, triggerArgs)
-	end
 end
 
 
 function intertwined_fate_chain(victim)
-	if not mod.tuning.IntertwinedFate.NearbyOnly or INTERTWINED_FATE_ALT then return end
+	if not mod.tuning.IntertwinedFate.NearbyOnly then return end
 	if not mod.tuning.IntertwinedFate.Ripple then return end
 	if not duo_running(duo_traits.IntertwinedFate) then return end
 	if not victim or not victim.ObjectId or victim.IsDead then return end
@@ -266,10 +272,7 @@ function intertwined_fate_set_share(hitched)
 		hitched = intertwined_fate_hitched()
 	end
 
-	if trait and INTERTWINED_FATE_ALT then
-		trait.DamageShareAmountIncrease = 0
-		trait.SWuIntertwinedDamageMultiplier = 1 + math.min(hitched * tuning.AltDamagePerHitched, tuning.AltMaxBonus)
-	elseif trait then
+	if trait then
 		trait.DamageShareAmountIncrease = math.min(hitched * tuning.SharePerHitched, tuning.MaxBonus)
 	end
 
@@ -281,112 +284,6 @@ function intertwined_fate_set_share(hitched)
 			unit.DamageShareAmount = amount
 		end
 	end
-end
-
-
-local INTERTWINED_CURSES = {
-	BurnEffect = function(source, unit, effectName)
-		local held = (source.ActiveEffects and source.ActiveEffects[effectName]) or 0
-		local carried = (unit.ActiveEffects and unit.ActiveEffects[effectName]) or 0
-		if type(held) ~= 'number' or type(carried) ~= 'number' or held <= carried then return end
-
-		game.ApplyBurn(unit, { EffectName = effectName, NumStacks = held - carried })
-	end,
-	ChillEffect = function(_source, unit, effectName)
-		game.ApplyRoot(unit, { EffectName = effectName })
-	end,
-}
-
-
-local ROOT_PRESENTATIONS = {
-	RootApplyPresentation = true,
-	ChillApplyPresentation = true,
-}
-
-local function intertwined_fate_rechills(unit, effectName)
-	local effect = game.EffectData[effectName]
-	if not effect then return false end
-
-	local group = effect.EffectGroup
-	if not ROOT_PRESENTATIONS[effect.OnApplyPresentationFunctionName]
-		and group ~= 'Root' and group ~= 'Chill'
-	then
-		return false
-	end
-
-	return unit.RootActive == true
-		or (group ~= nil and game.HasEffectWithEffectGroup(unit, group) == true)
-end
-
-
-local function intertwined_fate_inflict(source, unit, effectName)
-	if intertwined_fate_rechills(unit, effectName) then return end
-
-	local handler = INTERTWINED_CURSES[effectName]
-	if handler then return handler(source, unit, effectName) end
-
-	local effect = game.EffectData[effectName]
-	local properties = effect and (effect.EffectData or effect.DataProperties)
-	if not properties then return end
-
-	game.ApplyEffect({
-		DestinationId = unit.ObjectId,
-		Id = game.CurrentRun.Hero.ObjectId,
-		EffectName = effectName,
-		DataProperties = game.MergeAllTables({ properties }),
-	})
-end
-
-
-local function intertwined_fate_curse(effectName, triggerArgs)
-	if triggerArgs.IsVulnerabilityEffect then return true end
-
-	local effect = game.EffectData[effectName]
-	local properties = effect and (effect.EffectData or effect.DataProperties)
-	return properties ~= nil and properties.IsVulnerabilityEffect == true
-end
-
-
-function mod.IntertwinedFateSpread(victim, _args, triggerArgs)
-	if not duo_on('IntertwinedFate') then return end
-	if not INTERTWINED_FATE_ALT then return end
-	if intertwinedFateSpreading then return end
-
-	local effectName = triggerArgs and triggerArgs.EffectName
-	if not effectName or effectName == INTERTWINED_HITCH then return end
-	if not intertwined_fate_curse(effectName, triggerArgs) then return end
-
-	local hero = game.CurrentRun and game.CurrentRun.Hero
-	if not hero then return end
-
-	local source = duo_live_foe(victim)
-	if not source or not source.ActiveEffects or not source.ActiveEffects[INTERTWINED_HITCH] then return end
-
-	intertwinedFateSpreading = true
-	game.thread(intertwined_fate_spread, source, effectName)
-end
-
-
-function intertwined_fate_spread(source, effectName)
-
-	game.waitUnmodified(0.01)
-
-	local ok, err = pcall(function()
-		if not duo_live_foe(source) or source.IsDead then return end
-
-		for _, unit in pairs(game.ShallowCopyTable(game.ActiveEnemies or {})) do
-
-			if unit ~= source and duo_live_foe(unit) and not unit.IsDead
-				and unit.ActiveEffects and unit.ActiveEffects[INTERTWINED_HITCH]
-				and not is_allied_summon(unit)
-			then
-				intertwined_fate_inflict(source, unit, effectName)
-			end
-		end
-	end)
-
-	intertwinedFateSpreading = false
-	if not ok then error(err) end
 end
 
 

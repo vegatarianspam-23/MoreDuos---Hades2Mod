@@ -55,8 +55,6 @@ local config = {
 
     WrathfulHubris = false;
 
-    IntertwinedFateAlt = false;
-
     PlasmicCapacitorAlt = false;
 
     SolarEclipseAlt = false;

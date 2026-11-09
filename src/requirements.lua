@@ -181,15 +181,6 @@ duo_requirements = {
 		Counts = { SpawnCastDamageBoon = 'HeraLinkTraits' },
 	},
 
-	IntertwinedFateAlt = {
-		Gods = { 'Aphrodite', 'Hera' },
-		OneFromEachSet = {
-			{ "LinkedDeathDamageBoon", "DamageSharePotencyBoon", "SpawnCastDamageBoon" },
-			{ "AphroditeWeaponBoon", "AphroditeSpecialBoon", "AphroditeManaBoon" },
-		},
-		Counts = { SpawnCastDamageBoon = 'HeraLinkTraits' },
-	},
-
 	GoddessSpite = {
 		Gods = { 'Aphrodite', 'Hera' },
 		OneFromEachSet = {

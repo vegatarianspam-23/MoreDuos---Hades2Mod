@@ -29,9 +29,6 @@ Each entry can be switched on in the config, under `Experimental`.
 
 Turning one of these on replaces the regular duo in the pool.
 
-- **Intertwined Fate Alt** (Aphrodite × Hera) · `IntertwinedFateAlt` — All foes are Hitched and share their status curses with each other. You deal 5% more damage for each foe with Hitch.
-  - Dying Wish, Hereditary Bane, Rousing Reception *(BoonEdits)*
-  - Flutter Strike, Flutter Flourish
 - **Plasmic Capacitor Alt** (Ares × Zeus) · `PlasmicCapacitorAlt` — Your Blitz leaves Plasma behind, which creates chain-lightning when collected. Maximum plasma cap raised to 120.
   - Grisly Gain, Visceral Impact, Meat Grinder *(BoonEdits)*, Profuse Bleeding *(BoonEdits)*
   - Heaven Strike, Heaven Flourish
