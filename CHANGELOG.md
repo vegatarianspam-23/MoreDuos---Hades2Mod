@@ -5,16 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.1] - 2026-11-01
-
-### Added
-
-- In-game config window: open the Hell2Modding menu and toggle any duo with a Windowed checkbox, grouped by god, with each duo listed under both of its gods. Changes save right away.
-
 ### Changed
 
 - Config window: turning a duo on or off now applies from the next room, no restart needed
-- Glacial Advance: now works with all of Poseidon's splash effects, including Tidal Ring and Geyser Spout when they count as splash effects (with BoonEdits), not just waves and Beach Ball
 - Spiteful Goddess (experimental): renamed from Goddess Spite (config key is still `GoddessSpite`) and reworked. After you take damage from an attack, inflict Hitch on all foes and deal 200% of the damage taken back to the attacker, or 1000% if it is nearby, up to 9999. Heinous Affront triggers count as 50 damage taken.
 - Spiteful Goddess (experimental), Intertwined Fate: Glamour Gain now counts toward the Aphrodite requirement
 - Gentle Caress: when Heinous Affront triggers it, restores a flat 50 Health and shows the Gentle Caress text
@@ -24,6 +17,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Untouchable Glow: fixed description
 - Gentle Caress: Heinous Affront now uses up one first-hit shield instead of removing all of them, including ones bought from Charon
 - Spiteful Goddess (experimental): fixed damage meter
+
+## [1.1.1] - 2026-11-01
+
+### Added
+
+- In-game config window: open the Hell2Modding menu and toggle any duo with a Windowed checkbox, grouped by god, with each duo listed under both of its gods. Changes save right away.
+
+### Changed
+
+- Glacial Advance: now works with all of Poseidon's splash effects, including Tidal Ring and Geyser Spout when they count as splash effects (with BoonEdits), not just waves and Beach Ball
 
 ## [1.1.0] - 2026-10-30
 
