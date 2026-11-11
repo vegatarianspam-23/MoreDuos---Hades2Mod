@@ -144,7 +144,8 @@ function mod.GoddessSpiteReflect(attacker, _args, triggerArgs)
 	if shared <= 0 then return end
 
 	local damage = shared
-	if goddess_spite_near(hero, foe) then
+	local struck = duo_revenge_for_summon() and duo_damaged_victim or hero
+	if goddess_spite_near(struck, foe) then
 		damage = math.min(shared * tuning.NearbyMultiplier, tuning.ReflectCap)
 	end
 

@@ -684,6 +684,23 @@ function heinous_affront_damage(foe, triggerArgs)
 end
 
 
+duo_damaged_victim = nil
+
+function duo_revenge_dispatch(base, victim, attacker, args)
+	local previous = duo_damaged_victim
+	duo_damaged_victim = victim
+	local ok, err = pcall(base, victim, attacker, args)
+	duo_damaged_victim = previous
+	if not ok then error(err, 0) end
+end
+
+function duo_revenge_for_summon()
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	local victim = duo_damaged_victim
+	return victim ~= nil and hero ~= nil and victim ~= hero
+end
+
+
 local function duo_alias_in_table(node, original, copy, depth)
 	if type(node) ~= 'table' or depth > 6 then return end
 

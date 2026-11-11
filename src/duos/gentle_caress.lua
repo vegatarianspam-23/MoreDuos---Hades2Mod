@@ -110,13 +110,19 @@ end
 ---@diagnostic disable-next-line: unused-local
 function mod.GentleCaressRevenge(foe, _args, triggerArgs)
 	if not duo_on('GentleCaress') then return end
-	if not (triggerArgs and triggerArgs.ManuallyTriggered) then return end
+	if not (triggerArgs and triggerArgs.ManuallyTriggered) and not duo_revenge_for_summon() then return end
 
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero or not game.HeroHasTrait(GENTLE_CARESS_SHIELD) then return end
 
+	local heal = GENTLE_CARESS_HEINOUS_HEAL
+	if duo_revenge_for_summon() then
+		heal = triggerArgs and triggerArgs.DamageAmount or 0
+		if type(heal) ~= 'number' or heal <= 0 then return end
+	end
+
 	game.Heal(hero, {
-		HealAmount = game.round(GENTLE_CARESS_HEINOUS_HEAL * game.CalculateHealingMultiplier()),
+		HealAmount = game.round(heal * game.CalculateHealingMultiplier()),
 		SourceName = 'SWuGentleCaress',
 	})
 

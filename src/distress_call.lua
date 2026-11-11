@@ -1334,7 +1334,10 @@ function mod.DistressCallDamaged(_attacker, _args, triggerArgs)
 
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero then return end
-	if triggerArgs and triggerArgs.triggeredById and triggerArgs.triggeredById ~= hero.ObjectId then return end
+	if not duo_revenge_for_summon() and triggerArgs and triggerArgs.triggeredById
+		and triggerArgs.triggeredById ~= hero.ObjectId then
+		return
+	end
 
 	distress_call_summon()
 end

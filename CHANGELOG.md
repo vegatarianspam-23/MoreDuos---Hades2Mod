@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- Distress Call, Gentle Caress: now trigger when Night Bloom's Retaliation talent fires off a hit on your summon, the same way they trigger from Heinous Affront. Gentle Caress restores Health equal to the damage your summon took, instead of a flat 50
+- Spiteful Goddess (experimental): when Night Bloom's Retaliation talent triggers it, the nearby bonus checks the distance from your summon instead of from you
+- Permafrost Shield: no longer shows its damage-cap text over you when one of your summons takes a big hit
+
 ## [1.1.3] - 2026-11-09
 
 ### Removed

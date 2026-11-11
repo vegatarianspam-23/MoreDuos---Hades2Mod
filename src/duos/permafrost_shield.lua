@@ -25,6 +25,7 @@ function mod.PermafrostShieldHit(_attacker, _args, triggerArgs)
 
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero or not triggerArgs then return end
+	if duo_revenge_for_summon() then return end
 	if (triggerArgs.DamageAmount or 0) < mod.tuning.PermafrostShield.DamageCap then return end
 
 	game.thread(game.InCombatTextArgs, {
