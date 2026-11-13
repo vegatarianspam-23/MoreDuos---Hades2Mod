@@ -95,10 +95,10 @@ duo_text = {
 	ColdHearted = {
 		Name = 'Cold Hearted',
 		Description = 'Your {$Keywords.WeaponSet} strikes grow in {$Keywords.BaseDamage} against ' ..
-			'{$Keywords.Root}-afflicted foes, and your {$Keywords.Root} effects last ' ..
-			'twice as long on {$Keywords.Weak}-afflicted foes.',
+			'{$Keywords.Root}-afflicted foes. Your {$Keywords.Root} effects do not wear off while foes are ' ..
+			'{$Keywords.Weak}-afflicted.',
 		StatLines = {
-			SWuColdHeartedPerSecondStatDisplay = { Name = 'Bonus Power per Second:', Index = 1 },
+			SWuColdHeartedPowerStatDisplay = { Name = 'Bonus Power vs. {$Keywords.Root}:', Index = 1 },
 		},
 	},
 
@@ -155,6 +155,15 @@ duo_text = {
 
 	GlacialAdvance = {
 		Name = 'Glacial Advance',
+		Description = 'Your {#BoldFormatGraft}Ocean Swells {#Prev}inflict {$Keywords.SlowField} on foes, ' ..
+			'and might be fired whenever your splash effects hit foes.',
+		StatLines = {
+			SWuGlacialAdvanceChanceStatDisplay = { Name = 'Ocean Swell Chance:', Index = 1 },
+			SWuGlacialAdvanceDamageStatDisplay = { Name = 'Ocean Swell Damage:', Index = 2 },
+		},
+	},
+	GlacialAdvanceAlt = {
+		Name = 'Glacial Advance Alt',
 		Description = 'Your splash effects from {#BoldFormatGraft}Poseidon {#Prev}inflict ' ..
 			'{$Keywords.Root} and deal more damage.',
 		StatLines = {
@@ -521,17 +530,17 @@ duo_text = {
 
 	TippedScales = {
 		Name = 'Tipped Scales',
-		Description = 'Gain some {$Keywords.SWuFavor}. Whenever a chance-based effect fails to occur, gain more.',
+		Description = 'Gain some {$Keywords.SWuFavor}. Whenever a chance-based effect fails to occur, a bolt of ' ..
+			'lightning strikes a random nearby foe.',
 		Keywords = {
 			SWuFavor = {
 				DisplayName = 'Favor',
-				Description = 'Added to the chance of each of your chance-based effects, and spent whenever ' ..
-					'one occurs.',
+				Description = 'Added to the chance of each of your chance-based effects.',
 			},
 		},
 		StatLines = {
-			SWuTippedScalesBaseStatDisplay = { Name = 'Base Favor:', Index = 1 },
-			SWuTippedScalesStatDisplay = { Name = 'Favor per Failure:', Index = 2 },
+			SWuTippedScalesBaseStatDisplay = { Name = 'Favor:', Index = 1 },
+			SWuTippedScalesBoltStatDisplay = { Name = 'Lightning Damage:', Index = 2 },
 		},
 	},
 }

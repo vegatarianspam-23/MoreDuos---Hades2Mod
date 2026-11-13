@@ -114,8 +114,8 @@ function suffix_SetupMap()
 	duo_sync_requirements()
 	glowing_brand_sync()
 	hot_iron_invalidate()
-	tipped_scales_refresh()
 	plasmic_capacitor_show_counter()
+	game.SWuCombatTextStacks = nil
 end
 
 
@@ -350,6 +350,55 @@ function sjson_HephaestusAnimations(data)
 end
 
 
+function sjson_PoseidonAnimations(data)
+	if not data or not data.Animations then return end
+
+	local tuning = mod.tuning.GlacialAdvance
+	local fx = tuning.SwellFx
+	for _, animation in ipairs(data.Animations) do
+		if animation.Name == fx.Loop then return end
+	end
+
+	local copies = {
+		{ Name = fx.In, InheritFrom = 'PoseidonOceanSwellFxIn', ChainTo = fx.Loop },
+		{ Name = fx.Loop, InheritFrom = 'PoseidonOceanSwellFx', ChainTo = fx.Dissipate },
+		{ Name = fx.Dissipate, InheritFrom = 'PoseidonOceanSwellDissipateFx' },
+	}
+
+	for _, copy in ipairs(copies) do
+		copy.Hue = tuning.SwellHue
+		copy.Saturation = tuning.SwellSaturation
+		copy.Value = tuning.SwellValue
+		copy.Red = tuning.SwellColor.Red
+		copy.Green = tuning.SwellColor.Green
+		copy.Blue = tuning.SwellColor.Blue
+		table.insert(data.Animations, sjson.to_object(copy, { 'Name', 'InheritFrom' }))
+	end
+end
+
+
+local function sjson_GlacialSwell(data)
+	local tuning = mod.tuning.GlacialAdvance
+	local original
+	for _, projectile in ipairs(data.Projectiles) do
+		if projectile.Name == tuning.SwellProjectile then return end
+		if projectile.Name == 'PoseidonOmegaWave' then original = projectile end
+	end
+	if not original or not original.Thing then return end
+
+	local thing = {}
+	for key, value in pairs(original.Thing) do thing[key] = value end
+	thing.Graphic = tuning.SwellFx.In
+
+	table.insert(data.Projectiles, sjson.to_object({
+		Name = tuning.SwellProjectile,
+		InheritFrom = 'PoseidonOmegaWave',
+		DetonateFx = tuning.SwellFx.Dissipate,
+		Thing = sjson.to_object(thing, { 'Graphic' }),
+	}, { 'Name', 'InheritFrom' }))
+end
+
+
 function sjson_PlayerProjectiles(data)
 	if not data or not data.Projectiles then return end
 
@@ -363,6 +412,7 @@ function sjson_PlayerProjectiles(data)
 		{ Name = mod.tuning.VolcanicCrown.EmberProjectile, InheritFrom = 'HestiaSprintPuddle' },
 		{ Name = mod.tuning.VolcanicCrown.BlastProjectile, InheritFrom = 'MassiveSlamBlast' },
 		{ Name = mod.tuning.VolcanicCrown.FireballProjectile, InheritFrom = 'ProjectileFireball' },
+		{ Name = mod.tuning.TippedScales.BoltProjectile, InheritFrom = 'ZeusRetaliateStrike' },
 		{
 			Name = mod.tuning.AirControl.GuardProjectile,
 			InheritFrom = 'HestiaSprintDefense',
@@ -406,6 +456,7 @@ function sjson_PlayerProjectiles(data)
 	end
 
 	sjson_StormFrontCopies(data)
+	sjson_GlacialSwell(data)
 	sjson_AirControlHadesProjectiles(data)
 end
 

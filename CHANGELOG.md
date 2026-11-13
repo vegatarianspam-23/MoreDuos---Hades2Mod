@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Glacial Advance Alt (experimental, `Experimental.GlacialAdvanceAlt`): old Glacial Advance effect: Poseidon's splash effects inflict Freeze and deal 30 more damage
+
+### Changed
+
+- Glacial Advance (new): Your Ocean Swells inflict Chill, and your splash effects from Poseidon have a 25% chance to fire an 80-damage Ocean Swell.
+- Tipped Scales: Favor stays at 10% and no longer builds up. Instead, whenever a chance-based effect fails, a lightning bolt strikes a random nearby foe for 100 damage, (rate limited at 0.3 seconds).
+- Cold Hearted: your Attack and Special now get a flat +25 power against Frozen foes, and Weak foes stay Frozen instead of thawing.
+
 ### Fixed
 
 - Distress Call, Gentle Caress: now trigger when Night Bloom's Retaliation talent fires off a hit on your summon, the same way they trigger from Heinous Affront. Gentle Caress restores Health equal to the damage your summon took, instead of a flat 50

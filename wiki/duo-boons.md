@@ -8,7 +8,7 @@
 - **Boiling Blood** (Ares × Hestia) — Plasma restores 1 Health on pickup. Deal 10% more damage for every hit you take this location, up to 100%.
 - **Bubbling Cauldron** (Hestia × Poseidon) — Froth is twice as likely to trigger, and can proc more frequently against Scorched foes.
 - **Burnt Offering** (Hera × Hestia) — Give up a boon now for 500 bonus Gold, and for the rest of the night you may purge rewards for more. Gain 20% of any Gold gained this way as Max Magick and Health.
-- **Cold Hearted** (Aphrodite × Demeter) — Your Attack and Special gain more power against Frozen foes (+10 power per second Frozen). Freeze lasts twice as long on Weak foes.
+- **Cold Hearted** (Aphrodite × Demeter) — Your Attack and Special get +25 power against Frozen foes. Freeze does not wear off while a foe is Weak.
 - **Different League** (Apollo × Aphrodite) — +15% chance to Dodge attacks from nearby foes. All your damage to a foe is increased by your chance to avoid its attacks (includes Daze)
 - **Discerning Taste** (Aphrodite × Zeus) — Most choices can be rerolled, including Hammers and Hexes, and the first reroll of each is free. Gain 5 rerolls now.
 - **Energy Overflow** (Apollo × Poseidon) — Restore 30% more Magick. Magick restored past your limit raises it for the rest of the location, up to 999.
@@ -16,7 +16,7 @@
 - **Family Reunion** (Hera × Zeus) — Gain a boon from every Olympian you have yet seen tonight. Legendary and Duo boons are 10% more likely to be offered for the rest of the night.
 - **Family Trade** (Hera × Zeus) — Sacrifice boons gain 3 extra Pom levels, and are offered whenever possible. Taking one keeps the original boon instead of replacing it, and choose from 3 boons now (prioritizes Hera / Zeus Sacrifices first).
 - **Gentle Caress** (Hephaestus × Aphrodite) — Excess healing converts to Armor, up to your Max Health. The first hit each encounter restores that much Health instead.
-- **Glacial Advance** (Poseidon × Demeter) — Poseidon's splash effects Freeze foes and deal 30 more damage.
+- **Glacial Advance** (Poseidon × Demeter) — Your Ocean Swells inflict Chill, and Poseidon's splash effects have a 25% chance to fire an 80-damage Ocean Swell outward when they hit a foe.
 - **Golden Rule** (Hera × Poseidon) — Deal 0.05% more damage per Gold held, up to 100%. Earn 5% interest on your Gold whenever you leave a location.
 - **Hot Iron** (Hephaestus × Hestia) — Your fireballs from Hestia apply Glow, and do 25% more damage against foes with Glow. Your weapon strikes gain bonuses from your fireball effects from Hestia.
 - **Ingenious Invention** (Apollo × Hephaestus) — Gain a random Hammer upgrade now, and another every 6 encounters.
@@ -34,6 +34,6 @@
 - **Spiteful Strength** (Hera × Hephaestus) — Prime 60 Magick now. Your weapon strikes deal more damage for the share of your Magick that is Primed, up to +100% at all of it. Bonus is doubled for an Attack or Special with no percentage-damage boon on it (none, Zeus, Poseidon, Hestia, Hephaestus).
 - **Storm Front** (Zeus × Demeter) — Demeter's Gusts are larger and throw chain lightning at foes they strike. 
 - **Tectonic Cycle** (Hephaestus × Poseidon) — Every 40 seconds, your start-of-encounter effects fire again. Optionally (`Options.TectonicCycleResetsCooldowns` in config, off by default), each cycle also resets most boon cooldowns.
-- **Tipped Scales** (Poseidon × Zeus) — Gain 10% Favor, which is added to every chance-based effect. Each miss adds 3% more, up to 100% (reset on a success).
+- **Tipped Scales** (Poseidon × Zeus) — Gain 10% Favor, which is added to every chance-based effect. Each miss strikes a random nearby foe with a 100-damage lightning bolt (capped at once every 0.3 seconds).
 - **Winter Solstice** (Apollo × Demeter) — While channelling Omega moves, a Squall rapidly damages and Chills nearby foes. Hold for 2 seconds to slow time for 2 seconds.
 - **Wishing Well** (Aphrodite × Poseidon) — A fountain room is offered whenever possible (marked by an Aromatic Phial icon on the location reward). Drinking from any fountain offers a reward from a random ally tonight, and take one now. Zagreus' Journey allies are experimental and off by default (`Experimental.ZagreusJourney` in config).

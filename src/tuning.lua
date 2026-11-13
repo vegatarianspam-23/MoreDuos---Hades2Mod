@@ -542,9 +542,8 @@ mod.tuning = {
 		NearbyExclusionBoon = 'AllCloseBoon',
 	},
 	ColdHearted = {
-		Power = 10,
-		PowerPerSecond = 10,
-		FreezeMultiplier = 2,
+		Power = 25,
+		HoldInterval = 0.2,
 	},
 	BoilingBlood = {
 		HealPerPlasma = 1,
@@ -588,6 +587,21 @@ mod.tuning = {
 		Damage = 100,
 	},
 	GlacialAdvance = {
+		SwellChance = 0.25,
+		SwellDamage = 80,
+		SwellCooldown = 0,
+
+		SwellProjectile = 'SWuGlacialSwell',
+		SwellFx = {
+			In = 'SWuGlacialSwellFxIn',
+			Loop = 'SWuGlacialSwellFx',
+			Dissipate = 'SWuGlacialSwellDissipateFx',
+		},
+		SwellHue = -0.05,
+		SwellSaturation = -0.6,
+		SwellValue = 0.15,
+		SwellColor = { Red = 0.75, Green = 0.9, Blue = 1.0 },
+
 		BonusDamage = 30,
 		WaveScale = 1.0,
 	},
@@ -874,14 +888,19 @@ mod.tuning = {
 		SprintLinger = 0.5,
 
 		PollInterval = 0.02,
+		PruneInterval = 0.1,
 
 		InsideProjectileSpeed = 0.50,
 		SlowZoneProjectile = 'SWuAirControlSlowZone',
 	},
 	TippedScales = {
-		FavorPerMiss = 0.03,
 		BaseFavor = 0.10,
-		MaxFavor = 1.00,
+		BoltDamage = 100,
+		Range = 380,
+		BoltProjectile = 'SWuTippedScalesBolt',
+		BoltWindow = 2,
+		BoltCooldown = 0.3,
+		BoltFrames = 4,
 	},
 	DiscerningTaste = {
 		Rerolls = 5,

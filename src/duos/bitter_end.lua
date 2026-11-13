@@ -27,7 +27,26 @@ local function bitter_end_kind(effectName)
 end
 
 
+local bitterEndKinds = setmetatable({}, { __mode = 'k' })
+
+local bitterEndLookups = setmetatable({}, { __mode = 'k' })
+
+
+local function bitter_end_lookup(list)
+	if not list then return nil end
+	local lookup = bitterEndLookups[list]
+	if not lookup then
+		lookup = game.ToLookup(list)
+		bitterEndLookups[list] = lookup
+	end
+	return lookup
+end
+
+
 local function bitter_end_action_kinds(action)
+	local cached = bitterEndKinds[action]
+	if cached then return cached end
+
 	local kinds = {}
 	kinds[bitter_end_kind(action.EffectName) or ''] = true
 	for _, name in ipairs(action.EffectNames or {}) do
@@ -37,6 +56,7 @@ local function bitter_end_action_kinds(action)
 		kinds[bitter_end_kind(action.Args.EffectName) or ''] = true
 	end
 	kinds[''] = nil
+	bitterEndKinds[action] = kinds
 	return kinds
 end
 
@@ -45,7 +65,7 @@ local function bitter_end_action_hits(trait, action, triggerArgs)
 	if action.ValidEffectName or action.Chance then return false end
 
 	local weapon = triggerArgs.SourceWeapon
-	local weapons = action.ValidWeaponsLookup or (action.ValidWeapons and game.ToLookup(action.ValidWeapons))
+	local weapons = action.ValidWeaponsLookup or bitter_end_lookup(action.ValidWeapons)
 	local validWeapon = weapons == nil or weapons[weapon] ~= nil
 	if not validWeapon and trait.Slot then
 		for _, shared in pairs((game.CurrentRun.Hero.HeroTraitValuesCache or {}).AddWeaponsToTraits or {}) do
@@ -58,7 +78,7 @@ local function bitter_end_action_hits(trait, action, triggerArgs)
 	if not validWeapon then return false end
 
 	local projectile = triggerArgs.SourceProjectile
-	local projectiles = action.ValidProjectilesLookup or (action.ValidProjectiles and game.ToLookup(action.ValidProjectiles))
+	local projectiles = action.ValidProjectilesLookup or bitter_end_lookup(action.ValidProjectiles)
 	if projectiles and not projectiles[projectile] then return false end
 	if action.ExcludeProjectilesLookup and action.ExcludeProjectilesLookup[projectile] then return false end
 

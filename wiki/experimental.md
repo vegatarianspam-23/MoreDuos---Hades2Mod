@@ -29,6 +29,9 @@ Each entry can be switched on in the config, under `Experimental`.
 
 Turning one of these on replaces the regular duo in the pool.
 
+- **Glacial Advance Alt** (Poseidon × Demeter) · `GlacialAdvanceAlt` — Poseidon's splash effects Freeze foes and deal 30 more damage.
+  - Ice Strike, Ice Flourish, Arctic Ring
+  - Wave Strike, Wave Flourish, Breaker Rush *(BoonEdits)*
 - **Plasmic Capacitor Alt** (Ares × Zeus) · `PlasmicCapacitorAlt` — Your Blitz leaves Plasma behind, which creates chain-lightning when collected. Maximum plasma cap raised to 120.
   - Grisly Gain, Visceral Impact, Meat Grinder *(BoonEdits)*, Profuse Bleeding *(BoonEdits)*
   - Heaven Strike, Heaven Flourish

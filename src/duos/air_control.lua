@@ -188,11 +188,13 @@ function mod.AirControl(_hero, args)
 	if not loop then return end
 
 	local last = game._worldTime
+	local sincePrune = 0
 
 	while duo_running(duo_traits.AirControl) do
 		local now = game._worldTime
 		local elapsed = (now - last) * game._elapsedTimeMultiplier
 		last = now
+		sincePrune = sincePrune + elapsed
 
 		local channelling = duo_on('AirControl') and air_control_channelling()
 
@@ -202,7 +204,10 @@ function mod.AirControl(_hero, args)
 			air_control_drop()
 		end
 
-		air_control_cast_guards_prune(false)
+		if sincePrune >= mod.tuning.AirControl.PruneInterval then
+			sincePrune = 0
+			air_control_cast_guards_prune(false)
+		end
 
 		if airControlSprintId and not game.SessionMapState.SprintActive then
 			airControlSprintLeft = airControlSprintLeft - elapsed

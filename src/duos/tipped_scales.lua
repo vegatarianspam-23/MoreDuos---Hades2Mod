@@ -1,31 +1,33 @@
 ---@meta _
 
 
+local TIPPED_SCALES_STRIKE = 'ZeusRetaliateStrike'
+local TIPPED_SCALES_BOLT = mod.tuning.TippedScales.BoltProjectile
+
+duo_alias_projectile(TIPPED_SCALES_STRIKE, TIPPED_SCALES_BOLT)
+do
+	local sources = game.ScreenData.RunClear.DamageSourceMap
+	sources[TIPPED_SCALES_BOLT] = sources[TIPPED_SCALES_BOLT] or sources[TIPPED_SCALES_STRIKE]
+end
+
+
 register_duo({
 	key = 'TippedScales',
 
 	StatLines = {
 		'SWuTippedScalesBaseStatDisplay',
-		'SWuTippedScalesStatDisplay',
+		'SWuTippedScalesBoltStatDisplay',
 	},
 	ExtractValues = {
 		{ Key = 'SWuBaseFavor', ExtractAs = 'BaseChance', Format = 'Percent', HideSigns = true },
-		{ Key = 'SWuFavorPerMiss', ExtractAs = 'Chance', Format = 'Percent', HideSigns = true },
+		{ Key = 'SWuBoltDamage', ExtractAs = 'TooltipBoltDamage' },
 	},
 
 	ExtraFields = {
 		SWuBaseFavor = mod.tuning.TippedScales.BaseFavor,
-		SWuFavorPerMiss = mod.tuning.TippedScales.FavorPerMiss,
-		SWuMaxFavor = mod.tuning.TippedScales.MaxFavor,
+		SWuBoltDamage = mod.tuning.TippedScales.BoltDamage,
 
 		LuckMultiplier = 1 + mod.tuning.TippedScales.BaseFavor,
-
-		ShowInHUD = true,
-		CustomLabel = {
-			DisplayType = 'RoomValue',
-			Key = 'SWuTippedScalesFavor',
-			Text = 'UI_TimedKillBuff',
-		},
 	},
 })
 
@@ -73,18 +75,51 @@ local function tipped_scales_non_enemy(level)
 end
 
 
+local tippedScalesChunks = {}
+
 local function tipped_scales_chunk(shortSrc)
 	if type(shortSrc) ~= 'string' then return nil end
 
+	local cached = tippedScalesChunks[shortSrc]
+	if cached then return cached end
+
 	local quoted = shortSrc:match('^%[string "(.+)"%]$')
 	local name = quoted or shortSrc:match('([^\\/]+)$') or shortSrc
-	return (name:gsub('%.lua$', ''))
+	name = name:gsub('%.lua$', '')
+	tippedScalesChunks[shortSrc] = name
+	return name
 end
 
 
 local tippedScalesArmed = false
 
 local tippedScalesMultiplier = 1
+
+local tippedScalesBoltUntil = 0
+
+local tippedScalesNextStrike = 0
+
+
+local function tipped_scales_bolt_table(value)
+	return type(value) == 'table'
+		and (value.SourceProjectile == TIPPED_SCALES_BOLT or value.ProjectileName == TIPPED_SCALES_BOLT)
+end
+
+
+local function tipped_scales_from_bolt(source)
+	if (game._worldTime or 0) > tippedScalesBoltUntil then return false end
+
+	for level = source, source + mod.tuning.TippedScales.BoltFrames do
+		if level > source and not debug.getinfo(level, 'S') then return false end
+
+		for index = 1, 60 do
+			local name, value = debug.getlocal(level, index)
+			if name == nil then break end
+			if tipped_scales_bolt_table(value) then return true end
+		end
+	end
+	return false
+end
 
 
 local function tipped_scales_no_foes()
@@ -100,7 +135,7 @@ end
 local function tipped_scales_caller()
 	if tipped_scales_no_foes() then return nil end
 
-	for level = 2, 16 do
+	for level = 2, 40 do
 		local info = debug.getinfo(level, 'Sn')
 		if not info then return nil end
 
@@ -113,7 +148,7 @@ local function tipped_scales_caller()
 		local name = tipped_scales_chunk(info.short_src)
 		if name and TIPPED_SCALES_SOURCES[name] then
 			if name == 'CombatLogic' and tipped_scales_non_enemy(level) then return nil end
-			return name
+			return name, level
 		end
 	end
 	return nil
@@ -124,42 +159,12 @@ function tipped_scales_arm(multiplier)
 	if not duo_on('TippedScales') then return end
 	if not game.HeroHasTrait(duo_traits.TippedScales) then return end
 
-	local matched = tipped_scales_caller()
+	local matched, level = tipped_scales_caller()
+	local fromBolt = matched ~= nil and tipped_scales_from_bolt(level)
+	if fromBolt then matched = nil end
 	tippedScalesArmed = matched ~= nil
 	tippedScalesMultiplier = (type(multiplier) == 'number' and multiplier > 0) and multiplier or 1
-end
-
-
-local function tipped_scales_draw(trait, favor)
-	local room = game.CurrentRun and game.CurrentRun.CurrentRoom
-	if not room or not trait then
-		return
-	end
-
-	room.SWuTippedScalesFavor = math.floor(favor * 100)
-	game.UpdateTraitNumber(trait)
-end
-
-
-local function tipped_scales_set(favor)
-	local trait = game.GetHeroTrait(duo_traits.TippedScales)
-	if not trait then return end
-
-	local tuning = mod.tuning.TippedScales
-	favor = math.max(tuning.BaseFavor, math.min(favor, tuning.MaxFavor))
-	trait.SWuFavor = favor
-	trait.LuckMultiplier = 1 + favor
-	tipped_scales_draw(trait, favor)
-end
-
-
-function tipped_scales_refresh()
-	if not duo_on('TippedScales') then return end
-	local name = duo_traits.TippedScales
-	local trait = name and in_run() and game.GetHeroTrait(name)
-
-	if not trait then return end
-	tipped_scales_draw(trait, trait.SWuFavor or mod.tuning.TippedScales.BaseFavor)
+	return matched, fromBolt
 end
 
 
@@ -177,11 +182,65 @@ function tipped_scales_chance(chance)
 	local base = tipped_scales_base(chance)
 	if not base then return chance end
 
-	local trait = game.GetHeroTrait(duo_traits.TippedScales)
-	local favor = (trait and trait.SWuFavor) or mod.tuning.TippedScales.BaseFavor
-
+	local favor = mod.tuning.TippedScales.BaseFavor
 	local others = math.max(tippedScalesMultiplier - favor, 0)
 	return base * others + favor
+end
+
+
+local function tipped_scales_target(hero)
+	local ids = game.GetClosestIds({
+		Id = hero.ObjectId,
+		DestinationName = 'EnemyTeam',
+		IgnoreInvulnerable = true,
+		IgnoreHomingIneligible = true,
+		StopsProjectiles = true,
+		Distance = mod.tuning.TippedScales.Range,
+		ScaleY = 0.65,
+		MaximumCount = 99,
+		PreciseCollision = true,
+	}) or {}
+
+	local foes = {}
+	for _, id in pairs(ids) do
+		local unit = (game.ActiveEnemies or {})[id]
+		if duo_foe(unit) and not is_allied_summon(unit) then
+			table.insert(foes, unit)
+		end
+	end
+
+	if #foes == 0 then return nil end
+	return foes[game.RandomInt(1, #foes)]
+end
+
+
+local function tipped_scales_strike()
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	if not hero then return false end
+
+	local now = game._worldTime or 0
+	if now < tippedScalesNextStrike then return false end
+
+	local foe = tipped_scales_target(hero)
+	if not foe then return false end
+	tippedScalesNextStrike = now + mod.tuning.TippedScales.BoltCooldown
+
+	local name = game.ProjectileData[TIPPED_SCALES_BOLT] and TIPPED_SCALES_BOLT or TIPPED_SCALES_STRIKE
+	local base = game.GetBaseDataValue({ Type = 'Projectile', Name = name, Property = 'Damage' })
+	if type(base) ~= 'number' or base <= 0 then base = 100 end
+
+	tippedScalesBoltUntil = (game._worldTime or 0) + mod.tuning.TippedScales.BoltWindow
+
+	game.thread(game.CreateZeusBolt, {
+		SourceId = hero.ObjectId,
+		TargetId = foe.ObjectId,
+		ProjectileName = name,
+		DamageMultiplier = mod.tuning.TippedScales.BoltDamage / base,
+		Range = 1,
+		SeekTarget = true,
+		Count = 1,
+	})
+	return true
 end
 
 
@@ -191,21 +250,8 @@ function tipped_scales_answer(chance, succeeded)
 	local base = tipped_scales_base(chance)
 	tippedScalesArmed = false
 
-	if not base then
-		return
-	end
+	if not base or succeeded then return end
+	if not game.HeroHasTrait(duo_traits.TippedScales) then return end
 
-	local trait = game.GetHeroTrait(duo_traits.TippedScales)
-	if not trait then
-		return
-	end
-
-	local tuning = mod.tuning.TippedScales
-	local before = trait.SWuFavor or tuning.BaseFavor
-
-	if not succeeded then
-		tipped_scales_set(before + tuning.FavorPerMiss)
-	else
-		tipped_scales_set(tuning.BaseFavor)
-	end
+	return tipped_scales_strike()
 end

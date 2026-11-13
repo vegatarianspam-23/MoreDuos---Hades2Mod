@@ -51,8 +51,9 @@ Each duo needs one boon from every group (sub-bullet). Boons marked *(BoonEdits)
   - Secret Crush, Spiritual Affirmation, Shameless Attitude
   - Heavy Metal, Trusty Shield, Security System, Uncanny Fortitude
 - **Glacial Advance**
-  - Ice Strike, Ice Flourish, Arctic Ring
-  - Wave Strike, Wave Flourish, Breaker Rush *(BoonEdits)*
+  - Wave Strike, Wave Flourish, Breaker Rush
+  - Ocean Swell
+  - Ice Strike, Ice Flourish, Arctic Ring, Frigid Rush, Tranquil Gain
 - **Golden Rule**
   - Sea Star, Buried Treasure
   - Bridal Glow, Uncommon Grace, Extended Family

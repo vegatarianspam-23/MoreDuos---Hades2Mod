@@ -4,17 +4,13 @@
 register_duo({
 	key = 'ColdHearted',
 
-	StatLines = { 'SWuColdHeartedPerSecondStatDisplay' },
+	StatLines = { 'SWuColdHeartedPowerStatDisplay' },
 	ExtractValues = with_keyword_extracts({
-		{ Key = 'SWuColdHeartedPower', ExtractAs = 'TooltipPower', SkipAutoExtract = true },
-		{ Key = 'SWuColdHeartedPerSecond', ExtractAs = 'TooltipPerSecond' },
-		{ Key = 'SWuFreezeMultiplier', ExtractAs = 'TooltipFreezeMultiplier', SkipAutoExtract = true },
+		{ Key = 'SWuColdHeartedPower', ExtractAs = 'TooltipPower', IncludeSigns = true },
 	}, 'Root', 'Weak'),
 
 	ExtraFields = {
 		SWuColdHeartedPower = mod.tuning.ColdHearted.Power,
-		SWuColdHeartedPerSecond = mod.tuning.ColdHearted.PowerPerSecond,
-		SWuFreezeMultiplier = mod.tuning.ColdHearted.FreezeMultiplier,
 	},
 })
 
@@ -32,42 +28,54 @@ function cold_hearted_power(attacker, victim, triggerArgs)
 		return 0
 	end
 
-	local tuning = mod.tuning.ColdHearted
-	local seconds = victim.SWuRootSince and math.max(math.ceil(game._worldTime - victim.SWuRootSince), 0) or 0
-	return tuning.Power + tuning.PowerPerSecond * seconds
+	return mod.tuning.ColdHearted.Power
+end
+
+
+local coldHeartedNames = {}
+
+local function cold_hearted_root_names(victim)
+	local names = coldHeartedNames
+	for i = #names, 1, -1 do names[i] = nil end
+	for name in pairs(victim.ActiveEffects or {}) do
+		local data = game.EffectData[name]
+		if data and data.EffectGroup == 'Root' then table.insert(names, name) end
+	end
+	return names
+end
+
+
+local function cold_hearted_hold(victim, token)
+	local interval = mod.tuning.ColdHearted.HoldInterval
+	local last = game._worldTime
+
+	while victim.SWuColdHeartedHold == token and not victim.IsDead do
+		game.wait(interval, game.RoomThreadName)
+		if victim.SWuColdHeartedHold ~= token or victim.IsDead or not victim.RootActive then break end
+
+		local now = game._worldTime
+		local elapsed = now - last
+		last = now
+
+		if duo_on('ColdHearted') and game.HeroHasTrait(duo_traits.ColdHearted)
+			and victim.ActiveEffects and victim.ActiveEffects.WeakEffect and elapsed > 0 then
+			local names = cold_hearted_root_names(victim)
+			if #names > 0 then
+				game.ModifyEffect({ Id = victim.ObjectId, Names = names, AddTime = elapsed })
+			end
+		end
+	end
+
+	if victim.SWuColdHeartedHold == token then victim.SWuColdHeartedHold = nil end
 end
 
 
 function cold_hearted_root_started(victim)
-	if victim then victim.SWuRootSince = game._worldTime end
-end
+	if not victim or not victim.ObjectId then return end
+	if not duo_on('ColdHearted') then return end
+	if not game.HeroHasTrait(duo_traits.ColdHearted) then return end
 
-
-function cold_hearted_root_args(victim, functionArgs)
-	if not duo_on('ColdHearted') then return functionArgs end
-	if not game.HeroHasTrait(duo_traits.ColdHearted) then return functionArgs end
-	if not victim or not victim.ActiveEffects or not victim.ActiveEffects.WeakEffect then
-		return functionArgs
-	end
-
-	local effectName = functionArgs and functionArgs.EffectName
-	local effect = effectName and game.EffectData[effectName]
-	local data = effect and effect.EffectData
-	if not data then return functionArgs end
-
-	local effectArgs = functionArgs.EffectArgs or {}
-	local duration = effectArgs.Duration or data.Duration
-	local threshold = effectArgs.ExpiringTimeThreshold or data.ExpiringTimeThreshold
-	if type(duration) ~= 'number' or type(threshold) ~= 'number' then return functionArgs end
-
-	local extension = 0
-	if game.HeroHasTrait('RootDurationBoon') then
-		extension = game.GetTotalHeroTraitValue('RootDurationExtension')
-	end
-
-	local held = (duration - threshold + extension) * mod.tuning.ColdHearted.FreezeMultiplier
-	local scaled = game.ShallowCopyTable(functionArgs)
-	scaled.EffectArgs = game.ShallowCopyTable(effectArgs)
-	scaled.EffectArgs.ExpiringTimeThreshold = math.max(extension, duration - held + extension)
-	return scaled
+	local token = {}
+	victim.SWuColdHeartedHold = token
+	game.thread(cold_hearted_hold, victim, token)
 end

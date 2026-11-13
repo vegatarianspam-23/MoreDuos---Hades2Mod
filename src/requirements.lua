@@ -151,6 +151,15 @@ duo_requirements = {
 	GlacialAdvance = {
 		Gods = { 'Poseidon', 'Demeter' },
 		OneFromEachSet = {
+			{ "PoseidonWeaponBoon", "PoseidonSpecialBoon", "PoseidonSprintBoon" },
+			{ "OmegaPoseidonProjectileBoon" },
+			{ "DemeterWeaponBoon", "DemeterSpecialBoon", "DemeterCastBoon", "DemeterSprintBoon", "DemeterManaBoon" },
+		},
+	},
+
+	GlacialAdvanceAlt = {
+		Gods = { 'Poseidon', 'Demeter' },
+		OneFromEachSet = {
 			{ "DemeterWeaponBoon", "DemeterSpecialBoon", "DemeterCastBoon" },
 			Group('PoseidonSplashTraits'),
 		},

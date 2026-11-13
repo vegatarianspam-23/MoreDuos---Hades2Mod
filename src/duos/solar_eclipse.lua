@@ -218,20 +218,48 @@ function solar_eclipse_clamp_record(hero, before)
 end
 
 
-function solar_eclipse_move_bonus()
+local solarEclipseBaseSpeed
+
+local solarEclipseBonusAt
+
+local solarEclipseBonus = 0
+
+
+local function solar_eclipse_current_speed(hero, key)
+	if key == 'Sprint' then
+		return game.GetWeaponDataValue({ Id = hero.ObjectId, WeaponName = 'WeaponSprint', Property = 'SelfVelocityCap' })
+	end
+	return game.GetUnitDataValue({ Id = hero.ObjectId, Property = 'Speed' })
+end
+
+
+local function solar_eclipse_measure()
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero or not hero.ObjectId then return 0 end
 
-	local base = game.GetBaseDataValue({ Type = 'Unit', Name = '_PlayerUnit', Property = 'Speed' })
-	if type(base) ~= 'number' or base <= 0 then return 0 end
+	if not solarEclipseBaseSpeed then
+		local base = game.GetBaseDataValue({ Type = 'Unit', Name = '_PlayerUnit', Property = 'Speed' })
+		if type(base) ~= 'number' or base <= 0 then return 0 end
+		solarEclipseBaseSpeed = base
+	end
 
 	local state = game.SessionMapState or {}
 	local key = state.SprintActive and 'Sprint' or 'Run'
-	local current = solar_eclipse_speeds(hero)[key]
+	local current = solar_eclipse_current_speed(hero, key)
 	if type(current) ~= 'number' then return 0 end
 
 	current = current * (state[SOLAR_ECLIPSE_CLAMPED[key]] or 1)
-	return math.max(0, current / base - 1)
+	return math.max(0, current / solarEclipseBaseSpeed - 1)
+end
+
+
+function solar_eclipse_move_bonus()
+	local now = game._worldTime
+	if now ~= nil and now == solarEclipseBonusAt then return solarEclipseBonus end
+
+	solarEclipseBonus = solar_eclipse_measure()
+	solarEclipseBonusAt = now
+	return solarEclipseBonus
 end
 
 

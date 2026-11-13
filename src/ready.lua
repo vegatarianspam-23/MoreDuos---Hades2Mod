@@ -30,10 +30,16 @@ modutil.mod.Path.Wrap("CalculateDamageMultipliers", function(base, attacker, vic
 end)
 
 
+local damageBase, damageMetered
+
 modutil.mod.Path.Wrap("Damage", function(base, victim, triggerArgs)
-	return hot_iron_damage(function(...)
-		return bleeding_heart_meter(base, ...)
-	end, victim, triggerArgs)
+	if base ~= damageBase then
+		damageBase = base
+		damageMetered = function(...)
+			return bleeding_heart_meter(base, ...)
+		end
+	end
+	return hot_iron_damage(damageMetered, victim, triggerArgs)
 end)
 
 modutil.mod.Path.Wrap("CheckOnDamagedPowers", function(base, victim, attacker, args)
@@ -66,11 +72,6 @@ end)
 modutil.mod.Path.Wrap("OnAllEnemiesDead", function(base, currentRoom, currentEncounter)
 	blood_born_clear()
 	return base(currentRoom, currentEncounter)
-end)
-
-
-modutil.mod.Path.Wrap("ApplyRoot", function(base, victim, functionArgs, triggerArgs)
-	return base(victim, cold_hearted_root_args(victim, functionArgs), triggerArgs)
 end)
 
 
@@ -352,12 +353,6 @@ modutil.mod.Path.Wrap("RandomChance", function(base, chance, rng)
 	local rolled = tipped_scales_chance(chance)
 	local result = base(rolled, rng)
 	tipped_scales_answer(chance, result)
-	return result
-end)
-
-modutil.mod.Path.Wrap("TraitUIActivateTraits", function(base, args)
-	local result = base(args)
-	tipped_scales_refresh()
 	return result
 end)
 
@@ -686,6 +681,11 @@ end)
 local hephaestusVfx = rom.path.combine(rom.paths.Content, 'Game/Animations/Melinoe_Hephaestus_VFX.sjson')
 sjson.hook(hephaestusVfx, function(data)
 	return sjson_HephaestusAnimations(data)
+end)
+
+local poseidonVfx = rom.path.combine(rom.paths.Content, 'Game/Animations/Melinoe_Poseidon_VFX.sjson')
+sjson.hook(poseidonVfx, function(data)
+	return sjson_PoseidonAnimations(data)
 end)
 
 local playerProjectiles = rom.path.combine(rom.paths.Content, 'Game/Projectiles/PlayerProjectiles.sjson')

@@ -99,23 +99,18 @@ local function orbital_ring_casts_holding(victim)
 	if not rings or not victim or not victim.ObjectId then return 0 end
 
 	local count = 0
+	local spot
 	for projectileId in pairs(rings) do
 		if not game.ProjectileExists({ Id = projectileId }) then
 			rings[projectileId] = nil
 		else
 			local location = game.GetLocation({ IsProjectile = true, Id = projectileId })
 			local radius = game.GetProjectileProperty({ ProjectileId = projectileId, Property = 'ModifiedDamageRadius' })
+			spot = spot or game.GetLocation({ Id = victim.ObjectId })
 
-			if location and radius then
-				local centerId = game.SpawnObstacle({
-					Name = 'InvisibleTarget',
-					LocationX = location.X,
-					LocationY = location.Y,
-				})
-				local distance = game.GetDistance({ Id = centerId, DestinationId = victim.ObjectId })
-				game.Destroy({ Id = centerId })
-
-				if distance and distance <= radius then
+			if location and radius and spot then
+				local dx, dy = spot.X - location.X, spot.Y - location.Y
+				if dx * dx + dy * dy <= radius * radius then
 					count = count + 1
 				end
 			end
