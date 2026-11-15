@@ -63,7 +63,6 @@ end
 local function glacial_advance_fields()
 	return {
 		SWuSwellChance = mod.tuning.GlacialAdvance.SwellChance,
-		SWuSwellDamage = mod.tuning.GlacialAdvance.SwellDamage,
 
 		OnEnemyDamagedAction = {
 			ValidProjectiles = STRUCK,
@@ -80,14 +79,13 @@ register_duo({
 
 	StatLines = GLACIAL_ADVANCE_ALT
 		and { 'SWuGlacialAdvanceStatDisplay' }
-		or { 'SWuGlacialAdvanceChanceStatDisplay', 'SWuGlacialAdvanceDamageStatDisplay' },
+		or { 'SWuGlacialAdvanceChanceStatDisplay' },
 	ExtractValues = GLACIAL_ADVANCE_ALT
 		and with_keyword_extracts({
 			{ Key = 'SWuWaveDamage', ExtractAs = 'TooltipWaveDamage', IncludeSigns = true },
 		}, 'Root')
 		or with_keyword_extracts({
 			{ Key = 'SWuSwellChance', ExtractAs = 'Chance', Format = 'LuckModifiedPercent', HideSigns = true },
-			{ Key = 'SWuSwellDamage', ExtractAs = 'TooltipSwellDamage' },
 		}, 'SlowField'),
 
 	ExtraFields = GLACIAL_ADVANCE_ALT and glacial_advance_alt_fields() or glacial_advance_fields(),

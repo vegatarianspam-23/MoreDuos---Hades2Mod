@@ -59,7 +59,7 @@ Each duo needs one boon from every group (sub-bullet). Boons marked *(BoonEdits)
   - Bridal Glow, Uncommon Grace, Extended Family
 - **Hot Iron** (Hephaestus × Hestia)
   - Furnace Blast, Anvil Ring *(BoonEdits)*, Smithy Rush *(BoonEdits)*
-  - Glowing Coal, Controlled Burn, Volcanic Crown *(BoonEdits)*
+  - Flame Strike, Flame Flourish, Smolder Ring, Heat Rush, Cardio Gain
 - **Ingenious Invention**
   - Super Nova, Perfect Image, Extra Dose
   - Heavy Metal, Trusty Shield, Security System, Uncanny Fortitude

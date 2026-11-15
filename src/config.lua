@@ -53,9 +53,13 @@ local config = {
 
     VolcanicCrown = false;
 
+    VolcanicRift = false;
+
     WrathfulHubris = false;
 
     GlacialAdvanceAlt = false;
+
+    HotIronAlt = false;
 
     PlasmicCapacitorAlt = false;
 

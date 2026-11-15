@@ -534,7 +534,7 @@ mod.tuning = {
 		ResetGrace = 5,
 	},
 	DifferentLeague = {
-		DodgeBonus = 0.15,
+		DodgeBonus = 0.10,
 		DamagePerDodge = 1.0,
 		MissInterval = 0.25,
 		MissDuration = 0.5,
@@ -588,7 +588,7 @@ mod.tuning = {
 	},
 	GlacialAdvance = {
 		SwellChance = 0.25,
-		SwellDamage = 80,
+		SwellDamage = 60,
 		SwellCooldown = 0,
 
 		SwellProjectile = 'SWuGlacialSwell',
@@ -636,6 +636,36 @@ mod.tuning = {
 
 		BlastRadius = 330,
 		EmberRadius = 200,
+	},
+	VolcanicRift = {
+		RiftProjectile = 'SWuVolcanicRift',
+		FireballProjectile = 'SWuVolcanicRiftFireball',
+		PuddleProjectile = 'SWuVolcanicRiftFire',
+		FineLineProjectile = 'ProjectileHeraOmega',
+
+		SprintTrail = false,
+		CountsAsHestiaFireball = true,
+		PuddlesScorch = false,
+
+		FissureAnim = 'SWuVolcanicRiftFissure',
+		FissureDetonateAnim = 'SWuVolcanicRiftFissureDetonate',
+		FissureLineAnim = 'SWuVolcanicRiftFissureLine',
+		FissureHue = 0.3,
+
+		RiftDamage = 120,
+		FireballDamage = 30,
+		PuddleDamage = 20,
+		PuddleInterval = 0.25,
+		PuddleDuration = 3,
+
+		SegmentLength = 400,
+		RiftCooldown = 0.75,
+		Fireballs = 5,
+		FireballSpread = 800,
+
+		AnchorLifetime = 3,
+
+		FirePuddles = { 'HestiaSprintPuddle', 'SWuVolcanicRiftFire', 'SWuVolcanicEmber', 'SWuVolcanicCrownFire' },
 	},
 	WrathfulHubris = {
 		DamageDealt = 0.50,
@@ -838,6 +868,9 @@ mod.tuning = {
 	},
 	HotIron = {
 		GlowMultiplier = 1.25,
+
+		MaxStacks = 5,
+		PowerPerStack = 10,
 	},
 	GlowingBrand = {
 		GlowPotency = 2.0,
@@ -864,7 +897,7 @@ mod.tuning = {
 		BlastProjectile = 'SWuLandMineBlast',
 		BlastDamage = 500,
 		BlastSize = 1.5,
-	},
+	}, 
 	EnergyOverflow = {
 		BonusRestore = 0.30,
 		MaxMana = 999,

@@ -15,6 +15,9 @@ Each entry can be switched on in the config, under `Experimental`.
 - **Volcanic Crown Alt** (Hephaestus × Hestia) · `VolcanicCrown` — Your Omega Cast erupts in a large Hepahestus blast and 6 fireballs, leaving burning embers behind.
   - Volcanic Strike, Volcanic Flourish
   - Glowing Coal, Controlled Burn, Volcanic Crown *(BoonEdits)*
+- **Volcanic Rift** (Hera × Hestia) · `VolcanicRift` — Your Fine Line fissures turn orange and erupt into 5 fireballs dealing 30 damage that leave fire puddles dealing 20 damage every 0.25 seconds.
+  - Fine Line
+  - Heat Rush, Volcanic Crown *(BoonEdits)*
 - **Wrathful Hubris** (Hera × Ares) · `WrathfulHubris` — You deal 50% more total damage, but take 50% more total damage. Total damage is applied after all other damage modifiers.
   - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain
   - Any core boon from Ares
@@ -32,6 +35,9 @@ Turning one of these on replaces the regular duo in the pool.
 - **Glacial Advance Alt** (Poseidon × Demeter) · `GlacialAdvanceAlt` — Poseidon's splash effects Freeze foes and deal 30 more damage.
   - Ice Strike, Ice Flourish, Arctic Ring
   - Wave Strike, Wave Flourish, Breaker Rush *(BoonEdits)*
+- **Hot Iron Alt** (Hephaestus × Hestia) · `HotIronAlt` — Your fireballs from Hestia apply Glow, and do 25% more damage against foes with Glow. Your weapon strikes gain bonuses from your fireball effects from Hestia.
+  - Furnace Blast, Anvil Ring *(BoonEdits)*, Smithy Rush *(BoonEdits)*
+  - Glowing Coal, Controlled Burn, Volcanic Crown *(BoonEdits)*
 - **Plasmic Capacitor Alt** (Ares × Zeus) · `PlasmicCapacitorAlt` — Your Blitz leaves Plasma behind, which creates chain-lightning when collected. Maximum plasma cap raised to 120.
   - Grisly Gain, Visceral Impact, Meat Grinder *(BoonEdits)*, Profuse Bleeding *(BoonEdits)*
   - Heaven Strike, Heaven Flourish

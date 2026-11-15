@@ -360,6 +360,13 @@ duo_requirements = {
 		Gods = { 'Hephaestus', 'Hestia' },
 		OneFromEachSet = {
 			Group('SWuGlowTraits'),
+			game.LinkedTraitData.HestiaCoreTraits,
+		},
+	},
+	HotIronAlt = {
+		Gods = { 'Hephaestus', 'Hestia' },
+		OneFromEachSet = {
+			Group('SWuGlowTraits'),
 			Group('SWuFireballTraits'),
 		},
 	},
@@ -369,6 +376,14 @@ duo_requirements = {
 		OneFromEachSet = {
 			{ "HephaestusWeaponBoon", "HephaestusSpecialBoon" },
 			Group('SWuFireballTraits'),
+		},
+	},
+
+	VolcanicRift = {
+		Gods = { 'Hera', 'Hestia' },
+		OneFromEachSet = {
+			{ "OmegaHeraProjectileBoon" },
+			{ "HestiaSprintBoon", "AloneDamageBoon" },
 		},
 	},
 

@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### Added
+
+- Hot Iron Alt (experimental, `Experimental.HotIronAlt`): old Hot Iron effect: Hestia's fireballs apply Glow and deal 25% more damage to Glowing foes, and your weapon strikes gain your fireball effects.
+- Volcanic Rift (experimental, `Experimental.VolcanicRift`, Hera × Hestia): your Fine Line fissures erupt into 5 fireballs (30 damage, counted as Hestia's fireballs) leaving fire puddles (20 damage every 0.25 sec.).
+
+### Changed
+
+- Hot Iron (new): your Glow can stack up to 5 times, each stack expiring on its own. Each stack adds its own Glow damage taken (+100% at 5 base stacks). Your Attack and Special get +10 power per Glow stack on the foe.
+- Glacial Advance: the Ocean Swell it fires deals 60 damage, down from 80, and the tooltip no longer lists its damage
+- Different League: +10% chance to Dodge attacks from nearby foes, down from 15%
+
+### Fixed
+
+- Drastic improvements to stuttering mid-combat
+
 ## [1.1.4] - 2026-11-13
 
 ### Added

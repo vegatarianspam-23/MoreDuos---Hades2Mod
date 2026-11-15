@@ -159,7 +159,6 @@ duo_text = {
 			'and might be fired whenever your splash effects hit foes.',
 		StatLines = {
 			SWuGlacialAdvanceChanceStatDisplay = { Name = 'Ocean Swell Chance:', Index = 1 },
-			SWuGlacialAdvanceDamageStatDisplay = { Name = 'Ocean Swell Damage:', Index = 2 },
 		},
 	},
 	GlacialAdvanceAlt = {
@@ -329,6 +328,23 @@ duo_text = {
 			SWuVolcanicCrownStatDisplay = { Name = 'Fireball Damage:', Index = 2 },
 		},
 	},
+	VolcanicRift = {
+		Name = 'Volcanic Rift',
+		Description = (mod.tuning.VolcanicRift.SprintTrail
+			and ('Your {$Keywords.Sprint} draws a fissure that erupts into fireballs, leaving fire puddles that deal ' ..
+				'{#BoldFormatGraft}{$TooltipData.ExtractData.TooltipPuddleDamage} {#Prev}damage every ' ..
+				'{#BoldFormatGraft}{$TooltipData.ExtractData.TooltipPuddleInterval} Sec.{#Prev}')
+			or 'Your fissures from {#BoldFormatGraft}Hera {#Prev}erupt into fireballs that leave burning fire puddles.')
+			.. (mod.tuning.VolcanicRift.PuddlesScorch
+				and ' All fire puddles inflict {$Keywords.Burn} equal to the damage they deal.' or ''),
+		StatLines = {
+			SWuVolcanicRiftStatDisplay = mod.tuning.VolcanicRift.SprintTrail
+				and { Name = 'Rift Damage:', Index = 1 } or nil,
+			SWuVolcanicRiftFireballStatDisplay = {
+				Name = 'Fireball Damage:', Index = mod.tuning.VolcanicRift.SprintTrail and 2 or 1,
+			},
+		},
+	},
 	WrathfulHubris = {
 		Name = 'Wrathful Hubris',
 		Description = 'You deal more total damage, but also take more total damage.',
@@ -369,7 +385,7 @@ duo_text = {
 	TectonicCycle = {
 		Name = 'Tectonic Cycle',
 		Description = 'Your effects that occur at the start of each {$Keywords.EncounterAlt} periodically ' ..
-			'occur again, and any {$Keywords.GodBoon} effects that recharge over time are ready again.',
+			'occur again.',
 		StatLines = {
 			SWuTectonicCycleStatDisplay = { Name = 'Cycle Interval:', Index = 1, Suffix = ' Sec.' },
 		},
@@ -442,6 +458,14 @@ duo_text = {
 
 	HotIron = {
 		Name = 'Hot Iron',
+		Description = 'Your {$Keywords.DelayedKnockback} can stack on foes, and they take more damage from ' ..
+			'your {$Keywords.WeaponSet} strikes for each stack.',
+		StatLines = {
+			SWuHotIronPowerStatDisplay = { Name = 'Bonus Power per Stack:', Index = 1 },
+		},
+	},
+	HotIronAlt = {
+		Name = 'Hot Iron Alt',
 		Description = 'Your fireballs from {#BoldFormatGraft}Hestia{#Prev} apply {$Keywords.DelayedKnockback}, and your weapon strikes gain bonuses from your fireball effects from {#BoldFormatGraft}Hestia{#Prev}.',
 		StatLines = {
 			SWuHotIronStatDisplay = { Name = 'Bonus Fireball Damage vs. {$Keywords.DelayedKnockback}:', Index = 1 },

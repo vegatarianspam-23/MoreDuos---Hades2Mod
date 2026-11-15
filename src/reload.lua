@@ -10,14 +10,35 @@ function once(key, setup)
 end
 
 
+local duoOn = {}
+local duoAltOn = {}
+
+function duo_config_changed()
+	duoOn = {}
+	duoAltOn = {}
+end
+
+local function duo_alt_on(key)
+	local cached = duoAltOn[key]
+	if cached == nil then
+		cached = config.Experimental[key .. 'Alt'] == true
+		duoAltOn[key] = cached
+	end
+	return cached
+end
+
 function duo_on(key)
-	if config.enabled == false then return false end
-	return config.Duos[key] == true or config.Experimental[key] == true or config.Experimental[key .. 'Alt'] == true
+	local cached = duoOn[key]
+	if cached ~= nil then return cached end
+	local on = config.enabled ~= false
+		and (config.Duos[key] == true or config.Experimental[key] == true or duo_alt_on(key))
+	duoOn[key] = on
+	return on
 end
 
 function duo_variant(key)
 	local alt = key .. 'Alt'
-	if config.Experimental[alt] == true and duo_text[alt] and duo_requirements[alt] then return alt end
+	if duo_alt_on(key) and duo_text[alt] and duo_requirements[alt] then return alt end
 	return key
 end
 
@@ -296,6 +317,35 @@ function sjson_AresAnimations(data)
 end
 
 
+function sjson_HeraAnimations(data)
+	if not data or not data.Animations then return end
+
+	local tuning = mod.tuning.VolcanicRift
+	for _, animation in ipairs(data.Animations) do
+		if animation.Name == tuning.FissureAnim then return end
+	end
+
+	local function child(name)
+		return sjson.to_object({ Name = name }, { 'Name' })
+	end
+
+	local copies = {
+		{
+			Name = tuning.FissureAnim,
+			InheritFrom = 'HeraProjectileAnim',
+			Hue = tuning.FissureHue,
+			CreateAnimations = { child('HeraProjectileAnimDark'), child(tuning.FissureLineAnim) },
+		},
+		{ Name = tuning.FissureLineAnim, InheritFrom = 'HeraProjectileAnim2', Hue = tuning.FissureHue },
+		{ Name = tuning.FissureDetonateAnim, InheritFrom = 'HeraCastDetonate', Hue = tuning.FissureHue },
+	}
+
+	for _, copy in ipairs(copies) do
+		table.insert(data.Animations, sjson.to_object(copy, { 'Name', 'InheritFrom' }))
+	end
+end
+
+
 function sjson_HephaestusAnimations(data)
 	if not data or not data.Animations then return end
 
@@ -412,6 +462,15 @@ function sjson_PlayerProjectiles(data)
 		{ Name = mod.tuning.VolcanicCrown.EmberProjectile, InheritFrom = 'HestiaSprintPuddle' },
 		{ Name = mod.tuning.VolcanicCrown.BlastProjectile, InheritFrom = 'MassiveSlamBlast' },
 		{ Name = mod.tuning.VolcanicCrown.FireballProjectile, InheritFrom = 'ProjectileFireball' },
+		{ Name = mod.tuning.VolcanicRift.RiftProjectile, InheritFrom = 'ProjectileHeraOmega' },
+		{ Name = mod.tuning.VolcanicRift.FireballProjectile, InheritFrom = 'ProjectileFireball' },
+		{
+			Name = mod.tuning.VolcanicRift.PuddleProjectile,
+			InheritFrom = 'HestiaSprintPuddle',
+			Damage = mod.tuning.VolcanicRift.PuddleDamage,
+			Fuse = mod.tuning.VolcanicRift.PuddleInterval,
+			TotalFuse = mod.tuning.VolcanicRift.PuddleDuration,
+		},
 		{ Name = mod.tuning.TippedScales.BoltProjectile, InheritFrom = 'ZeusRetaliateStrike' },
 		{
 			Name = mod.tuning.AirControl.GuardProjectile,
@@ -839,7 +898,11 @@ end
 
 
 function fireball_projectiles()
-	return mod.tuning.Fireballs.Projectiles
+	local projectiles = game.ShallowCopyTable(mod.tuning.Fireballs.Projectiles)
+	if mod.tuning.VolcanicRift.CountsAsHestiaFireball then
+		table.insert(projectiles, mod.tuning.VolcanicRift.FireballProjectile)
+	end
+	return projectiles
 end
 
 
@@ -1273,6 +1336,7 @@ function reload_config()
 	if ok and reloaded then
 		config = reloaded
 		public.config = config
+		duo_config_changed()
 	else
 		print('[' .. _PLUGIN.guid .. '] config reload failed: ' .. tostring(reloaded))
 	end
@@ -1290,6 +1354,7 @@ import 'duos/golden_rule.lua'
 import 'duos/boiling_blood.lua'
 import 'duos/convective_vortex.lua'
 import 'duos/volcanic_crown.lua'
+import 'duos/volcanic_rift.lua'
 import 'duos/wrathful_hubris.lua'
 import 'duos/goddess_spite.lua'
 import 'duos/bleeding_heart.lua'

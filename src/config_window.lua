@@ -62,6 +62,7 @@ local function config_checkbox(label, id, section, key)
 	local value, pressed = rom.ImGui.Checkbox(label .. '##' .. id, section[key] == true)
 	if pressed then
 		section[key] = value
+		duo_config_changed()
 		config_save()
 	end
 end

@@ -3,38 +3,179 @@
 
 local GLOW = 'DelayedKnockbackEffect'
 local FIREBALLS = fireball_lookup()
+local HOT_IRON_ALT = duo_alt('HotIron')
 
 
-register_duo({
-	key = 'HotIron',
+if HOT_IRON_ALT then
+	register_duo({
+		key = 'HotIron',
 
-	StatLines = { 'SWuHotIronStatDisplay' },
-	ExtractValues = with_keyword_extracts({
-		{ Key = 'SWuGlowMultiplier', ExtractAs = 'TooltipGlowDamage', Format = 'PercentDelta' },
-	}, 'DelayedKnockback'),
+		StatLines = { 'SWuHotIronStatDisplay' },
+		ExtractValues = with_keyword_extracts({
+			{ Key = 'SWuGlowMultiplier', ExtractAs = 'TooltipGlowDamage', Format = 'PercentDelta' },
+		}, 'DelayedKnockback'),
 
-	ExtraFields = {
-		SWuGlowMultiplier = mod.tuning.HotIron.GlowMultiplier,
+		ExtraFields = {
+			SWuGlowMultiplier = mod.tuning.HotIron.GlowMultiplier,
 
-		OnEnemyDamagedAction = {
-			ValidProjectiles = fireball_projectiles(),
-			ValidProjectilesLookup = fireball_lookup(),
-			EffectName = GLOW,
+			OnEnemyDamagedAction = {
+				ValidProjectiles = fireball_projectiles(),
+				ValidProjectilesLookup = fireball_lookup(),
+				EffectName = GLOW,
+			},
+
+			AddOutgoingDamageModifiers = {
+				ValidProjectiles = fireball_projectiles(),
+				ValidProjectilesLookup = fireball_lookup(),
+				ValidActiveEffects = { GLOW },
+				ValidWeaponMultiplier = mod.tuning.HotIron.GlowMultiplier,
+			},
 		},
+	})
+else
+	register_duo({
+		key = 'HotIron',
 
-		AddOutgoingDamageModifiers = {
-			ValidProjectiles = fireball_projectiles(),
-			ValidProjectilesLookup = fireball_lookup(),
-			ValidActiveEffects = { GLOW },
-			ValidWeaponMultiplier = mod.tuning.HotIron.GlowMultiplier,
+		StatLines = { 'SWuHotIronPowerStatDisplay' },
+		ExtractValues = with_keyword_extracts({
+			{ Key = 'SWuHotIronPower', ExtractAs = 'TooltipPower', IncludeSigns = true },
+		}, 'DelayedKnockback'),
+
+		ExtraFields = {
+			SWuHotIronPower = mod.tuning.HotIron.PowerPerStack,
 		},
-	},
-})
+	})
+end
 
 
 local function hot_iron_held()
 	if not duo_on('HotIron') or not game.CurrentRun or not game.CurrentRun.Hero then return false end
 	return game.HeroHasTrait(duo_traits.HotIron) == true
+end
+
+
+function hot_iron_brands()
+	return not HOT_IRON_ALT and hot_iron_held()
+end
+
+
+local function hot_iron_stacks(victim, now)
+	local stacks = victim.SWuHotIronGlow
+	if not stacks then return 0 end
+
+	for i = #stacks, 1, -1 do
+		if stacks[i].Expiry <= now then table.remove(stacks, i) end
+	end
+	return #stacks
+end
+
+
+local HOT_IRON_MODIFIER = 'SWuHotIronGlow'
+
+
+local function hot_iron_entry(victim)
+	local entry = victim.SWuHotIronEntry
+	if not entry then return nil end
+	for _, data in ipairs(victim.IncomingDamageModifiers or {}) do
+		if data == entry then return entry end
+	end
+	victim.SWuHotIronEntry = nil
+	return nil
+end
+
+
+local function hot_iron_glow_bonus(victim, pending)
+	for _, data in ipairs(victim.IncomingDamageModifiers or {}) do
+		if data.Name == GLOW and type(data.GlobalMultiplier) == 'number' then return data.GlobalMultiplier - 1 end
+	end
+	return pending or 0
+end
+
+
+local function hot_iron_sync(victim, pending)
+	local total = 0
+	for _, stack in ipairs(victim.SWuHotIronGlow or {}) do total = total + stack.Bonus end
+
+	local extra = total - hot_iron_glow_bonus(victim, pending)
+	local entry = hot_iron_entry(victim)
+
+	if extra <= 0 then
+		if entry then game.RemoveIncomingDamageModifier(victim, HOT_IRON_MODIFIER) end
+		victim.SWuHotIronEntry = nil
+		return
+	end
+
+	if entry then
+		entry.GlobalMultiplier = 1 + extra
+		return
+	end
+
+	entry = { Name = HOT_IRON_MODIFIER, GlobalMultiplier = 1 + extra, Temporary = true }
+	game.AddIncomingDamageModifier(victim, entry)
+	victim.SWuHotIronEntry = entry
+end
+
+
+local function hot_iron_decay(victim, duration)
+	game.wait(duration + 0.05, game.RoomThreadName)
+	if victim.IsDead then return end
+
+	if not (victim.ActiveEffects and victim.ActiveEffects[GLOW]) then victim.SWuHotIronGlow = nil end
+	hot_iron_stacks(victim, game._worldTime or 0)
+	hot_iron_sync(victim)
+end
+
+
+function hot_iron_glow(args)
+	if HOT_IRON_ALT or not args or args.EffectName ~= GLOW then return args end
+	if not hot_iron_held() then return args end
+
+	local victim = args.DestinationId and game.ActiveEnemies and game.ActiveEnemies[args.DestinationId]
+	if not victim or victim.IsDead then return args end
+
+	local properties = args.DataProperties
+	local base = game.EffectData[GLOW] and game.EffectData[GLOW].EffectData
+	local duration = (type(properties) == 'table' and properties.Duration) or (base and base.Duration)
+	if type(duration) ~= 'number' then return args end
+
+	local modifier = (type(properties) == 'table' and properties.Modifier) or (base and base.Modifier)
+	if type(modifier) ~= 'number' then return args end
+	local bonus = modifier - 1
+
+	local now = game._worldTime or 0
+	if not (victim.ActiveEffects and victim.ActiveEffects[GLOW]) then victim.SWuHotIronGlow = nil end
+	victim.SWuHotIronGlow = victim.SWuHotIronGlow or {}
+	local stacks = victim.SWuHotIronGlow
+
+	if hot_iron_stacks(victim, now) >= mod.tuning.HotIron.MaxStacks then
+		local oldest = 1
+		for i, stack in ipairs(stacks) do
+			if stack.Expiry < stacks[oldest].Expiry then oldest = i end
+		end
+		table.remove(stacks, oldest)
+	end
+	table.insert(stacks, { Expiry = now + duration, Bonus = bonus })
+
+	hot_iron_sync(victim, bonus)
+	game.thread(hot_iron_decay, victim, duration)
+	return args
+end
+
+
+function hot_iron_power(attacker, victim, triggerArgs)
+	if HOT_IRON_ALT or not duo_on('HotIron') then return 0 end
+	if not triggerArgs or triggerArgs.EffectName then return 0 end
+	if not victim or not victim.SWuHotIronGlow then return 0 end
+	if not (victim.ActiveEffects and victim.ActiveEffects[GLOW]) then return 0 end
+
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	if attacker ~= hero or not game.HeroHasTrait(duo_traits.HotIron) then return 0 end
+
+	if not game.WeaponSetLookups.HeroPrimarySecondaryWeaponsLinked[triggerArgs.SourceWeapon] then
+		return 0
+	end
+
+	return hot_iron_stacks(victim, game._worldTime or 0) * mod.tuning.HotIron.PowerPerStack
 end
 
 
@@ -57,6 +198,7 @@ end
 local function hot_iron_strike(victim, attacker, triggerArgs)
 	if not triggerArgs or triggerArgs.EffectName or not triggerArgs.SourceProjectile then return nil end
 	if FIREBALLS[triggerArgs.SourceProjectile] then return nil end
+	if not HOT_IRON_ALT then return nil end
 	if not attacker or not game.CurrentRun or attacker ~= game.CurrentRun.Hero then return nil end
 	if not hot_iron_held() then return nil end
 
@@ -196,7 +338,7 @@ local SIZE_PROPERTIES = { 'ProjectileScaleMultiplier', 'BlastRadiusMultiplier' }
 
 
 local function hot_iron_size_multiplier()
-	if not duo_on('HotIron') then return 1 end
+	if not duo_on('HotIron') or not HOT_IRON_ALT then return 1 end
 	local creation = game.TraitData.BurnSprintBoon and game.TraitData.BurnSprintBoon.OnProjectileCreationFunction
 	local mult = creation and creation.Args and creation.Args.AreaMultiplier
 	return type(mult) == 'number' and mult or 1

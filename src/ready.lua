@@ -64,6 +64,7 @@ modutil.mod.Path.Wrap("CalculateBaseDamageAdditions", function(base, attacker, v
 	local additive = base(attacker, victim, triggerArgs)
 	heinous_affront_record(attacker, victim, triggerArgs)
 	additive = additive + cold_hearted_power(attacker, victim, triggerArgs)
+	additive = additive + hot_iron_power(attacker, victim, triggerArgs)
 	additive = additive + plasmic_capacitor_spark_power(attacker, victim, triggerArgs)
 	return additive + glacial_advance_power(attacker, triggerArgs)
 end)
@@ -78,7 +79,7 @@ end)
 modutil.mod.Path.Wrap("ApplyEffect", function(base, args)
 	if args and args.EffectName == 'BurnEffect' and volcanic_crown_ember(args.TriggerArgs) then return end
 	different_league_record_miss(args)
-	return base(winter_solstice_frost(glowing_brand_glow(args)))
+	return base(winter_solstice_frost(hot_iron_glow(glowing_brand_glow(args))))
 end)
 
 
@@ -269,7 +270,10 @@ end)
 
 
 modutil.mod.Path.Wrap("CreateProjectileFromUnit", function(base, args)
-	return base(convective_vortex_rift(storm_front_enlarge(args)))
+	args = volcanic_rift_tint(convective_vortex_rift(storm_front_enlarge(args)))
+	local id = base(args)
+	volcanic_rift_track(args, id)
+	return id
 end)
 
 modutil.mod.Path.Wrap("CheckDemeterStormSpawn", function(base, hero, args)
@@ -676,6 +680,11 @@ end)
 local aresVfx = rom.path.combine(rom.paths.Content, 'Game/Animations/Melinoe_Ares_VFX.sjson')
 sjson.hook(aresVfx, function(data)
 	return sjson_AresAnimations(data)
+end)
+
+local heraVfx = rom.path.combine(rom.paths.Content, 'Game/Animations/Melinoe_Hera_VFX.sjson')
+sjson.hook(heraVfx, function(data)
+	return sjson_HeraAnimations(data)
 end)
 
 local hephaestusVfx = rom.path.combine(rom.paths.Content, 'Game/Animations/Melinoe_Hephaestus_VFX.sjson')

@@ -46,7 +46,8 @@ function glowing_brand_sync()
 	local held = glowing_brand_held()
 
 	mod.GlowingBrandBaseVfx = mod.GlowingBrandBaseVfx or effect.Vfx
-	effect.Vfx = held and mod.tuning.GlowingBrand.BrandFx or mod.GlowingBrandBaseVfx
+	local branded = held or (hot_iron_brands and hot_iron_brands())
+	effect.Vfx = branded and mod.tuning.GlowingBrand.BrandFx or mod.GlowingBrandBaseVfx
 
 	mod.GlowingBrandBaseDuration = mod.GlowingBrandBaseDuration or data.Duration
 	local base = mod.GlowingBrandBaseDuration
