@@ -109,7 +109,50 @@ function duo_sync_pool()
 	end
 end
 
+local duo_pair_cache = {}
+
+local function duo_pair(traitName)
+	local cached = duo_pair_cache[traitName]
+	if cached ~= nil then return cached end
+
+	local names = {}
+	for lootName, loot in pairs(game.LootData) do
+		if (loot.GodLoot or loot.TreatAsGodLootByShops) and type(loot.Traits) == 'table'
+			and game.Contains(loot.Traits, traitName) then
+			table.insert(names, lootName)
+		end
+	end
+
+	local pair = false
+	if #names == 2 then
+		table.sort(names)
+		pair = names[1] .. '|' .. names[2]
+	end
+	duo_pair_cache[traitName] = pair
+	return pair
+end
+
+function duo_pair_limit_meets(met, traitName)
+	if not met then return false end
+	if not (config.Options and config.Options.OneDuoPerPair == true) then return met end
+
+	local data = game.TraitData[traitName]
+	if not (data and data.IsDuoBoon) then return met end
+
+	local pair = duo_pair(traitName)
+	if not pair then return met end
+
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	for _, trait in ipairs(hero and hero.Traits or {}) do
+		if trait.IsDuoBoon and trait.Name ~= traitName and duo_pair(trait.Name) == pair then
+			return false
+		end
+	end
+	return met
+end
+
 function prefix_SetupMap()
+	duo_pair_cache = {}
 	reload_config()
 	duo_sync_pool()
 	intertwined_fate_alt_migrate()
@@ -119,10 +162,8 @@ function prefix_SetupMap()
 	wishing_well_keep_reprieve_offered()
 	discerning_taste_sync()
 	golden_rule_apply()
-	wrathful_hubris_apply()
 	boiling_blood_clear()
 	duo_reset_room_cooldowns()
-	distress_call_reset()
 	if pandemonium_list_blessing then pandemonium_list_blessing() end
 	if pandemonium_refresh_pony_menu then pandemonium_refresh_pony_menu() end
 	if pandemonium_held and pandemonium_held() then pandemonium_open_allies() end
@@ -133,7 +174,6 @@ end
 
 function suffix_SetupMap()
 	duo_sync_requirements()
-	glowing_brand_sync()
 	hot_iron_invalidate()
 	plasmic_capacitor_show_counter()
 	game.SWuCombatTextStacks = nil
@@ -346,60 +386,6 @@ function sjson_HeraAnimations(data)
 end
 
 
-function sjson_HephaestusAnimations(data)
-	if not data or not data.Animations then return end
-
-	local tuning = mod.tuning.GlowingBrand
-	local glowScale = 1
-	for _, animation in ipairs(data.Animations) do
-		if animation.Name == tuning.BrandFx then return end
-		if animation.Name == 'HephaestusVentDecal' and type(animation.Scale) == 'number' then
-			glowScale = animation.Scale
-		end
-	end
-
-	local scale = glowScale * tuning.BrandFxSize
-	local color = tuning.BrandColor
-
-	local copies = {
-		{
-			Name = tuning.BrandFx,
-			InheritFrom = 'HephaestusVentDecal',
-			ChildAnimation = tuning.BrandFxPulse,
-			ChainTo = tuning.BrandFxOut,
-			GroupName = tuning.BrandFxGroup,
-			Scale = scale,
-			Red = color.Red,
-			Green = color.Green,
-			Blue = color.Blue,
-			Sound = 'null',
-		},
-		{
-			Name = tuning.BrandFxPulse,
-			InheritFrom = 'HephaestusVentDecalB',
-			GroupName = tuning.BrandFxGroup,
-			Scale = scale,
-			StartRed = color.Red,
-			StartGreen = color.Green,
-			StartBlue = color.Blue,
-		},
-		{
-			Name = tuning.BrandFxOut,
-			InheritFrom = 'HephaestusVentDecalOut',
-			GroupName = tuning.BrandFxGroup,
-			Scale = scale,
-			Red = color.Red,
-			Green = color.Green,
-			Blue = color.Blue,
-		},
-	}
-
-	for _, copy in ipairs(copies) do
-		table.insert(data.Animations, sjson.to_object(copy, { 'Name', 'InheritFrom' }))
-	end
-end
-
-
 function sjson_PoseidonAnimations(data)
 	if not data or not data.Animations then return end
 
@@ -459,9 +445,6 @@ function sjson_PlayerProjectiles(data)
 
 	local copies = {
 		{ Name = mod.tuning.LandMine.BlastProjectile, InheritFrom = 'MassiveSlamBlast' },
-		{ Name = mod.tuning.VolcanicCrown.EmberProjectile, InheritFrom = 'HestiaSprintPuddle' },
-		{ Name = mod.tuning.VolcanicCrown.BlastProjectile, InheritFrom = 'MassiveSlamBlast' },
-		{ Name = mod.tuning.VolcanicCrown.FireballProjectile, InheritFrom = 'ProjectileFireball' },
 		{ Name = mod.tuning.VolcanicRift.RiftProjectile, InheritFrom = 'ProjectileHeraOmega' },
 		{ Name = mod.tuning.VolcanicRift.FireballProjectile, InheritFrom = 'ProjectileFireball' },
 		{
@@ -1347,16 +1330,13 @@ import 'duos/permafrost_shield.lua'
 import 'duos/bubbling_cauldron.lua'
 import 'duos/bitter_end.lua'
 import 'duos/blinding_smite.lua'
-import 'duos/untouchable_glow.lua'
 import 'duos/different_league.lua'
 import 'duos/cold_hearted.lua'
 import 'duos/golden_rule.lua'
 import 'duos/boiling_blood.lua'
 import 'duos/convective_vortex.lua'
-import 'duos/volcanic_crown.lua'
 import 'duos/volcanic_rift.lua'
-import 'duos/wrathful_hubris.lua'
-import 'duos/goddess_spite.lua'
+import 'duos/nasty_comeback.lua'
 import 'duos/bleeding_heart.lua'
 import 'duos/explosive_sparks.lua'
 import 'duos/glacial_advance.lua'
@@ -1378,7 +1358,6 @@ import 'duos/orbital_ring.lua'
 import 'duos/royal_banquet.lua'
 import 'duos/ingenious_invention.lua'
 import 'duos/land_mine.lua'
-import 'duos/glowing_brand.lua'
 import 'duos/hot_iron.lua'
 import 'duos/energy_overflow.lua'
 import 'duos/gentle_caress.lua'
@@ -1387,7 +1366,6 @@ import 'duos/air_control.lua'
 import 'duos/wishing_well.lua'
 import 'duos/discerning_taste.lua'
 import 'duos/tipped_scales.lua'
-import 'distress_call.lua'
 import 'config_window.lua'
 
 function wait_for_screens(settle)
@@ -1426,7 +1404,6 @@ local function duo_recharge_traits()
 			table.insert(traits, duo_traits[key])
 		end
 	end
-	if distress_call_on() and not distress_call_on_encounter_start() then table.insert(traits, DISTRESS_CALL_TRAIT) end
 	return traits
 end
 

@@ -145,7 +145,7 @@ local function tectonic_cycle_reset_cooldowns()
 		end
 	end
 
-	distress_call_reset_cooldown()
+	game.ResetCooldown('BoonEditDistressCall')
 
 	game.TraitUIActivateTraits({ IgnoreFlash = true })
 end

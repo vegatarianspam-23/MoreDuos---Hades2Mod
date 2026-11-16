@@ -83,14 +83,6 @@ duo_requirements = {
 		},
 	},
 
-	UntouchableGlow = {
-		Gods = { 'Apollo', 'Aphrodite' },
-		OneFromEachSet = {
-			{ "AphroditeWeaponBoon", "AphroditeSpecialBoon", "AphroditeManaBoon" },
-			{ "ApolloCastAreaBoon", "PerfectDamageBonusBoon", "DoubleStrikeChanceBoon" }
-		}
-	},
-
 	DifferentLeague = {
 		Gods = { 'Apollo', 'Aphrodite' },
 		OneFromEachSet = {
@@ -190,13 +182,12 @@ duo_requirements = {
 		Counts = { SpawnCastDamageBoon = 'HeraLinkTraits' },
 	},
 
-	GoddessSpite = {
-		Gods = { 'Aphrodite', 'Hera' },
+	NastyComeback = {
+		Gods = { 'Hera', 'Hephaestus' },
 		OneFromEachSet = {
-			{ "LinkedDeathDamageBoon", "DamageSharePotencyBoon", "SpawnCastDamageBoon" },
-			{ "AphroditeWeaponBoon", "AphroditeSpecialBoon", "AphroditeManaBoon" },
+			{ "HeraWeaponBoon", "HeraSpecialBoon", "HeraCastBoon", "HeraSprintBoon", "HeraManaBoon" },
+			{ "HephaestusWeaponBoon", "HephaestusSpecialBoon", "HephaestusCastBoon", "HephaestusSprintBoon", "HephaestusManaBoon" },
 		},
-		Counts = { SpawnCastDamageBoon = 'HeraLinkTraits' },
 	},
 
 	SpitefulStrength = {
@@ -216,14 +207,6 @@ duo_requirements = {
 			{ "DamageSharePotencyBoon", "LinkedDeathDamageBoon", "SpawnCastDamageBoon" },
 		},
 		Counts = { SpawnCastDamageBoon = 'HeraLinkTraits' },
-	},
-
-	WrathfulHubris = {
-		Gods = { 'Hera', 'Ares' },
-		OneFromEachSet = {
-			{ "HeraWeaponBoon", "HeraSpecialBoon", "HeraCastBoon", "HeraSprintBoon", "HeraManaBoon" },
-			{ "AresWeaponBoon", "AresSpecialBoon", "AresCastBoon", "AresSprintBoon", "AresManaBoon" },
-		},
 	},
 
 	RazorShoals = {
@@ -348,14 +331,6 @@ duo_requirements = {
 		Counts = { SpawnCastDamageBoon = 'HeraLinkTraits' },
 	},
 
-	GlowingBrand = {
-		Gods = { 'Hephaestus', 'Hestia' },
-		OneFromEachSet = {
-			Group('SWuGlowTraits'),
-			Group('SWuFireballTraits'),
-		},
-	},
-
 	HotIron = {
 		Gods = { 'Hephaestus', 'Hestia' },
 		OneFromEachSet = {
@@ -367,14 +342,6 @@ duo_requirements = {
 		Gods = { 'Hephaestus', 'Hestia' },
 		OneFromEachSet = {
 			Group('SWuGlowTraits'),
-			Group('SWuFireballTraits'),
-		},
-	},
-
-	VolcanicCrown = {
-		Gods = { 'Hephaestus', 'Hestia' },
-		OneFromEachSet = {
-			{ "HephaestusWeaponBoon", "HephaestusSpecialBoon" },
 			Group('SWuFireballTraits'),
 		},
 	},

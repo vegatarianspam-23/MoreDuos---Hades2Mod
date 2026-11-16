@@ -72,6 +72,9 @@ Each duo needs one boon from every group (sub-bullet). Boons marked *(BoonEdits)
 - **Land Mine**
   - Volcanic Strike, Volcanic Flourish
   - Grievous Blow, Mutual Destruction, Blood Spree
+- **Nasty Comeback**
+  - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain
+  - Volcanic Strike, Volcanic Flourish, Anvil Ring, Smithy Rush, Tough Gain
 - **Orbital Ring**
   - Hereditary Bane, Dying Wish, Rousing Reception *(BoonEdits)*
   - Super Nova, Extra Dose, Light Smite
@@ -96,10 +99,6 @@ Each duo needs one boon from every group (sub-bullet). Boons marked *(BoonEdits)
 - **Solar Flare**
   - Flame Strike, Flame Flourish, Smolder Ring
   - Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, Lucid Gain
-- **Spiteful Strength**
-  - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain
-  - Volcanic Strike, Volcanic Flourish, Anvil Ring, Smithy Rush, Tough Gain
-  - High Surf, Static Shock, Secret Crush, Killing Stroke, Ingenious Strike, Ingenious Flourish, Stalwart Stand, Trusty Shield
 - **Storm Front**
   - Arctic Gale, Frigid Rush
   - Divine Vengeance, Power Surge, Lightning Lance

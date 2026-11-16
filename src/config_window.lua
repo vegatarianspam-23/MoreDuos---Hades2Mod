@@ -5,7 +5,8 @@
 local CONFIG_SMALL_WORDS = { Of = 'of', For = 'for', The = 'the', And = 'and', To = 'to' }
 
 local CONFIG_LABELS = {
-	TectonicCycleResetsCooldowns = 'Tectonic Cycle also resets timed cooldowns',
+	OneDuoPerPair = 'Only one duo per god pairing each run',
+	TectonicCycleResetsCooldowns ='Tectonic Cycle also resets timed cooldowns',
 	WrathOfOlympus = 'Wrath of Olympus support',
 	ZagreusJourney = "Zagreus' Journey support",
 }

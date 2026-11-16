@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `Options.OneDuoPerPair` (off by default): once you hold a duo, no other duo of the same two gods is offered. Covers vanilla duos too
+- Nasty Comeback (Hera × Hephaestus): after you take damage from an attack, inflict Hitch on all foes and deal 1000% of the damage taken back to your attacker (up to 9999).
+
+### Removed
+
+- Experimental duos Glowing Brand, Volcanic Crown Alt and Wrathful Hubris, with their `Experimental.GlowingBrand`, `Experimental.VolcanicCrown` and `Experimental.WrathfulHubris` config entries
+- Spiteful Goddess (experimental, `Experimental.GoddessSpite`), replaced by Nasty Comeback
+- Distress Call (experimental, `Experimental.DistressCall`): moved to BoonEdits, where it is a Hermes Legendary on by default
+- Untouchable Glow (experimental, `Experimental.UntouchableGlow`). BoonEdits' Flawless Execution (Hermes Legendary) carries on its effect
+
+### Changed
+
+- Spiteful Strength is now experimental and off by default (`Experimental.SpitefulStrength`, was `Duos.SpitefulStrength`)
+
 ## [1.1.5] - 2026-11-15
 
 ### Added

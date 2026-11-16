@@ -72,17 +72,6 @@ duo_text = {
 		},
 	},
 
-	UntouchableGlow = {
-		Name = 'Untouchable Glow',
-		Description = 'Your {$Keywords.WeaponSet} strikes deal more damage and you take less damage the longer ' ..
-			'you stay around nearby foes. The bonus resets whenever you are hit.',
-		StatLines = {
-			SWuUntouchableGlowMaxStatDisplay = { Name = 'Max Bonus Damage & Resistance:', Index = 1 },
-		},
-		CombatText = {
-			SWuUntouchableGlowExpired = '{!Icons.DownArrow} {#AltPenaltyFormat}Untouchable Glow{#Prev}!',
-		},
-	},
 	DifferentLeague = {
 		Name = 'Different League',
 		Description = 'You have a greater chance to {$Keywords.Dodge} attacks from nearby foes. You deal more ' ..
@@ -319,15 +308,6 @@ duo_text = {
 			},
 		},
 	},
-	VolcanicCrown = {
-		Name = 'Volcanic Crown Alt',
-		Description = 'Your {$Keywords.CastEX} erupts in a large blast, throwing out a crown of fireballs ' ..
-			'and leaving behind burning embers.',
-		StatLines = {
-			SWuVolcanicCrownBlastStatDisplay = { Name = 'Blast Damage:', Index = 1 },
-			SWuVolcanicCrownStatDisplay = { Name = 'Fireball Damage:', Index = 2 },
-		},
-	},
 	VolcanicRift = {
 		Name = 'Volcanic Rift',
 		Description = (mod.tuning.VolcanicRift.SprintTrail
@@ -345,21 +325,12 @@ duo_text = {
 			},
 		},
 	},
-	WrathfulHubris = {
-		Name = 'Wrathful Hubris',
-		Description = 'You deal more total damage, but also take more total damage.',
-		StatLines = {
-			SWuWrathfulHubrisDealtStatDisplay = { Name = 'Bonus Total Damage:', Index = 1 },
-			SWuWrathfulHubrisTakenStatDisplay = { Name = 'Bonus Total Damage Taken:', Index = 2 },
-		},
-	},
-	GoddessSpite = {
-		Name = 'Spiteful Goddess',
+	NastyComeback = {
+		Name = 'Nasty Comeback',
 		Description = 'After you take damage from an attack, inflict {$Keywords.Link} on all foes and deal damage ' ..
-			'back to your attacker, or {#BoldFormatGraft}{$TooltipData.ExtractData.TooltipNearbyMultiplier}x ' ..
-			'{#Prev}as much if it is nearby.',
+			'back to your attacker.',
 		StatLines = {
-			SWuGoddessSpiteStatDisplay = { Name = 'Damage Returned:', Index = 1 },
+			SWuNastyComebackStatDisplay = { Name = 'Damage Returned:', Index = 1 },
 		},
 	},
 	WinterSolsticeAlt = {
@@ -431,28 +402,6 @@ duo_text = {
 			'into the binding circle. Foes caught in your {$Keywords.CastSet} take more damage.',
 		StatLines = {
 			SWuOrbitalRingStatDisplay = { Name = 'Damage to Foes in Cast:', Index = 1 },
-		},
-	},
-
-	GlowingBrand = {
-		Name = 'Glowing Brand',
-		Description = 'Your fireball effects from {#BoldFormatGraft}Hestia {#Prev}inflict ' ..
-			'{$Keywords.DelayedKnockback}, and your {$Keywords.DelayedKnockback} is more potent and lasts longer.',
-		StatLines = {
-			SWuGlowingBrandPotencyStatDisplay = { Name = '{$Keywords.DelayedKnockback} Potency:', Index = 1 },
-			SWuGlowingBrandDurationStatDisplay = { Name = '{$Keywords.DelayedKnockback} Duration:', Index = 2 },
-		},
-	},
-
-	DistressCall = {
-		Name = 'Distress Call',
-		Description = mod.tuning.DistressCall.OnEncounterStart
-			and 'At the start of each {$Keywords.EncounterAlt}, summon an ally to the fight for a few seconds.'
-			or 'After you take damage, summon an ally to the fight for a few seconds.',
-		Flavour = '',
-		StatLines = {
-			SWuDistressCallCooldownStatDisplay = { Name = 'Distress Call Cooldown:', Index = 1, Suffix = ' Sec.' },
-			SWuDistressCallDurationStatDisplay = { Name = 'Ally Duration:', Index = 1, Suffix = ' Sec.' },
 		},
 	},
 

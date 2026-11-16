@@ -23,6 +23,7 @@
 - **Intertwined Fate** (Aphrodite × Hera) — Nearby foes are Hitched while you fight, refreshed like Glamour Gain. Hitch shares 10% more damage for each Hitched foe, up to +200%.
 - **Kindled Spirit** (Aphrodite × Hestia) — Whenever you restore Health, inflict 20 Scorch per point restored on nearby foes. Restore 3 Health after taking damage.
 - **Land Mine** (Hephaestus × Ares) — When a foe steps into your Cast, spend 50 Magick to prime your Omega Cast, then erupt in a Hephaestus blast for 500 damage. Re-arms after 8 seconds.
+- **Nasty Comeback** (Hera × Hephaestus) — After you take damage from an attack, inflict Hitch on all foes and deal 1000% of taken damage back to your attacker (up to 9999). Heinous Affront uses a flat 50 damage.
 - **Orbital Ring** (Apollo × Hera) — When you Cast, every Hitched foe is pulled into the binding circle. Foes held in a Cast take 30% more damage.
 - **Permafrost Shield** (Demeter × Hephaestus) — You cannot take more than 35 damage from a single hit.
 - **Plasmic Capacitor** (Ares × Zeus) — Plasma is 20% more effective, caps at 120, and chain lightning deals 0.5 more damage for every Plasma you hold.
@@ -31,7 +32,6 @@
 - **Royal Banquet** (Hera × Demeter) — Your boons are one rarity higher tonight, repeat this effect whenever one gains a Pom level.
 - **Solar Eclipse** (Apollo × Ares) — Move and strike 5% faster for each Dazed foe. All damage you deal is increased by half your bonus move speed (including Sprinting).
 - **Solar Flare** (Apollo × Hestia) — While you channel an Omega move, a ring of fire expands around you, inflicting 90 Scorch every second. Inflict 50% more Scorch from all sources.
-- **Spiteful Strength** (Hera × Hephaestus) — Prime 60 Magick now. Your weapon strikes deal more damage for the share of your Magick that is Primed, up to +100% at all of it. Bonus is doubled for an Attack or Special with no percentage-damage boon on it (none, Zeus, Poseidon, Hestia, Hephaestus).
 - **Storm Front** (Zeus × Demeter) — Demeter's Gusts are larger and throw chain lightning at foes they strike. 
 - **Tectonic Cycle** (Hephaestus × Poseidon) — Every 40 seconds, your start-of-encounter effects fire again.
 - **Tipped Scales** (Poseidon × Zeus) — Gain 10% Favor, which is added to every chance-based effect. Each miss strikes a random nearby foe with a 100-damage lightning bolt (capped at once every 0.3 seconds).

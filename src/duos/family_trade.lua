@@ -54,6 +54,31 @@ function family_trade_offer_sacrifice(base, lootData, args)
 end
 
 
+local function family_trade_slot_full(slot)
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	if not slot or not hero then return false end
+
+	local count = 0
+	for _, trait in ipairs(hero.Traits or {}) do
+		local data = trait.Name and game.TraitData[trait.Name]
+		if (trait.Slot or (data and data.Slot)) == slot then count = count + 1 end
+	end
+	return count >= mod.tuning.FamilyTrade.MaxPerSlot
+end
+
+
+local function family_trade_open_slots(traitNames)
+	if not traitNames then return traitNames end
+
+	local open = {}
+	for _, traitName in ipairs(traitNames) do
+		local data = game.TraitData[traitName]
+		if not (data and family_trade_slot_full(data.Slot)) then table.insert(open, traitName) end
+	end
+	return open
+end
+
+
 local familyTradeReplacing = false
 
 
@@ -61,7 +86,7 @@ function family_trade_replacements(base, traitNames, onlyFromLootName)
 	if not family_trade_held() then return base(traitNames, onlyFromLootName) end
 
 	familyTradeReplacing = true
-	local ok, result = pcall(base, traitNames, onlyFromLootName)
+	local ok, result = pcall(base, family_trade_open_slots(traitNames), onlyFromLootName)
 	familyTradeReplacing = false
 
 	if not ok then error(result) end
@@ -185,7 +210,8 @@ local function family_trade_sacrifices(lootName, slots, offered)
 	for _, traitName in ipairs((loot and loot.PriorityUpgrades) or {}) do
 		local data = game.TraitData[traitName]
 		local slot = data and data.Slot and slots[data.Slot]
-		if slot and not offered[traitName] and not game.HeroHasTrait(traitName) and game.IsTraitEligible(data) then
+		if slot and not offered[traitName] and not game.HeroHasTrait(traitName) and game.IsTraitEligible(data)
+			and not family_trade_slot_full(data.Slot) then
 			local rarity = game.GetUpgradedRarity(slot.Rarity) or slot.Rarity
 			if data.RarityLevels and data.RarityLevels[rarity] then
 				table.insert(options, {

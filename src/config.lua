@@ -26,6 +26,7 @@ local config = {
     IntertwinedFate = true;
     KindledSpirit = true;
     LandMine = true;
+    NastyComeback = true;
     OrbitalRing = true;
     PermafrostShield = true;
     PlasmicCapacitor = true;
@@ -34,7 +35,6 @@ local config = {
     RoyalBanquet = true;
     SolarEclipse = true;
     SolarFlare = true;
-    SpitefulStrength = true;
     StormFront = true;
     TectonicCycle = true;
     TippedScales = true;
@@ -45,17 +45,9 @@ local config = {
   Experimental = {
     ConvectiveVortex = false;
 
-    GlowingBrand = false;
-
-    UntouchableGlow = false;
-
-    GoddessSpite = false;
-
-    VolcanicCrown = false;
+    SpitefulStrength = false;
 
     VolcanicRift = false;
-
-    WrathfulHubris = false;
 
     GlacialAdvanceAlt = false;
 
@@ -69,8 +61,6 @@ local config = {
 
     WinterSolsticeAlt = false;
 
-    DistressCall = false;
-
     Pandemonium = false;
 
     WrathOfOlympus = false;
@@ -79,6 +69,8 @@ local config = {
   };
 
   Options = {
+    OneDuoPerPair = false;
+
     -- resets all timed cooldowns (like Volcanic Strike, Unseen Ire, etc.) at the start of each encounter
     -- cd resets are picked up by tectonic cycle
     TectonicCycleResetsCooldowns = false;

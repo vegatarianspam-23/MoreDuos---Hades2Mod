@@ -17,7 +17,6 @@ mod.tuning = {
 	Fireballs = {
 		Projectiles = {
 			'ProjectileCastFireball', 'ProjectileFireball', 'SWuHestiaFireball',
-			'SWuVolcanicCrownFireball', 'SWuVolcanicFireball',
 		},
 	},
 
@@ -101,408 +100,6 @@ mod.tuning = {
 		TakeAllUses = 9,
 	},
 
-	DistressCall = {
-		Duration = 8,
-		Cooldown = 40,
-
-		OnEncounterStart = true,
-		EncounterStartDelay = 0.5,
-		EncounterFoeWait = 15,
-		SwingLimit = 2.5,
-
-		NominalHealth = 1,
-
-		AllowInBoss = true,
-		FocusBoss = true,
-
-		TargetReach = 9999,
-
-		BossProjectile = {
-			ImpactLineOfSight = false,
-			CheckObstacleImpact = false,
-			MaxVictimZ = 9999,
-		},
-
-		Allies = {
-			{
-				Key = 'Heracles',
-				Unit = 'NPC_Heracles_01',
-				BlockedBy = 'Heracles',
-				WakeDelay = 0,
-				Haste = 1.25,
-				Packages = { 'Heracles' },
-				Voice = { Bank = 'Heracles' },
-				Greet = true,
-				Entrance = {
-					Animation = 'Heracles_Combat_Taunt',
-					Height = 2500,
-					Delay = 0.3,
-					Force = 3500,
-					Land = 0.5,
-					Sound = '/SFX/Enemy Sounds/Heracles/EmotePowerCharging',
-					LandFx = 'HydraTouchdownFx',
-					LandSounds = {
-						'/SFX/Enemy Sounds/Heracles/EmotePowerAttacking',
-						'/SFX/Enemy Sounds/Polyphemus/PolyphemusGroundSlam',
-					},
-					LandShake = true,
-				},
-				Exit = {
-					Animation = 'Heracles_Combat_LeapExit',
-					Voice = true,
-					Wind = 0.62,
-					Rise = 2000,
-					RiseTime = 0.2,
-					Fade = 0.1,
-					Shake = true,
-				},
-			},
-			{
-				Key = 'Nemesis',
-				Unit = 'NPC_Nemesis_01',
-				Variant = 'NemesisCombat',
-				WakeDelay = 0,
-				Packages = { 'Nemesis' },
-				Voice = { Bank = 'Nemesis' },
-				Greet = true,
-				Entrance = {
-					Animation = 'Nemesis_Combat_Entrance',
-					Height = 1500,
-					Delay = 0.3,
-					Force = 2000,
-					Land = 0.6,
-					Sound = '/SFX/Player Sounds/MelWhooshDropIn',
-					Shake = true,
-				},
-				Exit = {
-					Animation = 'Nemesis_Hub_Exit',
-					Voice = true,
-					Wind = 0.92,
-					Rise = 1000,
-					RiseTime = 0.2,
-					Fade = 0.1,
-				},
-			},
-			{
-				Key = 'Icarus',
-				Unit = 'NPC_Icarus_01',
-				Variant = 'IcarusCombat',
-				Packages = { 'Icarus', 'NPC_Icarus_01' },
-				Voice = { Bank = 'Icarus' },
-				Greet = true,
-				Invisible = true,
-				WakeDelay = 0,
-				SpawnAt = { 'CameraClamp' },
-
-				Weapons = {
-					IcarusBombardmentLine = {
-						TargetSpawnPoints = false,
-						TargetRequiredKillEnemy = true,
-						TargetClosestToPlayer = true,
-
-						PostAttackCooldownMin = 1.5,
-						PostAttackCooldownMax = 1.5,
-						Requirements = { MinAttacksBetweenUse = 0 },
-					},
-					IcarusBombardmentSingle = {
-						TargetClosestToPlayer = true,
-
-						PostAttackCooldownMin = 0.8,
-						PostAttackCooldownMax = 1.2,
-					},
-				},
-
-				Exit = {
-					Cycles = 3,
-					Grace = 1.0,
-					Settle = 0.5,
-					Animation = 'Icarus_FlyExit_TakeOff',
-					Voice = true,
-					Wind = 0.36,
-					Rise = 800,
-					RiseTime = 0.22,
-					Fade = 0.11,
-				},
-			},
-			{
-				Key = 'Hades',
-				Unit = 'NPC_Hades_Field_01',
-				Packages = { 'NPC_Hades_Field_01', 'Hades' },
-				Voice = { Bank = 'Hades' },
-				BossOnly = true,
-				Weight = 0.5,
-
-				Grudge = {
-					Fraction = 0.20,
-					Delay = 1.0,
-
-					Effect = 'HadesInvisible',
-					Multiplier = 1.5,
-
-					DamageSourceName = 'HadesPreDamageBoon',
-					Presentation = 'HadesPreDamagePresentation',
-					Text = 'PreDamageHit_Hades',
-					VoiceLines = 'HadesCurseVoiceLines',
-				},
-			},
-			{
-				Key = 'Dionysus',
-				Unit = 'NPC_Dionysus_01',
-				Packages = { 'NPC_Dionysus_01', 'Dionysus' },
-				Voice = { Bank = 'Dionysus' },
-
-				Revel = {
-					Ball = '3DDiscoBall_SkipEncounter',
-					Chain = 'OlympusCeilingChain01',
-					Reflections = 'DiscoBallReflections_SkipEncounter',
-					ChainScale = 0.51,
-					ChainOffset = -97,
-					Height = 1200,
-					Drop = -650,
-					DropAlt = -525,
-
-					Sound = '/SFX/DionysusBoonWineLaugh',
-					Music = '/Music/MusicPlayer/Iris/DionysusMusicMusicPlayer',
-					EndSound = '/SFX/Menu Sounds/RecordScratch',
-
-					Fog = 'DionysusField',
-					Clouds = 18,
-					MinGap = 750,
-					Spread = 2800,
-					SpreadY = 0.6,
-					Refresh = 4.0,
-					Drift = 137.5,
-
-					Hangover = 'DamageOverTime',
-					Damage = 50,
-					Radius = 400,
-					Sweep = 0.5,
-
-					Drink = 'PowerDrinkDrop',
-					Drinks = 2,
-					DrinkMin = 700,
-					DrinkVfx = 'BoonDropFrontFlare',
-					DrinkSound = '/SFX/Menu Sounds/KeepsakeEurydiceAcorn',
-				},
-			},
-			{
-				Key = 'Athena',
-				Unit = 'NPC_Athena_01',
-				Packages = { 'NPC_Athena_01', 'Athena' },
-				Voice = { Bank = 'Athena' },
-				NoBoss = true,
-				Weight = 0.5,
-
-				Smite = {
-					Nova = 'AthenaLandingNova',
-					Sound = '/SFX/AthenaWrathHolyShield',
-					Damage = 9999,
-
-					Descend = 1.2,
-					Interval = 0.01,
-					Linger = 0.7,
-
-					Entrance = 'Athena_Leap_Entrance',
-					Departure = 'Athena_Leap_Exit',
-					Height = 2000,
-				},
-			},
-			{
-				Key = 'Artemis',
-				Unit = 'NPC_Artemis_Field_01',
-				Packages = { 'Artemis', 'NPC_Artemis_Field_01' },
-				Voice = { Bank = 'Artemis', From = 'NPC_Artemis_01' },
-				Greet = true,
-				Invisible = 'Artemis_Invisible',
-				WakeDelay = 0,
-				SpawnAt = { 'ArtemisSpawnPoints', 'HeroStart', 'CameraClamp' },
-				SpawnAtEntrance = 'ArtemisUseHeroStart',
-
-				Weapons = {
-					ArtemisSniper = {
-						PreAttackDuration = 0.6,
-						FireDuration = 0.15,
-						PostAttackDurationMin = 0.7,
-						PostAttackDurationMax = 0.85,
-					},
-					ArtemisHuntersMark = {
-						PreAttackDuration = 0.3,
-						PostAttackDurationMin = 0.7,
-						PostAttackDurationMax = 0.9,
-					},
-				},
-
-				Exit = {
-					Cycles = 4,
-					Grace = 1.0,
-					Settle = 0.5,
-					Voice = true,
-					Wind = 0.4,
-					Fade = 0.1,
-				},
-			},
-			{
-				Key = 'Thanatos',
-				Unit = 'NPC_Thanatos_Field_01',
-				Requires = 'NikkelM-Zagreus_Journey',
-				Packages = { 'Thanatos', 'ModsNikkelMHadesBiomesFxOriginal', 'NikkelM-HadesBiomesFxModded' },
-				Voice = { Bank = { 'Thanatos', 'ThanatosField' } },
-				NoBoss = true,
-				WakeDelay = 0,
-				Greet = true,
-				GreetLines = 'EntranceVoiceLines',
-				TargetReach = 1000,
-				Weapons = {
-					ThanatosDeathCurseAoE = {
-						ForceFirst = true,
-						MinAttacksBetweenUse = 0,
-						Requirements = { MinAttacksBetweenUse = 0 },
-					},
-				},
-				Entrance = {
-					Fx = 'ThanatosTeleport',
-					Delay = 0.2,
-					FadeIn = 0.3,
-					Sound = '/SFX/ThanatosEntranceSound',
-					Land = 0.5,
-				},
-				Exit = {
-					Animation = 'NPCThanatosExit',
-					Fx = 'ThanatosTeleport',
-					Wind = 0.1,
-					Fade = 0.35,
-				},
-			},
-			{
-				Key = 'Megaera',
-				Unit = 'Harpy',
-				Requires = 'NikkelM-Zagreus_Journey',
-				Traitor = true,
-				DamageMultiplier = 30,
-				Packages = { 'TartarusModsNikkelMHadesBiomes', 'ModsNikkelMHadesBiomesFxOriginal', 'NikkelM-HadesBiomesFxModded' },
-				Voice = { Bank = 'MegaeraField' },
-				BlockedIn = { 'BossHarpy1' },
-				WakeDelay = 0,
-				Greet = true,
-				Clear = {
-					'IsBoss', 'UseBossHealthBar', 'AIStages', 'AdditionalEnemySetupFunctionName',
-					'OnDeathFunctionName', 'OnDeathFunctionArgs', 'KillEnemyEvents', 'FightStartGlobalVoiceLines',
-					'BossPresentationUltraSuperPriorityIntroTextLineSets', 'BossPresentationIntroTextLineSets',
-					'BossPresentationTextLineSets', 'ShrineMetaUpgradeName', 'ShrineDataOverwrites', 'DreamBiomeData',
-					'SpawnOptions', 'SupportAIWeaponSetOptions', 'SupportUnitName',
-				},
-				Data = {
-					AIOptions = { 'AttackerAI' },
-					WeaponOptions = { 'HarpyLunge', 'HarpyWhipWhirl', 'HarpyLightning' },
-					HideHealthBar = true,
-					EncounterStartVoiceLines = {
-						RandomRemaining = true,
-						PreLineWait = 0.6,
-						{ Cue = '/VO/MegaeraField_0401' },
-						{ Cue = '/VO/MegaeraField_0085' },
-						{ Cue = '/VO/MegaeraField_0086' },
-						{ Cue = '/VO/MegaeraField_0114' },
-						{ Cue = '/VO/MegaeraField_0116' },
-					},
-					ExitVoiceLines = {
-						RandomRemaining = true,
-						{ Cue = '/VO/MegaeraField_0662' },
-						{ Cue = '/VO/MegaeraField_0133' },
-						{ Cue = '/VO/MegaeraField_0296' },
-					},
-				},
-				Entrance = {
-					Animation = 'MegaeraMultiFurySkyDive',
-					Height = 1500,
-					Delay = 0.3,
-					Force = 2500,
-					Land = 0.5,
-					LandShake = true,
-				},
-				Exit = {
-					Animation = 'MegaeraMultiFuryTakeOff',
-					Voice = true,
-					Wind = 0.4,
-					Rise = 1500,
-					RiseTime = 0.2,
-					Fade = 0.1,
-				},
-			},
-			{
-				Key = 'Bouldy',
-				Unit = 'NPC_Bouldy_01',
-				Requires = 'NikkelM-Zagreus_Journey',
-				Packages = { 'Bouldy', 'BiomeI' },
-				Voice = { Bank = 'Sisyphus' },
-				Weight = 0.5,
-
-				Callout = {
-					Speaker = 'NPC_Sisyphus_01',
-					SubtitleColor = { 109, 185, 116, 255 },
-					Sets = {
-						{
-							Rooms = { 'A_Boss01', 'A_Boss02', 'A_Boss03' },
-							Cues = { 'Sisyphus_0290', 'Sisyphus_0291', 'Sisyphus_0292', 'Sisyphus_0293', 'Sisyphus_0294', 'Sisyphus_0295' },
-						},
-						{
-							Units = { 'Hecate', 'Eris' },
-							Cues = { 'Sisyphus_0290', 'Sisyphus_0291', 'Sisyphus_0293', 'Sisyphus_0294', 'Sisyphus_0295' },
-						},
-						{
-							Units = { 'NPC_Thanatos_Field_01' },
-							Cues = { 'Sisyphus_0296', 'Sisyphus_0297', 'Sisyphus_0298', 'Sisyphus_0299', 'Sisyphus_0300' },
-						},
-						{
-							Rooms = { 'D_Boss01' },
-							Cues = { 'Sisyphus_0302', 'Sisyphus_0303', 'Sisyphus_0304', 'Sisyphus_0305', 'Sisyphus_0306', 'Sisyphus_0307' },
-						},
-						{
-							Rooms = { 'CharonFight01' },
-							Cues = { 'Sisyphus_0447', 'Sisyphus_0448', 'Sisyphus_0449', 'Sisyphus_0450', 'Sisyphus_0451', 'Sisyphus_0452' },
-						},
-						{
-							Cues = {
-								'Sisyphus_0268', 'Sisyphus_0269', 'Sisyphus_0272', 'Sisyphus_0273', 'Sisyphus_0274',
-								'Sisyphus_0275', 'Sisyphus_0276', 'Sisyphus_0277', 'Sisyphus_0279', 'Sisyphus_0280',
-								'Sisyphus_0282', 'Sisyphus_0283', 'Sisyphus_0284', 'Sisyphus_0285', 'Sisyphus_0310',
-								'Sisyphus_0313', 'Sisyphus_0314', 'Sisyphus_0315',
-							},
-						},
-					},
-				},
-
-				Drop = {
-					Damage = 4000,
-					Radius = 700,
-					Reach = 900,
-
-					Scale = 0.5,
-					Height = 1000,
-					Fall = 0.45,
-					FallSound = '/Leftovers/SFX/MeteorStrikeQuiet',
-					LandFx = 'UnitUnfrozen',
-					LandSound = '/SFX/Explosion1',
-
-					Delay = 2.5,
-
-					LootDelay = 0,
-					LootRange = 150,
-					LootForceMin = 200,
-					LootForceMax = 350,
-					LootScale = 0.6,
-					Loot = {
-						{ Name = 'RoomMoneyTinyDrop', Count = 5, Overrides = { DropMoney = 10 } },
-						{ Name = 'MetaCurrencyDrop', Count = 5, Overrides = { AddResources = { MetaCurrency = 20 } } },
-						{ Name = 'HealDropMinor', Count = 5, Overrides = { HealFixed = 10 } },
-					},
-
-					Linger = 0,
-					Fade = 0.15,
-				},
-			},
-		},
-	},
-
 	PermafrostShield = {
 		DamageCap = 35,
 	},
@@ -520,18 +117,6 @@ mod.tuning = {
 		MaxBolts = 5,
 
 		BoltInterval = 0.12,
-	},
-	UntouchableGlow = {
-		StepInterval = 0.3,
-		PercentPerStep = 0.01,
-		MaxPercent = 1.00,
-		DefensePerStep = 0.01,
-		MaxDefense = 1.00,
-		IncludeTraps = true,
-		Radius = 430,
-		NearbyExclusionBoon = 'AllCloseBoon',
-		ExpireSound = '/SFX/WrathOver',
-		ResetGrace = 5,
 	},
 	DifferentLeague = {
 		DodgeBonus = 0.10,
@@ -613,30 +198,6 @@ mod.tuning = {
 		HealthLossOnly = false,
 		HeinousAffront = true,
 	},
-	VolcanicCrown = {
-		EmberProjectile = 'SWuVolcanicEmber',
-		BlastProjectile = 'SWuVolcanicBlast',
-		FireballProjectile = 'SWuVolcanicFireball',
-
-		Fireballs = 6,
-		FireballDamage = 120,
-		CentreDamage = 500,
-		CentreScale = 1.0,
-		BlastDelay = 0.3,
-		CoalDamage = 100,
-		EmberDuration = 6,
-		EmberRefresh = 2,
-
-		BlastSize = 1.5,
-		EmberSize = 1.5,
-
-		FireballSize = 1.5,
-
-		CastRadius = 430,
-
-		BlastRadius = 330,
-		EmberRadius = 200,
-	},
 	VolcanicRift = {
 		RiftProjectile = 'SWuVolcanicRift',
 		FireballProjectile = 'SWuVolcanicRiftFireball',
@@ -665,23 +226,15 @@ mod.tuning = {
 
 		AnchorLifetime = 3,
 
-		FirePuddles = { 'HestiaSprintPuddle', 'SWuVolcanicRiftFire', 'SWuVolcanicEmber', 'SWuVolcanicCrownFire' },
+		FirePuddles = { 'HestiaSprintPuddle', 'SWuVolcanicRiftFire' },
 	},
-	WrathfulHubris = {
-		DamageDealt = 0.50,
-		DamageTaken = 0.50,
-	},
-	GoddessSpite = {
+	NastyComeback = {
 		HeinousAffrontDamage = 50,
-		ReflectMultiplier = 2,
-		NearbyMultiplier = 5,
+		ReflectMultiplier = 10,
 		ReflectCap = 9999,
 		ShareDelay = 0.05,
 
-		Radius = 430,
-		NearbyExclusionBoon = 'AllCloseBoon',
-
-		ReflectSource = 'SWuGoddessSpiteReflect',
+		ReflectSource = 'SWuNastyComebackReflect',
 	},
 	GoldenRule = {
 		DamagePerGold = 0.0005,
@@ -699,6 +252,7 @@ mod.tuning = {
 		Choices = 3,
 		ExchangeLevelBonus = 3,
 		AcquireDelay = 0.3,
+		MaxPerSlot = 2,
 	},
 	BloodBorn = {
 		Zombies = 5,
@@ -871,17 +425,6 @@ mod.tuning = {
 
 		MaxStacks = 5,
 		PowerPerStack = 10,
-	},
-	GlowingBrand = {
-		GlowPotency = 2.0,
-		GlowDuration = 2.0,
-
-		BrandFx = 'SWuBrandDecal',
-		BrandFxPulse = 'SWuBrandDecalPulse',
-		BrandFxOut = 'SWuBrandDecalOut',
-		BrandFxSize = 1.2,
-		BrandFxGroup = 'FX_Terrain',
-		BrandColor = { Red = 1.0, Green = 0.85, Blue = 0.0 },
 	},
 	LandMine = {
 		Recharge = 8,

@@ -19,14 +19,13 @@ end
 modutil.mod.Path.Wrap("CalculateDamageMultipliers", function(base, attacker, victim, weaponData, triggerArgs)
 	spiteful_strength_refresh(attacker, triggerArgs)
 	orbital_ring_refresh(attacker, victim)
-	untouchable_glow_refresh(attacker, victim, triggerArgs)
 	different_league_refresh(attacker, victim)
 	solar_eclipse_refresh(attacker)
 	local multipliers = base(attacker, victim, weaponData, triggerArgs)
 	if bitter_end_applies(attacker, victim, triggerArgs) then
 		multipliers = multipliers * mod.tuning.BitterEnd.InflictMultiplier
 	end
-	return wrathful_hubris_total(attacker, multipliers)
+	return multipliers
 end)
 
 
@@ -44,12 +43,6 @@ end)
 
 modutil.mod.Path.Wrap("CheckOnDamagedPowers", function(base, victim, attacker, args)
 	return hot_iron_on_damaged(base, victim, attacker, args)
-end)
-
-
-modutil.mod.Path.Wrap("DoAttack", function(base, enemy, aiData)
-	if distress_call_attack_started(enemy, aiData) then return true end
-	return base(enemy, aiData)
 end)
 
 
@@ -77,9 +70,8 @@ end)
 
 
 modutil.mod.Path.Wrap("ApplyEffect", function(base, args)
-	if args and args.EffectName == 'BurnEffect' and volcanic_crown_ember(args.TriggerArgs) then return end
 	different_league_record_miss(args)
-	return base(winter_solstice_frost(hot_iron_glow(glowing_brand_glow(args))))
+	return base(winter_solstice_frost(hot_iron_glow(args)))
 end)
 
 
@@ -103,7 +95,6 @@ end)
 
 
 modutil.mod.Path.Wrap("ApplyBurn", function(base, victim, functionArgs, triggerArgs)
-	if volcanic_crown_ember(triggerArgs) then return end
 	local stacks = solar_flare_scorch((functionArgs and functionArgs.NumStacks) or 1)
 
 	if functionArgs then
@@ -230,7 +221,7 @@ modutil.mod.Path.Wrap("RemoveWeaponTrait", function(base, traitName, args)
 end)
 
 modutil.mod.Path.Wrap("HasTraitRequirements", function(base, traitName)
-	return burnt_offering_meets_requirements(base, traitName)
+	return duo_pair_limit_meets(burnt_offering_meets_requirements(base, traitName), traitName)
 end)
 
 
@@ -244,7 +235,6 @@ modutil.mod.Path.Wrap("AddTraitToHero", function(base, args)
 	local added = base(args)
 	royal_banquet_bless(added or (args and args.TraitData))
 	family_trade_reslot()
-	glowing_brand_sync()
 	hot_iron_invalidate()
 	return added
 end)
@@ -296,11 +286,6 @@ modutil.mod.Path.Wrap("InCombatTextArgs", function(base, args)
 end)
 
 
-modutil.mod.Path.Wrap("CleanupRaiseDeadEncounter", function(base, currentRoom)
-	return distress_call_encounter_cleanup(base, currentRoom)
-end)
-
-
 modutil.mod.Path.Wrap("SetupHeroObject", function(base, ...)
 	different_league_reset_dodge()
 	return base(...)
@@ -314,11 +299,8 @@ end)
 
 
 modutil.mod.Path.Wrap("DamageHero", function(base, victim, triggerArgs)
-	wrathful_hubris_taken(victim, triggerArgs)
 	intertwined_fate_last_word(victim, triggerArgs)
-	local result = base(victim, triggerArgs)
-	untouchable_glow_struck(victim, triggerArgs)
-	return result
+	return base(victim, triggerArgs)
 end)
 
 
@@ -552,12 +534,6 @@ modutil.mod.Path.Wrap("LeaveRoom", function(base, currentRun, door)
 end)
 
 
-modutil.mod.Path.Wrap("StartRoom", function(base, currentRun, currentRoom)
-	if currentRoom and currentRoom.BiomeStartRoom then distress_call_reset_cooldown() end
-	return base(currentRun, currentRoom)
-end)
-
-
 modutil.mod.Path.Wrap("SetupMap", function(base, ...)
 	prefix_SetupMap()
 	local result = base(...)
@@ -685,11 +661,6 @@ end)
 local heraVfx = rom.path.combine(rom.paths.Content, 'Game/Animations/Melinoe_Hera_VFX.sjson')
 sjson.hook(heraVfx, function(data)
 	return sjson_HeraAnimations(data)
-end)
-
-local hephaestusVfx = rom.path.combine(rom.paths.Content, 'Game/Animations/Melinoe_Hephaestus_VFX.sjson')
-sjson.hook(hephaestusVfx, function(data)
-	return sjson_HephaestusAnimations(data)
 end)
 
 local poseidonVfx = rom.path.combine(rom.paths.Content, 'Game/Animations/Melinoe_Poseidon_VFX.sjson')

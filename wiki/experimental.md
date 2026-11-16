@@ -9,24 +9,13 @@ Each entry can be switched on in the config, under `Experimental`.
 - **Convective Vortex** (Ares × Hestia) · `ConvectiveVortex` — Your Blade Rift lasts 50% longer and inflicts 25 Scorch per hit. Scorch on foes in the rift builds up instead of burning down.
   - Meat Grinder
   - Flame Strike, Flame Flourish, Smolder Ring
-- **Spiteful Goddess** (Aphrodite × Hera) · `GoddessSpite` — After you take damage from an attack, inflict Hitch on all foes and deal 200% of taken damage back to your attacker, or 1000% as much if it is nearby (up to 9999). Heinous Affront uses a flat 50 damage.
-  - Dying Wish, Hereditary Bane, Rousing Reception *(BoonEdits)*
-  - Flutter Strike, Flutter Flourish
-- **Volcanic Crown Alt** (Hephaestus × Hestia) · `VolcanicCrown` — Your Omega Cast erupts in a large Hepahestus blast and 6 fireballs, leaving burning embers behind.
-  - Volcanic Strike, Volcanic Flourish
-  - Glowing Coal, Controlled Burn, Volcanic Crown *(BoonEdits)*
+- **Spiteful Strength** (Hera × Hephaestus) · `SpitefulStrength` — Prime 60 Magick now. Your weapon strikes deal more damage for the share of your Magick that is Primed, up to +100% at all of it. Bonus is doubled for an Attack or Special with no percentage-damage boon on it (none, Zeus, Poseidon, Hestia, Hephaestus).
+  - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain
+  - Volcanic Strike, Volcanic Flourish, Anvil Ring, Smithy Rush, Tough Gain
+  - High Surf, Static Shock, Secret Crush, Killing Stroke, Ingenious Strike, Ingenious Flourish, Stalwart Stand, Trusty Shield
 - **Volcanic Rift** (Hera × Hestia) · `VolcanicRift` — Your Fine Line fissures turn orange and erupt into 5 fireballs dealing 30 damage that leave fire puddles dealing 20 damage every 0.25 seconds.
   - Fine Line
   - Heat Rush, Volcanic Crown *(BoonEdits)*
-- **Wrathful Hubris** (Hera × Ares) · `WrathfulHubris` — You deal 50% more total damage, but take 50% more total damage. Total damage is applied after all other damage modifiers.
-  - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain
-  - Any core boon from Ares
-- **Glowing Brand** (Hephaestus × Hestia) — Hestia's fireballs inflict Glow. Your Glow is twice as potent and lasts twice as long.
-  - Furnace Blast, Anvil Ring *(BoonEdits)*, Smithy Rush *(BoonEdits)*
-  - Glowing Coal, Controlled Burn, Volcanic Crown *(BoonEdits)*
-- **Untouchable Glow** (Apollo × Aphrodite) · `UntouchableGlow` — For every 0.3 seconds you spend near foes, your Weapon strikes deal 1% more damage and you take 1% less damage, both up to 100% (30 seconds). The bonus resets whenever an attack that deals damage hits you, and can't reset again for 5 seconds.
-  - Flutter Strike, Flutter Flourish, Glamour Gain
-  - Super Nova, Perfect Image, Extra Dose
 
 ## Alternate versions
 
@@ -54,4 +43,3 @@ Turning one of these on replaces the regular duo in the pool.
 ## Other Boons
 
 - **Pandemonium** (Chaos Legendary) · `Pandemonium` — ???
-- **Distress Call** (Hermes Legendary) · `DistressCall` — at the start of each encounter, summon an ally to fight for you for 8 seconds. With Zagreus' Journey, Thanatos, Megaera and Bouldy can answer too; Bouldy drops onto a foe for 4000 damage and scatters Gold, Bones and Health. Setting `DistressCall.OnEncounterStart` to false in tuning switches back to summoning after you take damage (40 second cooldown, reset at the start of each location).
