@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Nasty Comeback: fixed Prometheus bug where damage taken from his memory games prematurely ends the sequence
+
+### Changed
+
+- Gentle Caress: Heinous Affront no longer triggers it. Restore the old behaviour with `HeinousAffront = true` under `GentleCaress` in `tuning.lua`
+- Nasty Comeback: deals 10000% of the damage taken back to your attacker (was 1000%)
+- Nasty Comeback: Heinous Affront still inflicts Hitch on all foes, but no longer deals damage back to your attacker.
+- Discerning Taste: only offered with The Enchantress or Champions Arcana equipped
+
 ## [1.1.6] - 2026-11-16
 
 ### Added

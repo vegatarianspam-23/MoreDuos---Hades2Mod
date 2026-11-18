@@ -21,6 +21,9 @@ register_duo({
 
 
 local function nasty_comeback_damage(victim, args)
+	if not victim or not victim.ObjectId or game.IsInvulnerable({ Id = victim.ObjectId }) then return end
+	if victim.InvulnerableFlags and not game.IsEmpty(victim.InvulnerableFlags) then return end
+
 	local source = mod.tuning.NastyComeback.ReflectSource
 	local states = { game.CurrentRun, game.GameState }
 	local before = {}
@@ -117,8 +120,9 @@ function mod.NastyComebackReflect(attacker, _args, triggerArgs)
 	if not foe or foe.IsDead or is_allied_summon(foe) then return end
 
 	local tuning = mod.tuning.NastyComeback
+	local affront = triggerArgs and triggerArgs.ManuallyTriggered
 	local taken = triggerArgs and triggerArgs.DamageAmount
-	if triggerArgs and triggerArgs.ManuallyTriggered then
+	if affront then
 		taken = tuning.HeinousAffrontDamage
 	end
 	if type(taken) ~= 'number' or taken <= 0 then return end
@@ -128,6 +132,8 @@ function mod.NastyComebackReflect(attacker, _args, triggerArgs)
 			duo_hitch(unit)
 		end
 	end
+
+	if affront and not tuning.HeinousAffront then return end
 
 	local shared = math.min(taken * tuning.ReflectMultiplier, tuning.ReflectCap)
 	if shared <= 0 then return end

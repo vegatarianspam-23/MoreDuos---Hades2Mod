@@ -361,6 +361,8 @@ function mod.IntertwinedFateRevenge(attacker, _args, triggerArgs)
 		if not unit or not unit.ObjectId or unit.IsDead or unit == hero then return end
 		if struck[unit.ObjectId] then return end
 		if is_allied_summon(unit) then return end
+		if game.IsInvulnerable({ Id = unit.ObjectId }) then return end
+		if unit.InvulnerableFlags and not game.IsEmpty(unit.InvulnerableFlags) then return end
 		struck[unit.ObjectId] = true
 
 		game.CreateAnimationsBetween({

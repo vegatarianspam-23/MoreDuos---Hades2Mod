@@ -33,7 +33,7 @@ Each duo needs one boon from every group (sub-bullet). Boons marked *(BoonEdits)
 - **Different League**
   - Flutter Strike, Flutter Flourish, Glamour Gain
   - Solar Ring, Blinding Rush, Dazzling Display, Light Smite
-- **Discerning Taste** — not offered during Fates' Whim.
+- **Discerning Taste** — not offered during Fates' Whim, and needs The Enchantress or Champions Arcana equipped.
   - Shameless Attitude, Secret Crush, Spiritual Affirmation
   - Divine Vengeance, Power Surge, Lightning Lance
 - **Energy Overflow**

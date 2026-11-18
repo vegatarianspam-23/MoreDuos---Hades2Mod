@@ -142,9 +142,19 @@ function duo_pair_limit_meets(met, traitName)
 	local pair = duo_pair(traitName)
 	if not pair then return met end
 
+	local needed = {}
+	local requirements = game.TraitRequirements[traitName] or {}
+	for _, list in ipairs({ requirements.OneOf or {}, requirements.TwoOf or {} }) do
+		for _, name in ipairs(list) do needed[name] = true end
+	end
+	for _, set in ipairs(requirements.OneFromEachSet or {}) do
+		for _, name in ipairs(set) do needed[name] = true end
+	end
+
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	for _, trait in ipairs(hero and hero.Traits or {}) do
-		if trait.IsDuoBoon and trait.Name ~= traitName and duo_pair(trait.Name) == pair then
+		if trait.IsDuoBoon and trait.Name ~= traitName and not needed[trait.Name]
+			and duo_pair(trait.Name) == pair then
 			return false
 		end
 	end

@@ -415,6 +415,7 @@ duo_requirements = {
 		OneFromEachSet = {
 			{ "HighHealthOffenseBoon", "FocusRawDamageBoon", "HealthRewardBonusBoon" },
 			{ "BoltRetaliateBoon", "ZeusManaBoltBoon", "CastAnywhereBoon" },
+			{ "DoorRerollMetaUpgrade", "PanelRerollMetaUpgrade" },
 		}
 	},
 

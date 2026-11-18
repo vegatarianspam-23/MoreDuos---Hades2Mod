@@ -229,8 +229,9 @@ mod.tuning = {
 		FirePuddles = { 'HestiaSprintPuddle', 'SWuVolcanicRiftFire' },
 	},
 	NastyComeback = {
+		HeinousAffront = false,
 		HeinousAffrontDamage = 50,
-		ReflectMultiplier = 10,
+		ReflectMultiplier = 100,
 		ReflectCap = 9999,
 		ShareDelay = 0.05,
 
@@ -548,6 +549,7 @@ mod.tuning = {
 	},
 	GentleCaress = {
 		CapArmor = true,
+		HeinousAffront = false,
 
 		ArmorCapFloor = 100,
 	},
