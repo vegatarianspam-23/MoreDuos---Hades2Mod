@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.7] - 2026-11-18
+
 ### Fixed
 
 - Nasty Comeback: fixed Prometheus bug where damage taken from his memory games prematurely ends the sequence
@@ -248,6 +250,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
+[1.1.7]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.6...1.1.7
 [1.1.6]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.5...1.1.6
 [1.1.5]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.4...1.1.5
 [1.1.4]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.3...1.1.4
