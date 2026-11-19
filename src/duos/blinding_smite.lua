@@ -3,7 +3,10 @@
 
 local DAZE = 'BlindEffect'
 
-local BOLT = 'ZeusRetaliateStrike'
+local STRIKE = 'ZeusRetaliateStrike'
+local BOLT = mod.tuning.BlindingSmite.BoltProjectile
+
+duo_alias_projectile(STRIKE, BOLT)
 
 local LIGHTNING = {
 	'ZeusEchoStrike',
@@ -12,6 +15,9 @@ local LIGHTNING = {
 	'ZeusSprintStrike',
 	'ZeusZeroManaStrike',
 	'ZeusRetaliateStrike',
+	BOLT,
+	mod.tuning.AirControl.BoltProjectile,
+	mod.tuning.TippedScales.BoltProjectile,
 	'ProjectileZeusSpark',
 	'ZeusCastAnywhereBlast',
 	'ZeusApolloSynergyStrike',
@@ -74,14 +80,15 @@ function mod.BlindingSmiteStrike(attacker, _args)
 	if not hero then return end
 
 	local tuning = mod.tuning.BlindingSmite
-	local base = game.GetBaseDataValue({ Type = 'Projectile', Name = BOLT, Property = 'Damage' })
+	local bolt = game.ProjectileData[BOLT] and BOLT or STRIKE
+	local base = game.GetBaseDataValue({ Type = 'Projectile', Name = bolt, Property = 'Damage' })
 	if type(base) ~= 'number' or base <= 0 then base = 100 end
 
 	for index = 1, game.RandomInt(tuning.MinBolts, tuning.MaxBolts) do
 		game.thread(game.CreateZeusBolt, {
 			SourceId = hero.ObjectId,
 			TargetId = foe.ObjectId,
-			ProjectileName = BOLT,
+			ProjectileName = bolt,
 			DamageMultiplier = tuning.BoltDamage / base,
 			Range = 1,
 			SeekTarget = true,

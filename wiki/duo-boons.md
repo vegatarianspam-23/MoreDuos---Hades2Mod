@@ -10,7 +10,7 @@
 - **Burnt Offering** (Hera × Hestia) — Give up a boon now for 500 bonus Gold, and for the rest of the night you may purge rewards for more. Gain 20% of any Gold gained this way as Max Magick and Health.
 - **Cold Hearted** (Aphrodite × Demeter) — Your Attack and Special get +25 power against Frozen foes. Freeze does not wear off while a foe is Weak.
 - **Different League** (Apollo × Aphrodite) — +10% chance to Dodge attacks from nearby foes. All your damage to a foe is increased by your chance to avoid its attacks (includes Daze)
-- **Discerning Taste** (Aphrodite × Zeus) — Most choices can be rerolled, including Hammers and Hexes, and the first reroll of each is free. Gain 5 rerolls now.
+- **Discerning Taste** (Aphrodite × Zeus) — Most choices can be rerolled, including location rewards, Hammers and Hexes, and the first reroll of each is free. Gain 5 rerolls now. Does not need a reroll Arcana and keeps Fates' Whim.
 - **Energy Overflow** (Apollo × Poseidon) — Restore 30% more Magick. Magick restored past your limit raises it for the rest of the location, up to 999.
 - **Explosive Sparks** (Hephaestus × Zeus) — Hammer strikes from Hephaestus have a 30% chance to set off a massive blast where it lands.
 - **Family Reunion** (Hera × Zeus) — Gain a boon from every Olympian you have yet seen tonight. Legendary and Duo boons are 10% more likely to be offered for the rest of the night.

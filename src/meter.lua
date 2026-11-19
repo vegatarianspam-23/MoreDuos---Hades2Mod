@@ -55,6 +55,9 @@ end
 
 
 duo_meter_add('AirControl', mod.tuning.AirControl.GuardProjectile, DUO_METER_FREE)
+duo_meter_add('AirControl', mod.tuning.AirControl.BoltProjectile, DUO_METER_ALIASED)
+duo_meter_add('BlindingSmite', mod.tuning.BlindingSmite.BoltProjectile, DUO_METER_ALIASED)
+duo_meter_add('TippedScales', mod.tuning.TippedScales.BoltProjectile, DUO_METER_ALIASED)
 
 duo_meter_add('LandMine', mod.tuning.LandMine.BlastProjectile, DUO_METER_ALIASED)
 

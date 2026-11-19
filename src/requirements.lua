@@ -29,16 +29,19 @@ function duo_offer_sets(key)
 
 	local offered = spec.OneFromEachSet
 
-	for i, set in ipairs(offered) do
-		if set.Group then set = game.LinkedTraitData[set.Group] or {} end
+	for _, set in ipairs(offered) do
+		if not (set.SkipIf and set.SkipIf()) then
+			if set.Group then set = game.LinkedTraitData[set.Group] or {} end
 
-		sets[i] = {}
-		for _, traitName in ipairs(set) do
-			local data = game.TraitData[traitName]
-			local group = counts[traitName] and game.LinkedTraitData[counts[traitName]]
-			if not (data and data.IsDuoBoon and not spec.AllowDuos) and (not counts[traitName] or (group and game.Contains(group, traitName))) then
-				table.insert(sets[i], traitName)
+			local picks = {}
+			for _, traitName in ipairs(set) do
+				local data = game.TraitData[traitName]
+				local group = counts[traitName] and game.LinkedTraitData[counts[traitName]]
+				if not (data and data.IsDuoBoon and not spec.AllowDuos) and (not counts[traitName] or (group and game.Contains(group, traitName))) then
+					table.insert(picks, traitName)
+				end
 			end
+			table.insert(sets, picks)
 		end
 	end
 
@@ -415,7 +418,7 @@ duo_requirements = {
 		OneFromEachSet = {
 			{ "HighHealthOffenseBoon", "FocusRawDamageBoon", "HealthRewardBonusBoon" },
 			{ "BoltRetaliateBoon", "ZeusManaBoltBoon", "CastAnywhereBoon" },
-			{ "DoorRerollMetaUpgrade", "PanelRerollMetaUpgrade" },
+			{ "DoorRerollMetaUpgrade", "PanelRerollMetaUpgrade", SkipIf = function() return mod.tuning.DiscerningTaste.IgnoreArcana == true end },
 		}
 	},
 

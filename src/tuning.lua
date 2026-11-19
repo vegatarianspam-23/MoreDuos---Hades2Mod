@@ -111,6 +111,7 @@ mod.tuning = {
 		InflictMultiplier = 1.50,
 	},
 	BlindingSmite = {
+		BoltProjectile = 'SWuBlindingSmiteBolt',
 		DazedMultiplier = 1.30,
 		BoltDamage = 100,
 		MinBolts = 1,
@@ -450,6 +451,7 @@ mod.tuning = {
 	},
 	AirControl = {
 		GuardProjectile = 'SWuAirControlGuard',
+		BoltProjectile = 'SWuAirControlBolt',
 		RingFx = 'SWuAirControlRingFx',
 		RingRadius = 430,
 		FlameFx = 'SWuAirControlFlames',
@@ -481,6 +483,7 @@ mod.tuning = {
 	},
 	DiscerningTaste = {
 		Rerolls = 5,
+		IgnoreArcana = true,
 	},
 	WishingWell = {
 		OfferDelay = 0,

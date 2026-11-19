@@ -15,13 +15,26 @@ register_duo({
 		AcquireFunctionName = _PLUGIN.guid .. '.DiscerningTasteAcquire',
 
 		GameStateRequirements = {
-			{
-				Path = { 'GameState', 'FatedStatus' },
-				IsNone = { 'Fated' },
-			},
+			{ FunctionName = _PLUGIN.guid .. '.DiscerningTasteFateAllows' },
 		},
 	},
 })
+
+
+function discerning_taste_ignores_arcana()
+	return mod.tuning.DiscerningTaste.IgnoreArcana == true
+end
+
+
+function mod.DiscerningTasteFateAllows()
+	if discerning_taste_ignores_arcana() then return true end
+	return game.GameState.FatedStatus ~= 'Fated'
+end
+
+
+function discerning_taste_door_reroll_allowed()
+	return discerning_taste_ignores_arcana() and discerning_taste_held()
+end
 
 
 function discerning_taste_held()

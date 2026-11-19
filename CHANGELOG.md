@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed Air Control not destroying certain projectiles from Zagreus' Journey properly
+- Updated damage meter for Air Control, Blinding Smite and Tipped Scales lightning
+
+### Changed
+
+- Discerning Taste: offered during Fates' Whim and without The Enchantress or Champions Arcana, and taking it keeps Fates' Whim. While held you can reroll both location rewards and boons, as with both Arcana equipped (without their extra rerolls).
+
 ## [1.1.7] - 2026-11-18
 
 ### Fixed

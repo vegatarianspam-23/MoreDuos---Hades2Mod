@@ -5,10 +5,6 @@ local TIPPED_SCALES_STRIKE = 'ZeusRetaliateStrike'
 local TIPPED_SCALES_BOLT = mod.tuning.TippedScales.BoltProjectile
 
 duo_alias_projectile(TIPPED_SCALES_STRIKE, TIPPED_SCALES_BOLT)
-do
-	local sources = game.ScreenData.RunClear.DamageSourceMap
-	sources[TIPPED_SCALES_BOLT] = sources[TIPPED_SCALES_BOLT] or sources[TIPPED_SCALES_STRIKE]
-end
 
 
 register_duo({

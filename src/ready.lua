@@ -421,6 +421,14 @@ modutil.mod.Path.Wrap("HeroHasTrait", function(base, traitName)
 	return base(traitName)
 end)
 
+modutil.mod.Path.Wrap("HasHeroTraitValue", function(base, propertyName)
+	local held = base(propertyName)
+	if held == nil and propertyName == 'AllowDoorReroll' and discerning_taste_door_reroll_allowed() then
+		return true
+	end
+	return held
+end)
+
 
 local extraBoons = mod.tuning.Systems.ExtraBoonRewards or 0
 

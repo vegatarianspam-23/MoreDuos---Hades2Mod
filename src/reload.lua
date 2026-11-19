@@ -465,6 +465,8 @@ function sjson_PlayerProjectiles(data)
 			TotalFuse = mod.tuning.VolcanicRift.PuddleDuration,
 		},
 		{ Name = mod.tuning.TippedScales.BoltProjectile, InheritFrom = 'ZeusRetaliateStrike' },
+		{ Name = mod.tuning.AirControl.BoltProjectile, InheritFrom = 'ZeusRetaliateStrike' },
+		{ Name = mod.tuning.BlindingSmite.BoltProjectile, InheritFrom = 'ZeusRetaliateStrike' },
 		{
 			Name = mod.tuning.AirControl.GuardProjectile,
 			InheritFrom = 'HestiaSprintDefense',
@@ -514,10 +516,6 @@ end
 
 
 function sjson_AirControlHadesProjectiles(data)
-	local ok, zagreus = pcall(function() return rom.mods['NikkelM-Zagreus_Journey'] end)
-	local names = ok and zagreus and zagreus.HadesSjsonProjectilesTable
-	if not names then return end
-
 	local byName = {}
 	for _, projectile in ipairs(data.Projectiles) do
 		byName[projectile.Name] = projectile
@@ -546,11 +544,36 @@ function sjson_AirControlHadesProjectiles(data)
 		return true
 	end
 
-	for name in pairs(names) do
-		local projectile = byName[name]
-		if projectile and blockable(name) then
-			projectile.CanBeProjectileDefenseDestroyedByLayer = 'BoonDefense'
+	local flagged = {}
+	for name, projectile in pairs(byName) do
+		if projectile.CanBeProjectileDefenseDestroyedByName2 == 'ExAttackSuitDefense' and blockable(name) then
+			flagged[name] = projectile
 		end
+	end
+
+	local function inherits_flag(projectile)
+		local seen = {}
+		local current = projectile.InheritFrom
+		while current and not seen[current] do
+			seen[current] = true
+			if flagged[current] then return true end
+			local parent = byName[current]
+			if not parent or parent.CanBeProjectileDefenseDestroyedByLayer ~= nil then return false end
+			current = parent.InheritFrom
+		end
+		return false
+	end
+
+	for _, projectile in pairs(byName) do
+		if projectile.CanBeProjectileDefenseDestroyedByName2 == 'null'
+			and projectile.CanBeProjectileDefenseDestroyedByLayer == nil
+			and inherits_flag(projectile) then
+			projectile.CanBeProjectileDefenseDestroyedByLayer = 'null'
+		end
+	end
+
+	for _, projectile in pairs(flagged) do
+		projectile.CanBeProjectileDefenseDestroyedByLayer = 'BoonDefense'
 	end
 end
 
@@ -857,10 +880,15 @@ function duo_apply_blitz(victim, damage)
 end
 
 
-function duo_recharge(seconds, floor)
+function duo_recharge(seconds, floor, timer)
 	if type(seconds) ~= 'number' then return seconds end
 
-	local scaled = seconds * game.GetTotalHeroTraitValue('OlympianRechargeMultiplier', { IsMultiplier = true })
+	local multiplier = game.GetTotalHeroTraitValue('OlympianRechargeMultiplier', { IsMultiplier = true })
+	if type(game.BoonEditRecharge) == 'function' then
+		seconds = game.BoonEditRecharge(seconds, { Multiplier = multiplier, Timer = timer })
+	end
+
+	local scaled = seconds * multiplier
 	if type(floor) == 'number' then return math.max(floor, scaled) end
 
 	return scaled

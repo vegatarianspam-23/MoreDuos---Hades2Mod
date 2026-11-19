@@ -3,6 +3,10 @@
 
 local AIR_CONTROL_DASH = { 'WeaponBlink', 'WeaponSprint' }
 
+local AIR_CONTROL_BOLT = mod.tuning.AirControl.BoltProjectile
+
+duo_alias_projectile('ZeusRetaliateStrike', AIR_CONTROL_BOLT)
+
 
 function air_control_fired_weapons()
 	local weapons = game.ConcatTableValues({}, game.WeaponSets.HeroNonPhysicalWeapons)
@@ -328,13 +332,14 @@ function mod.AirControlBlock(_victim, functionArgs, triggerArgs)
 	if game.IsUntargetable({ Id = attacker.ObjectId }) then return end
 	local tuning = mod.tuning.AirControl
 	if not game.CheckCooldown('SWuAirControl' .. attacker.ObjectId, tuning.BlockCooldown) then return end
-	local base = game.GetBaseDataValue({ Type = 'Projectile', Name = 'ZeusRetaliateStrike', Property = 'Damage' })
+	local bolt = game.ProjectileData[AIR_CONTROL_BOLT] and AIR_CONTROL_BOLT or 'ZeusRetaliateStrike'
+	local base = game.GetBaseDataValue({ Type = 'Projectile', Name = bolt, Property = 'Damage' })
 	if type(base) ~= 'number' or base <= 0 then base = 100 end
 
 	game.thread(game.CreateZeusBolt, {
 		SourceId = hero.ObjectId,
 		TargetId = attacker.ObjectId,
-		ProjectileName = 'ZeusRetaliateStrike',
+		ProjectileName = bolt,
 		DamageMultiplier = tuning.BoltDamage / base,
 		Range = 1,
 		SeekTarget = true,
