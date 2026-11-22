@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [9.9.9] - 2026-11-21
+## [1.2.0] - 2026-11-22
 
 ### Changed
 
@@ -274,7 +274,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[9.9.9]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.8...9.9.9
+[1.2.0]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.8...1.2.0
 [1.1.8]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.7...1.1.8
 [1.1.7]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.6...1.1.7
 [1.1.6]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.5...1.1.6
