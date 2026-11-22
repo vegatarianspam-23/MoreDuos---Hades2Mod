@@ -16,14 +16,15 @@ $host_url = [regex]::Match($toml, '(?m)^repository\s*=\s*"([^"]+)"').Groups[1].V
 if (-not $namespace -or -not $name -or -not $host_url) { throw 'thunderstore.toml is missing namespace, name or repository' }
 
 $wiki_url = "$host_url/api/experimental/package/$namespace/$name/wiki/"
-$token = $env:TCLI_AUTH_TOKEN
-if (-not $DryRun -and -not $token) { throw 'TCLI_AUTH_TOKEN is not set' }
+$session = $env:THUNDERSTORE_SESSION
+if (-not $session) { $session = [Environment]::GetEnvironmentVariable('THUNDERSTORE_SESSION', 'User') }
+if (-not $DryRun -and -not $session) { throw 'THUNDERSTORE_SESSION is not set (wiki edits need your thunderstore.io sessionid cookie; service account tokens are refused)' }
 
 function Invoke-Api([string]$Method, [string]$Url, $Body) {
 	$client = New-Object System.Net.WebClient
 	$client.Headers['Accept'] = 'application/json'
 	if ($Method -ne 'GET') {
-		$client.Headers['Authorization'] = "Bearer $token"
+		$client.Headers['Authorization'] = "Session $session"
 		$client.Headers['Content-Type'] = 'application/json'
 	}
 	try {

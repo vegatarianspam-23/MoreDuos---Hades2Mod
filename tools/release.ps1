@@ -12,6 +12,8 @@ $ErrorActionPreference = 'Stop'
 
 if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw 'version must be Major.Minor.Patch, e.g. 1.45.320' }
 
+if (-not $env:TCLI_AUTH_TOKEN) { $env:TCLI_AUTH_TOKEN = [Environment]::GetEnvironmentVariable('TCLI_AUTH_TOKEN', 'User') }
+
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 $utf8 = New-Object System.Text.UTF8Encoding($false)
@@ -65,6 +67,8 @@ if (-not $first.Success) { throw 'no previous release heading in CHANGELOG.md' }
 $pending = [regex]::Match($text.Substring(0, $first.Index), '(?m)^(### |- )')
 if (-not $pending.Success) { throw 'no pending changes above the last release in CHANGELOG.md' }
 $previous = $first.Groups[1].Value
+if (-not (Invoke-Git tag --list $previous)) { throw "CHANGELOG.md's latest release $previous has no tag; an interrupted run may have left it stamped" }
+if ($toml -notmatch "versionNumber = `"$([regex]::Escape($previous))`"") { throw "thunderstore.toml is not at $previous; an interrupted run may have left it stamped" }
 $text = $text.Insert($pending.Index, "## [$Version] - $(Get-Date -Format 'yyyy-MM-dd')`n`n")
 $link = [regex]::Match($text, "(?m)^\[$([regex]::Escape($previous))\]:")
 if (-not $link.Success) { throw "no [$previous]: link at the foot of CHANGELOG.md" }
@@ -110,11 +114,27 @@ try {
 Invoke-Git add CHANGELOG.md thunderstore.toml
 Invoke-Git commit --quiet --message "Release $Version"
 Invoke-Git tag $Version --annotate --message "Release $Version"
-Invoke-Git push --quiet origin "HEAD:$branch" "refs/tags/$Version"
+Invoke-Git -c "credential.username=$owner" push --quiet origin "HEAD:$branch" "refs/tags/$Version"
 Write-Host "Pushed $branch and tag $Version" -ForegroundColor Green
 
 try {
-	$credential = "protocol=https`nhost=github.com`n`n" | & git credential fill
+	$start = New-Object System.Diagnostics.ProcessStartInfo('git', 'credential fill')
+	$start.UseShellExecute = $false
+	$start.RedirectStandardInput = $true
+	$start.RedirectStandardOutput = $true
+	$start.EnvironmentVariables['GIT_TERMINAL_PROMPT'] = '0'
+	$start.EnvironmentVariables['GCM_INTERACTIVE'] = 'never'
+	$input_encoding = [Console]::InputEncoding
+	try {
+		[Console]::InputEncoding = $utf8
+		$process = [System.Diagnostics.Process]::Start($start)
+	} finally {
+		[Console]::InputEncoding = $input_encoding
+	}
+	$process.StandardInput.Write("protocol=https`nhost=github.com`nusername=$owner`n`n")
+	$process.StandardInput.Close()
+	$credential = $process.StandardOutput.ReadToEnd() -split "`n"
+	$process.WaitForExit()
 	$github_token = ($credential | Where-Object { $_ -like 'password=*' }) -replace '^password=', ''
 	if (-not $github_token) { throw 'no stored GitHub credential' }
 	$headers = @{ Authorization = "Bearer $github_token"; Accept = 'application/vnd.github+json'; 'User-Agent' = 'release.ps1' }

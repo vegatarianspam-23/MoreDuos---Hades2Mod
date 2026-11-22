@@ -264,7 +264,7 @@ duo_text = {
 
 	PlasmicCapacitor = {
 		Name = 'Plasmic Capacitor',
-		Description = 'Your {!Icons.BloodDropIcon} is more effective. Any excess you collect {!Icons.BloodDropIcon} ' ..
+		Description = 'Your {!Icons.BloodDropIcon} is more effective. Any excess {!Icons.BloodDropIcon} you collect ' ..
 			'emits a burst of chain-lightning at nearby foes.',
 		StatLines = {
 			SWuPlasmicCapacitorBonusStatDisplay = { Name = 'Bonus Plasma Effectiveness:', Index = 1 },
