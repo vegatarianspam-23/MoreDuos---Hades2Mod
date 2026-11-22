@@ -121,7 +121,7 @@ duo_requirements = {
 	ConvectiveVortex = {
 		Gods = { 'Ares', 'Hestia' },
 		OneFromEachSet = {
-			{ "AresExCastBoon" },
+			{ "AresExCastBoon", "zerp-More_Dash_Boons-AresBlinkTrailBoon", "SWuBloodyBlinkBoon" },
 			{ "HestiaWeaponBoon", "HestiaSpecialBoon", "HestiaCastBoon" },
 		},
 	},
@@ -252,6 +252,14 @@ duo_requirements = {
 		},
 	},
 
+	PlasmicCapacitorAlt2 = {
+		Gods = { 'Ares', 'Zeus' },
+		OneFromEachSet = {
+			game.LinkedTraitData.AresBloodDropTraits,
+			{ "FocusLightningBoon" },
+		},
+	},
+
 	SolarEclipse = {
 		Gods = { 'Apollo', 'Ares' },
 		OneFromEachSet = {
@@ -309,6 +317,21 @@ duo_requirements = {
 		},
 	},
 
+	SacrosanctAlms = {
+		Gods = { 'Hermes', 'Hera' },
+		OneFromEachSet = {
+			{ "BoonDecayBoon", "CommonGlobalDamageBoon", "DamageShareRetaliateBoon" },
+			{ "MoneyMultiplierBoon", "RestockBoon" },
+		},
+	},
+
+	GildedHook = {
+		Gods = { 'Hermes', 'Poseidon' },
+		OneFromEachSet = {
+			{ "MoneyMultiplierBoon", "RestockBoon" },
+		},
+	},
+
 	RoyalBanquet = {
 		Gods = { 'Hera', 'Demeter' },
 		OneFromEachSet = {
@@ -320,7 +343,7 @@ duo_requirements = {
 	IngeniousInvention = {
 		Gods = { 'Apollo', 'Hephaestus' },
 		OneFromEachSet = {
-			{ "ApolloCastAreaBoon", "PerfectDamageBonusBoon", "DoubleStrikeChanceBoon" },
+			{ "ApolloCastAreaBoon", "PerfectDamageBonusBoon", "DoubleStrikeChanceBoon", "ApolloExCastBoon" },
 			{ "HeavyArmorBoon", "ArmorBoon", "EncounterStartDefenseBuffBoon", "ManaToHealthBoon" }
 		},
 	},
@@ -329,7 +352,7 @@ duo_requirements = {
 		Gods = { 'Apollo', 'Hera' },
 		OneFromEachSet = {
 			{ "DamageSharePotencyBoon", "LinkedDeathDamageBoon", "SpawnCastDamageBoon" },
-			{ "ApolloCastAreaBoon", "DoubleStrikeChanceBoon", "ApolloRetaliateBoon" },
+			{ "ApolloCastAreaBoon", "PerfectDamageBonusBoon", "DoubleStrikeChanceBoon", "ApolloExCastBoon" },
 		},
 		Counts = { SpawnCastDamageBoon = 'HeraLinkTraits' },
 	},
@@ -352,7 +375,7 @@ duo_requirements = {
 	VolcanicRift = {
 		Gods = { 'Hera', 'Hestia' },
 		OneFromEachSet = {
-			{ "OmegaHeraProjectileBoon" },
+			{ "OmegaHeraProjectileBoon", "zerp-More_Dash_Boons-HeraBlinkTrailBoon", "SWuSwornBlinkBoon" },
 			{ "HestiaSprintBoon", "AloneDamageBoon" },
 		},
 	},
@@ -368,7 +391,7 @@ duo_requirements = {
 	EnergyOverflow = {
 		Gods = { 'Apollo', 'Poseidon' },
 		OneFromEachSet = {
-			{ "ApolloCastAreaBoon", "DoubleStrikeChanceBoon", "ApolloRetaliateBoon" },
+			{ "ApolloCastAreaBoon", "PerfectDamageBonusBoon", "DoubleStrikeChanceBoon", "ApolloExCastBoon" },
 			{ "RoomRewardBonusBoon", "DoubleRewardBoon" },
 		},
 	},

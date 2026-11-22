@@ -18,32 +18,69 @@ function duo_config_changed()
 	duoAltOn = {}
 end
 
-local function duo_alt_on(key)
-	local cached = duoAltOn[key]
+DUO_ALT_SUFFIXES = { 'Alt', 'Alt2' }
+
+local function duo_alt_on(id)
+	local cached = duoAltOn[id]
 	if cached == nil then
-		cached = config.Experimental[key .. 'Alt'] == true
-		duoAltOn[key] = cached
+		cached = config.Experimental[id] == true
+		duoAltOn[id] = cached
 	end
 	return cached
+end
+
+local function duo_any_alt_on(key)
+	for _, suffix in ipairs(DUO_ALT_SUFFIXES) do
+		if duo_alt_on(key .. suffix) then return true end
+	end
+	return false
 end
 
 function duo_on(key)
 	local cached = duoOn[key]
 	if cached ~= nil then return cached end
 	local on = config.enabled ~= false
-		and (config.Duos[key] == true or config.Experimental[key] == true or duo_alt_on(key))
+		and (config.Duos[key] == true or config.Experimental[key] == true or duo_any_alt_on(key))
 	duoOn[key] = on
 	return on
 end
 
 function duo_variant(key)
-	local alt = key .. 'Alt'
-	if duo_alt_on(key) and duo_text[alt] and duo_requirements[alt] then return alt end
+	for _, suffix in ipairs(DUO_ALT_SUFFIXES) do
+		local alt = key .. suffix
+		if duo_alt_on(alt) and duo_text[alt] and duo_requirements[alt] then return alt end
+	end
 	return key
 end
 
-function duo_alt(key)
-	return duo_variant(key) ~= key
+function duo_alt(key, suffix)
+	local variant = duo_variant(key)
+	if suffix then return variant == key .. suffix end
+	return variant ~= key
+end
+
+function duo_mod_present(guid)
+	local ok, present = pcall(function() return rom.mods[guid] ~= nil end)
+	return ok and present
+end
+
+function duo_mod_on(key, guid)
+	return duo_on(key) and duo_mod_present(guid)
+end
+
+DUO_MOD_SUPPORT = {
+	SacrosanctAlms = { Guid = 'Wistiti-HermesDuos', Toggle = 'HermesDuos' },
+	GildedHook = { Guid = 'Wistiti-HermesDuos', Toggle = 'HermesDuos' },
+	VolcanicRift = { Guid = 'Wistiti-HermesDuos', Toggle = 'HermesDuos' },
+	BurntOffering = { Guid = 'Wistiti-HermesDuos', Toggle = 'HermesDuos', Without = true },
+}
+
+function duo_support_on(key)
+	local support = DUO_MOD_SUPPORT[key]
+	if not support then return true end
+	local active = duo_mod_present(support.Guid) and config.Experimental[support.Toggle] == true
+	if support.Without then return not active end
+	return active
 end
 
 
@@ -95,7 +132,7 @@ function duo_sync_pool()
 	for key, traitName in pairs(duo_traits or {}) do
 		local spec = duo_requirements and duo_requirements[duo_variants[key] or key]
 		if spec and spec.Gods then
-			local wanted = duo_on(key)
+			local wanted = duo_on(key) and duo_support_on(key)
 			local owner = spec.Gods[1] .. 'Upgrade'
 			if not game.LootData[owner] then
 				owner = _PLUGIN.guid .. '-' .. spec.Gods[1] .. 'Upgrade'
@@ -105,6 +142,54 @@ function duo_sync_pool()
 			if spec.Gods[2] then
 				duo_pool_set(spec.Gods[2] .. 'Upgrade', traitName, wanted)
 			end
+		end
+	end
+end
+
+DUO_EXTERNAL_REMOVED = {
+	'Wistiti-HermesDuos-PurgeRarifyBoon',
+	'Wistiti-HermesDuos-MoneyMoreDamageBoon',
+}
+
+function duo_strip_external_trait(traitName)
+	mod.DuoStripped = mod.DuoStripped or {}
+	local stripped = mod.DuoStripped[traitName] or {}
+	mod.DuoStripped[traitName] = stripped
+
+	for lootName, loot in pairs(game.LootData or {}) do
+		if type(loot) == 'table' and type(loot.Traits) == 'table' and game.Contains(loot.Traits, traitName) then
+			stripped[lootName] = true
+			duo_list_set(loot.Traits, traitName, false)
+		end
+	end
+
+	local info = game.ScreenData and game.ScreenData.BoonInfo
+	if info and info.TraitSortOrder then
+		for lootName, order in pairs(info.TraitSortOrder) do
+			if game.Contains(order, traitName) then
+				stripped[lootName] = true
+				duo_list_set(order, traitName, false)
+			end
+		end
+	end
+end
+
+function duo_unstrip_external_trait(traitName)
+	local stripped = mod.DuoStripped and mod.DuoStripped[traitName]
+	if not stripped then return end
+
+	for lootName in pairs(stripped) do
+		duo_pool_set(lootName, traitName, true)
+	end
+	mod.DuoStripped[traitName] = nil
+end
+
+function duo_mod_sync()
+	for _, traitName in ipairs(DUO_EXTERNAL_REMOVED) do
+		if duo_mod_on('HermesDuos', 'Wistiti-HermesDuos') then
+			duo_strip_external_trait(traitName)
+		else
+			duo_unstrip_external_trait(traitName)
 		end
 	end
 end
@@ -165,6 +250,7 @@ function prefix_SetupMap()
 	duo_pair_cache = {}
 	reload_config()
 	duo_sync_pool()
+	duo_mod_sync()
 	intertwined_fate_alt_migrate()
 	load_icon_package()
 	duo_meter_apply()
@@ -173,6 +259,7 @@ function prefix_SetupMap()
 	discerning_taste_sync()
 	golden_rule_apply()
 	boiling_blood_clear()
+	different_league_clear()
 	duo_reset_room_cooldowns()
 	if pandemonium_list_blessing then pandemonium_list_blessing() end
 	if pandemonium_refresh_pony_menu then pandemonium_refresh_pony_menu() end
@@ -389,6 +476,9 @@ function sjson_HeraAnimations(data)
 		{ Name = tuning.FissureLineAnim, InheritFrom = 'HeraProjectileAnim2', Hue = tuning.FissureHue },
 		{ Name = tuning.FissureDetonateAnim, InheritFrom = 'HeraCastDetonate', Hue = tuning.FissureHue },
 	}
+	for _, name in ipairs(tuning.SwornTrailAnims) do
+		table.insert(copies, { Name = tuning.SwornTrailPrefix .. name, InheritFrom = name, Hue = tuning.FissureHue })
+	end
 
 	for _, copy in ipairs(copies) do
 		table.insert(data.Animations, sjson.to_object(copy, { 'Name', 'InheritFrom' }))
@@ -1392,6 +1482,8 @@ import 'duos/winter_solstice.lua'
 import 'duos/solar_flare.lua'
 import 'duos/tectonic_cycle.lua'
 import 'duos/burnt_offering.lua'
+import 'duos/sacrosanct_alms.lua'
+import 'duos/gilded_hook.lua'
 import 'duos/orbital_ring.lua'
 import 'duos/royal_banquet.lua'
 import 'duos/ingenious_invention.lua'

@@ -37,7 +37,7 @@ Each duo needs one boon from every group (sub-bullet). Boons marked *(BoonEdits)
   - Shameless Attitude, Secret Crush, Spiritual Affirmation
   - Divine Vengeance, Power Surge, Lightning Lance
 - **Energy Overflow**
-  - Super Nova, Extra Dose, Light Smite
+  - Super Nova, Perfect Image, Extra Dose, Prominence Flare
   - Buried Treasure, Sea Star
 - **Explosive Sparks**
   - Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, Ionic Gain
@@ -61,7 +61,7 @@ Each duo needs one boon from every group (sub-bullet). Boons marked *(BoonEdits)
   - Furnace Blast, Anvil Ring *(BoonEdits)*, Smithy Rush *(BoonEdits)*
   - Flame Strike, Flame Flourish, Smolder Ring, Heat Rush, Cardio Gain
 - **Ingenious Invention**
-  - Super Nova, Perfect Image, Extra Dose
+  - Super Nova, Perfect Image, Extra Dose, Prominence Flare
   - Heavy Metal, Trusty Shield, Security System, Uncanny Fortitude
 - **Intertwined Fate**
   - Dying Wish, Hereditary Bane, Rousing Reception *(BoonEdits)*
@@ -77,7 +77,7 @@ Each duo needs one boon from every group (sub-bullet). Boons marked *(BoonEdits)
   - Volcanic Strike, Volcanic Flourish, Anvil Ring, Smithy Rush, Tough Gain
 - **Orbital Ring**
   - Hereditary Bane, Dying Wish, Rousing Reception *(BoonEdits)*
-  - Super Nova, Extra Dose, Light Smite
+  - Super Nova, Perfect Image, Extra Dose, Prominence Flare
 - **Permafrost Shield**
   - Snow Queen, Plentiful Forage, Steady Growth
   - Trusty Shield, Heavy Metal, Security System, Uncanny Fortitude

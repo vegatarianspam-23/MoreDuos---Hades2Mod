@@ -14,6 +14,7 @@ for original, copy in pairs(ENLARGED) do
 	local sources = game.ScreenData.RunClear.DamageSourceMap
 	sources[copy] = sources[copy] or sources[original]
 end
+table.insert(STORMS, 'DemeterOmegaStorm')
 
 
 register_duo({

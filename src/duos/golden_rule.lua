@@ -4,10 +4,10 @@
 register_duo({
 	key = 'GoldenRule',
 
-	StatLines = { 'SWuGoldenRuleStatDisplay', 'SWuGoldenRuleMaxStatDisplay' },
+	StatLines = { 'SWuGoldenRuleStatDisplay' },
 	ExtractValues = {
 		{ Key = 'SWuDamagePerGold', ExtractAs = 'TooltipPerGold', Format = 'Percent', DecimalPlaces = 2 },
-		{ Key = 'SWuMaxBonus', ExtractAs = 'TooltipMaxBonus', Format = 'Percent' },
+		{ Key = 'SWuMaxBonus', ExtractAs = 'TooltipMaxBonus', Format = 'Percent', SkipAutoExtract = true },
 	},
 
 	ExtraFields = {

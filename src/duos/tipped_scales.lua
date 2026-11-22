@@ -36,6 +36,13 @@ local TIPPED_SCALES_SOURCES = {
 	EventLogic = true,
 
 	CombatLogic = true,
+	gilded_hook = true,
+	concave_stone = true,
+}
+
+local TIPPED_SCALES_ARM_WITHOUT_FOES = {
+	gilded_hook = true,
+	concave_stone = true,
 }
 
 
@@ -129,8 +136,6 @@ end
 
 
 local function tipped_scales_caller()
-	if tipped_scales_no_foes() then return nil end
-
 	for level = 2, 40 do
 		local info = debug.getinfo(level, 'Sn')
 		if not info then return nil end
@@ -144,6 +149,7 @@ local function tipped_scales_caller()
 		local name = tipped_scales_chunk(info.short_src)
 		if name and TIPPED_SCALES_SOURCES[name] then
 			if name == 'CombatLogic' and tipped_scales_non_enemy(level) then return nil end
+			if not TIPPED_SCALES_ARM_WITHOUT_FOES[name] and tipped_scales_no_foes() then return nil end
 			return name, level
 		end
 	end

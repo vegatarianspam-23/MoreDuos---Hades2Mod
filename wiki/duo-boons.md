@@ -4,12 +4,12 @@
 - **Bitter End** (Ares × Demeter) — Your weapon strikes deal 50% more damage when inflicting Wounds or Freeze.
 - **Bleeding Heart** (Ares × Aphrodite) — Inflicting Wounds on a Weak foe creates a falling blade. Falling blades deal 50% more damage to Weak foes.
 - **Blinding Smite** (Apollo × Zeus) — When a Dazed foe misses its attack, 1–5 lightning bolts strike it . Lightning from Zeus deals 30% more damage to Dazed foes.
-- **Blood Born** (Hera × Ares) — Whenever a foe is slain, 5 Shamblers rise to take its place (capped at 10). Deal 3% more damage for every foe slain this location, up to 100%.
+- **Blood Born** (Hera × Ares) — Whenever you take damage or slay a foe, 30% chance to raise 1-5 Shamblers (capped at 10 at a time). Deal 5% more damage for every foe slain this location, up to 100%.
 - **Boiling Blood** (Ares × Hestia) — Plasma restores 1 Health on pickup. Deal 10% more damage for every hit you take this location, up to 100%.
 - **Bubbling Cauldron** (Hestia × Poseidon) — Froth is twice as likely to trigger, and can proc more frequently against Scorched foes.
 - **Burnt Offering** (Hera × Hestia) — Give up a boon now for 500 bonus Gold, and for the rest of the night you may purge rewards for more. Gain 20% of any Gold gained this way as Max Magick and Health.
 - **Cold Hearted** (Aphrodite × Demeter) — Your Attack and Special get +25 power against Frozen foes. Freeze does not wear off while a foe is Weak.
-- **Different League** (Apollo × Aphrodite) — +10% chance to Dodge attacks from nearby foes. All your damage to a foe is increased by your chance to avoid its attacks (includes Daze)
+- **Different League** (Apollo × Aphrodite) — +15% chance to Dodge attacks from nearby foes. Deal 5% more damage for every attack you Dodge this encounter, up to 100%.
 - **Discerning Taste** (Aphrodite × Zeus) — Most choices can be rerolled, including location rewards, Hammers and Hexes, and the first reroll of each is free. Gain 5 rerolls now. Does not need a reroll Arcana and keeps Fates' Whim.
 - **Energy Overflow** (Apollo × Poseidon) — Restore 30% more Magick. Magick restored past your limit raises it for the rest of the location, up to 999.
 - **Explosive Sparks** (Hephaestus × Zeus) — Hammer strikes from Hephaestus have a 30% chance to set off a massive blast where it lands.
@@ -26,7 +26,7 @@
 - **Nasty Comeback** (Hera × Hephaestus) — After you take damage from an attack, inflict Hitch on all foes and deal 10000% of taken damage back to your attacker (up to 9999). Heinous Affront only inflicts the Hitch.
 - **Orbital Ring** (Apollo × Hera) — When you Cast, every Hitched foe is pulled into the binding circle. Foes held in a Cast take 30% more damage.
 - **Permafrost Shield** (Demeter × Hephaestus) — You cannot take more than 35 damage from a single hit.
-- **Plasmic Capacitor** (Ares × Zeus) — Plasma is 20% more effective, caps at 120, and chain lightning deals 0.5 more damage for every Plasma you hold.
+- **Plasmic Capacitor** (Ares × Zeus) — Plasma is 50% more effective. Collecting Plasma past the 100 cap emits a burst of chain lightning (20 damage) at a nearby foe.
 - **Razor Shoals** (Ares × Poseidon) — Wounds can be re-inflicted on Frothed foes.
 - **Room Temperature** (Hestia × Demeter) — Hestia's fireballs thaw Frozen foes (so that they can be Frozen again), and deal 200 more damage to them.
 - **Royal Banquet** (Hera × Demeter) — Your boons are one rarity higher tonight, repeat this effect whenever one gains a Pom level.

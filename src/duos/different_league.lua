@@ -1,21 +1,54 @@
 ---@meta _
 
 
+local DIFFERENT_LEAGUE_DODGED = 'SWuDifferentLeagueDodged'
+
+
+local function different_league_scaling()
+	return mod.tuning.DifferentLeague.DodgeScaling == true
+end
+
+
+local function different_league_avoid()
+	return mod.tuning.DifferentLeague.AvoidDamage == true
+end
+
+
 register_duo({
 	key = 'DifferentLeague',
 
-	StatLines = { 'SWuDifferentLeagueDodgeStatDisplay' },
+	StatLines = different_league_scaling()
+		and { 'SWuDifferentLeagueStackStatDisplay', 'SWuDifferentLeagueDodgeStatDisplay' }
+		or { 'SWuDifferentLeagueStackStatDisplay' },
 	ExtractValues = with_keyword_extracts({
-		{ Key = 'SWuDodgeBonus', ExtractAs = 'TooltipDodgeBonus', Format = 'Percent', IncludeSigns = true },
+		{ Key = 'SWuDamagePerDodge', ExtractAs = 'TooltipPerDodge', Format = 'Percent' },
+		{ Key = 'SWuDodgeBonus', ExtractAs = 'TooltipDodgeBonus', Format = 'Percent', IncludeSigns = true,
+			SkipAutoExtract = not different_league_scaling() or nil },
+		{ Key = 'SWuMaxBonus', ExtractAs = 'TooltipMaxBonus', Format = 'Percent', SkipAutoExtract = true },
 	}, 'Blind'),
 
 	ExtraFields = {
+		SWuDamagePerDodge = mod.tuning.DifferentLeague.StackDamage,
+		SWuMaxBonus = mod.tuning.DifferentLeague.StackMax,
 		SWuDodgeBonus = mod.tuning.DifferentLeague.DodgeBonus,
 		SWuDifferentLeagueMultiplier = 1,
 
-		AddOutgoingDamageModifiers = {
+		AddOutgoingDamageModifiers = different_league_avoid() and {
 			UseTraitValue = 'SWuDifferentLeagueMultiplier',
 			IsMultiplier = true,
+		} or nil,
+
+		ShowInHUD = true,
+		CustomLabel = {
+			DisplayType = 'RoomValue',
+			Key = 'SWuDifferentLeaguePercent',
+			Text = 'UI_TimedKillBuff',
+		},
+
+		OnDodgeFunction = {
+			FunctionName = DIFFERENT_LEAGUE_DODGED,
+			RunOnce = true,
+			FunctionArgs = {},
 		},
 
 		SetupFunction = {
@@ -26,6 +59,67 @@ register_duo({
 		},
 	},
 })
+
+
+local function different_league_bonus()
+	local room = game.CurrentRun and game.CurrentRun.CurrentRoom
+	if not room then return 0 end
+	local tuning = mod.tuning.DifferentLeague
+
+	return math.min((room.SWuDifferentLeagueDodges or 0) * tuning.StackDamage, tuning.StackMax)
+end
+
+
+local function different_league_apply()
+	local bonus = different_league_bonus()
+	duo_set_multiplier('DifferentLeague', 1 + bonus)
+	duo_show_percent(duo_traits.DifferentLeague, 'SWuDifferentLeaguePercent', bonus)
+end
+
+
+function different_league_clear()
+	duo_set_multiplier('DifferentLeague', 1)
+end
+
+
+local function different_league_new_encounter()
+	local room = game.CurrentRun and game.CurrentRun.CurrentRoom
+	if not room then return end
+
+	room.SWuDifferentLeagueDodges = 0
+	different_league_apply()
+end
+
+
+local function different_league_revenge(attacker)
+	local tuning = mod.tuning.DifferentLeague
+	if not tuning.RevengeOnDodge then return end
+	if not attacker or not attacker.ObjectId or attacker.IsDead then return end
+	if not game.ActiveEnemies or game.ActiveEnemies[attacker.ObjectId] ~= attacker then return end
+	if duo_ignores(attacker) then return end
+
+	local cooldown = tuning.RevengeCooldown
+		* game.GetTotalHeroTraitValue('OlympianRechargeMultiplier', { IsMultiplier = true })
+	if not game.CheckCooldown(attacker.ObjectId .. 'SWuDifferentLeagueRevenge', cooldown) then return end
+
+	local triggerArgs = { ManuallyTriggered = true, Victim = game.CurrentRun.Hero, DamageAmount = 10 }
+	for _, functionData in pairs(game.GetHeroTraitValues('OnSelfDamagedFunction')) do
+		game.thread(game.CallFunctionName, functionData.Name, attacker, functionData.FunctionArgs, triggerArgs)
+	end
+end
+
+
+modutil.mod.Path.Set(DIFFERENT_LEAGUE_DODGED, function(attacker)
+	if not duo_on('DifferentLeague') then return end
+	if not game.HeroHasTrait(duo_traits.DifferentLeague) then return end
+
+	local room = game.CurrentRun and game.CurrentRun.CurrentRoom
+	if not room then return end
+
+	room.SWuDifferentLeagueDodges = (room.SWuDifferentLeagueDodges or 0) + 1
+	different_league_apply()
+	different_league_revenge(attacker)
+end)
 
 
 local DIFFERENT_LEAGUE_MISS = 'SWuDifferentLeagueMiss'
@@ -81,6 +175,7 @@ end
 
 
 function different_league_record_miss(args)
+	if not different_league_avoid() then return end
 	local miss = args and args.DataProperties and args.DataProperties.MissChance
 	if type(miss) ~= 'number' or not args.EffectName or not args.DestinationId then return end
 
@@ -117,17 +212,8 @@ function different_league_dodge_against(foe)
 end
 
 
-local function different_league_near(hero, unit)
-	local boon = mod.tuning.DifferentLeague.NearbyExclusionBoon
-	if boon and game.HeroHasTrait(boon) then return true end
-
-	local distance = game.GetDistance({ Id = hero.ObjectId, DestinationId = unit.ObjectId })
-	return distance ~= nil and distance <= mod.tuning.DifferentLeague.Radius
-end
-
-
 local function different_league_multiplier(attacker, victim)
-	if not duo_on('DifferentLeague') then return 1 end
+	if not duo_on('DifferentLeague') or not different_league_avoid() then return 1 end
 
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero or attacker ~= hero then return 1 end
@@ -138,6 +224,7 @@ end
 
 
 function different_league_refresh(attacker, victim)
+	if not different_league_avoid() then return end
 	local trait = duo_traits.DifferentLeague and game.GetHeroTrait(duo_traits.DifferentLeague)
 	if not trait then return end
 
@@ -145,7 +232,20 @@ function different_league_refresh(attacker, victim)
 end
 
 
+local function different_league_near(hero, unit)
+	local boon = mod.tuning.DifferentLeague.NearbyExclusionBoon
+	if boon and game.HeroHasTrait(boon) then return true end
+
+	local distance = game.GetDistance({ Id = hero.ObjectId, DestinationId = unit.ObjectId })
+	return distance ~= nil and distance <= mod.tuning.DifferentLeague.Radius
+end
+
+
 function mod.DifferentLeague(_hero, args)
+	if not duo_on('DifferentLeague') then return end
+	different_league_new_encounter()
+	if not different_league_scaling() then return end
+
 	local interval = (args and args.Interval) or mod.tuning.DifferentLeague.MissInterval
 	local loop = duo_loop_claim(duo_traits.DifferentLeague)
 	if not loop then return end

@@ -19,6 +19,7 @@ local LIGHTNING = {
 	mod.tuning.AirControl.BoltProjectile,
 	mod.tuning.TippedScales.BoltProjectile,
 	'ProjectileZeusSpark',
+	'ZeusWrathBolt',
 	'ZeusCastAnywhereBlast',
 	'ZeusApolloSynergyStrike',
 }

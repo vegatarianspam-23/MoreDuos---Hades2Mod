@@ -9,9 +9,10 @@ local CONFIG_LABELS = {
 	TectonicCycleResetsCooldowns ='Tectonic Cycle also resets timed cooldowns',
 	WrathOfOlympus = 'Wrath of Olympus support',
 	ZagreusJourney = "Zagreus' Journey support",
+	HermesDuos = 'HermesDuos support',
 }
 
-local CONFIG_MOD_SUPPORT = { WrathOfOlympus = true, ZagreusJourney = true }
+local CONFIG_MOD_SUPPORT = { WrathOfOlympus = true, ZagreusJourney = true, HermesDuos = true }
 
 local CONFIG_EXPERIMENTAL_GROUPS = {
 	{ Key = 'Duos', Name = 'New duos' },
@@ -120,7 +121,7 @@ end
 
 local function config_experimental_group(key)
 	if CONFIG_MOD_SUPPORT[key] then return 'Mods' end
-	if key:sub(-3) == 'Alt' then return 'Alt' end
+	if key:match('Alt%d*$') then return 'Alt' end
 	if config_gods(key) then return 'Duos' end
 	return 'Other'
 end

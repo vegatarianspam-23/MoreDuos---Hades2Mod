@@ -200,7 +200,7 @@ function mod.AirControl(_hero, args)
 		last = now
 		sincePrune = sincePrune + elapsed
 
-		local channelling = duo_on('AirControl') and air_control_channelling()
+		local channelling = duo_on('AirControl') and air_control_channelling() and mod.tuning.AirControl.ChannelGuard
 
 		if channelling then
 			air_control_raise()

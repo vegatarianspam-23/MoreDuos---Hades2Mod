@@ -74,10 +74,16 @@ duo_text = {
 
 	DifferentLeague = {
 		Name = 'Different League',
-		Description = 'You have a greater chance to {$Keywords.Dodge} attacks from nearby foes. You deal more ' ..
-			'damage to each foe based on your chance to avoid its attacks, including {$Keywords.Blind}.',
+		Description = (mod.tuning.DifferentLeague.DodgeScaling
+				and 'You have a greater chance to {$Keywords.Dodge} attacks from nearby foes. ' or '') ..
+			(mod.tuning.DifferentLeague.AvoidDamage
+				and 'You deal more damage to each foe based on your chance to avoid its attacks. ' or '') ..
+			'You deal more damage for every attack you {$Keywords.Dodge} this {$Keywords.EncounterAlt}, ' ..
+			'up to {#BoldFormatGraft}' ..
+			'{$TooltipData.ExtractData.TooltipMaxBonus}%{#Prev}.',
 		StatLines = {
-			SWuDifferentLeagueDodgeStatDisplay = { Name = 'Bonus {$Keywords.Dodge} Chance vs. Nearby Foes:', Index = 1 },
+			SWuDifferentLeagueStackStatDisplay = { Name = 'Bonus Damage per Dodge:', Index = 1 },
+			SWuDifferentLeagueDodgeStatDisplay = { Name = 'Bonus {$Keywords.Dodge} Chance vs. Nearby Foes:', Index = 2 },
 		},
 	},
 
@@ -93,11 +99,11 @@ duo_text = {
 
 	GoldenRule = {
 		Name = 'Golden Rule',
-		Description = 'You deal more damage for every {!Icons.Currency} you have. After you exit a ' ..
+		Description = 'You deal more damage for every {!Icons.Currency} you have, up to {#BoldFormatGraft}' ..
+			'{$TooltipData.ExtractData.TooltipMaxBonus}%{#Prev}. After you exit a ' ..
 			'{$Keywords.RoomAlt}, earn interest on it.',
 		StatLines = {
 			SWuGoldenRuleStatDisplay = { Name = 'Bonus Damage per Gold:', Index = 1 },
-			SWuGoldenRuleMaxStatDisplay = { Name = 'Max Bonus Damage:', Index = 2 },
 		},
 	},
 
@@ -216,14 +222,17 @@ duo_text = {
 
 	BloodBorn = {
 		Name = 'Blood Born',
-		Description = 'You deal more damage for every foe you slay this {$Keywords.RoomAlt}. ' ..
-			'Whenever a foe is slain, {#BoldFormatGraft}' ..
-			'{$TooltipData.ExtractData.TooltipZombies} {#Prev}' ..
+		Description = (mod.tuning.BloodBorn.RingSummon
+				and 'Whenever a foe is slain, '
+				or 'Whenever you take damage or slay a foe, you may raise ') ..
 			(mod.tuning.BloodBorn.Hitch and '{$Keywords.Link}-afflicted ' or '') ..
-			'Shamblers rise to take its place.',
+			(mod.tuning.BloodBorn.RingSummon and 'Shamblers rise to take its place. ' or 'Shamblers. ') ..
+			'You deal more damage for every foe slain this ' ..
+			(mod.tuning.BloodBorn.PerEncounter and '{$Keywords.EncounterAlt}' or '{$Keywords.RoomAlt}') ..
+			', Shamblers included, up to {#BoldFormatGraft}{$TooltipData.ExtractData.TooltipMaxBonus}%{#Prev}.',
 		StatLines = {
 			SWuBloodBornStatDisplay = { Name = 'Bonus Damage per Slain Foe:', Index = 1 },
-			SWuBloodBornMaxStatDisplay = { Name = 'Max Bonus Damage:', Index = 2 },
+			SWuBloodBornRaiseStatDisplay = { Name = 'Chance to Raise Shamblers:', Index = 2 },
 		},
 	},
 
@@ -255,10 +264,18 @@ duo_text = {
 
 	PlasmicCapacitor = {
 		Name = 'Plasmic Capacitor',
+		Description = 'Your {!Icons.BloodDropIcon} is more effective. Any excess you collect {!Icons.BloodDropIcon} ' ..
+			'emits a burst of chain-lightning at nearby foes.',
+		StatLines = {
+			SWuPlasmicCapacitorBonusStatDisplay = { Name = 'Bonus Plasma Effectiveness:', Index = 1 },
+		},
+	},
+	PlasmicCapacitorAlt2 = {
+		Name = 'Plasmic Capacitor Alt 2',
 		Description = 'Your {!Icons.BloodDropIcon} is more effective, and your chain-lightning deals more ' ..
 			'damage for each {!Icons.BloodDropIcon} you have.',
 		StatLines = {
-			SWuPlasmicCapacitorCeilingStatDisplay = { Name = 'Max Plasma:', Index = 2 },
+			SWuPlasmicCapacitorAlt2CeilingStatDisplay = { Name = 'Max Plasma:', Index = 2 },
 		},
 	},
 	PlasmicCapacitorAlt = {
@@ -373,6 +390,28 @@ duo_text = {
 		StatLines = {
 			SWuBurntOfferingGoldStatDisplay = { Name = 'First-Offering Bonus Gold:', Index = 1 },
 			SWuBurntOfferingPurgesStatDisplay = { Name = 'Purges per {$Keywords.Biome}:', Index = 2 },
+		},
+	},
+
+	SacrosanctAlms = {
+		Name = 'Sacrosanct Alms',
+		Description = 'For the rest of this night, you may purge rewards for {!Icons.Currency}, ' ..
+			'{!Icons.ManaUp} and {!Icons.HealthUp}. Give up a ' ..
+			'{$Keywords.GodBoonNoTooltip} now for bonus {!Icons.Currency}.',
+		StatLines = {
+			SWuSacrosanctAlmsGoldStatDisplay = { Name = 'First-Offering Bonus Gold:', Index = 1 },
+			SWuSacrosanctAlmsPurgesStatDisplay = { Name = 'Purges per {$Keywords.Biome}:', Index = 2 },
+		},
+	},
+
+	GildedHook = {
+		Name = 'Gilded Hook',
+		Description = 'Whenever you take a {$Keywords.GodBoon} or {!Icons.Hammer}, a copy may appear. Take a random one now.',
+		StatLines = {
+			SWuGildedHookStatDisplay = { Name = 'Duplicate Chance:', Index = 1 },
+		},
+		CombatText = {
+			SWuGildedHookReward = '{#CombatTextHighlightFormat}Gilded Hook{#Prev}!',
 		},
 	},
 

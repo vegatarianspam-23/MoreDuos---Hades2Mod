@@ -17,6 +17,7 @@ mod.tuning = {
 	Fireballs = {
 		Projectiles = {
 			'ProjectileCastFireball', 'ProjectileFireball', 'SWuHestiaFireball',
+			'ProjectileSprintFireball',
 		},
 	},
 
@@ -120,7 +121,15 @@ mod.tuning = {
 		BoltInterval = 0.12,
 	},
 	DifferentLeague = {
-		DodgeBonus = 0.10,
+		StackDamage = 0.05,
+		StackMax = 1.00,
+
+		RevengeOnDodge = false,
+		RevengeCooldown = 6,
+
+		DodgeScaling = true,
+		DodgeBonus = 0.15,
+		AvoidDamage = false,
 		DamagePerDodge = 1.0,
 		MissInterval = 0.25,
 		MissDuration = 0.5,
@@ -213,9 +222,16 @@ mod.tuning = {
 		FissureDetonateAnim = 'SWuVolcanicRiftFissureDetonate',
 		FissureLineAnim = 'SWuVolcanicRiftFissureLine',
 		FissureHue = 0.3,
+		SwornTrailPrefix = 'SWuVolcanicRift',
+		SwornTrailAnims = {
+			'HeraBlinkShort1', 'HeraBlinkShort2', 'HeraBlinkShort3',
+			'HeraBlinkShortDark1', 'HeraBlinkShortDark2', 'HeraBlinkShortDark3',
+			'HeraBlinkDissShort1', 'HeraBlinkDissShort2', 'HeraBlinkDissShort3',
+		},
+
 
 		RiftDamage = 120,
-		FireballDamage = 30,
+		FireballDamage = 60,
 		PuddleDamage = 20,
 		PuddleInterval = 0.25,
 		PuddleDuration = 3,
@@ -257,7 +273,7 @@ mod.tuning = {
 		MaxPerSlot = 2,
 	},
 	BloodBorn = {
-		Zombies = 5,
+		ZombieWeights = { 0.10, 0.30, 0.30, 0.20, 0.10 },
 		SummonSpread = 150,
 		SummonInterval = 0.08,
 		ZombieEnemy = 'Zombie',
@@ -266,8 +282,12 @@ mod.tuning = {
 
 		MaxAlive = 10,
 
-		DamagePerKill = 0.03,
+		RaiseChance = 0.30,
+		RingSummon = false,
+
+		DamagePerKill = 0.05,
 		MaxBonus = 1.00,
+		PerEncounter = false,
 	},
 	RazorShoals = {
 		RefreshDelay = 0.01,
@@ -291,7 +311,10 @@ mod.tuning = {
 		BoltRange = 800,
 		PlasmaMin = 1,
 		PlasmaMax = 3,
-		PlasmaMultiplier = 1.2,
+		PlasmaBonus = 0.50,
+		PlasmaCap = 100,
+
+		Alt2PlasmaMultiplier = 1.2,
 		SparkPowerPerPlasma = 0.5,
 		SparkPowerThreshold = 0,
 		ArcDamage = 20,
@@ -409,6 +432,25 @@ mod.tuning = {
 
 		DemandDelay = 0.6,
 	},
+	SacrosanctAlms = {
+		ManaPerGold = 0.20,
+		HealthPerGold = 0.20,
+		FirstPurgeGold = 500,
+
+		PurgeGoldMultiplier = 1.0,
+
+		PurgesPerBiome = false,
+
+		MinorFindMultiplier = 0.5,
+
+		DemandDelay = 0.6,
+	},
+	GildedHook = {
+		DuplicateChance = 0.35,
+		MysteryBoonChance = 0.5,
+		MysteryBoon = 'BlindBoxLoot',
+		Anvil = 'ChaosWeaponUpgrade',
+	},
 	IngeniousInvention = {
 		EncountersPerHammer = 6,
 		Debug = true,
@@ -455,6 +497,8 @@ mod.tuning = {
 		RingFx = 'SWuAirControlRingFx',
 		RingRadius = 430,
 		FlameFx = 'SWuAirControlFlames',
+
+		ChannelGuard = false,
 
 		BoltDamage = 120,
 		BlockCooldown = 0,

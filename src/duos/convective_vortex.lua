@@ -2,6 +2,12 @@
 
 
 local RIFT = 'AresProjectile'
+local BLOODY = 'BlinkTrailProjectileAres'
+
+
+local function convective_vortex_covers(name)
+	return name == RIFT or name == BLOODY
+end
 
 
 register_duo({
@@ -18,16 +24,17 @@ register_duo({
 		SWuRiftDuration = mod.tuning.ConvectiveVortex.DurationMultiplier,
 
 		OnEnemyDamagedAction = {
-			ValidProjectiles = { RIFT },
-			ValidProjectilesLookup = game.ToLookup({ RIFT }),
+			ValidProjectiles = { RIFT, BLOODY },
+			ValidProjectilesLookup = game.ToLookup({ RIFT, BLOODY }),
 			FunctionName = _PLUGIN.guid .. '.ConvectiveVortex',
 		},
 	},
 })
 
 
-function mod.ConvectiveVortex(victim, functionArgs)
+function mod.ConvectiveVortex(victim, functionArgs, triggerArgs)
 	if not duo_on('ConvectiveVortex') then return end
+	if triggerArgs and triggerArgs.SourceProjectile and not convective_vortex_covers(triggerArgs.SourceProjectile) then return end
 	if functionArgs and functionArgs.VictimWillBeAlive == false then return end
 	if not victim or not victim.ObjectId or victim.IsDead or duo_ignores(victim) then return end
 
@@ -55,7 +62,7 @@ end
 
 
 function convective_vortex_rift(args)
-	if not args or args.Name ~= RIFT then return args end
+	if not args or not convective_vortex_covers(args.Name) then return args end
 	if not duo_on('ConvectiveVortex') then return args end
 	if not game.HeroHasTrait(duo_traits.ConvectiveVortex) then return args end
 
@@ -66,7 +73,7 @@ function convective_vortex_rift(args)
 	})
 
 	local lifetime = (args.DataProperties and args.DataProperties.TotalFuse)
-		or game.GetBaseDataValue({ Type = 'Projectile', Name = RIFT, Property = 'TotalFuse' })
+		or game.GetBaseDataValue({ Type = 'Projectile', Name = args.Name, Property = 'TotalFuse' })
 	if type(lifetime) == 'number' then
 		args.DataProperties = game.ShallowCopyTable(args.DataProperties or {})
 		args.DataProperties.TotalFuse = lifetime * tuning.DurationMultiplier

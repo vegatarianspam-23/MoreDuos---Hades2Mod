@@ -6,16 +6,13 @@ Each entry can be switched on in the config, under `Experimental`.
 
 ## Duos
 
-- **Convective Vortex** (Ares × Hestia) · `ConvectiveVortex` — Your Blade Rift lasts 50% longer and inflicts 25 Scorch per hit. Scorch on foes in the rift builds up instead of burning down.
+- **Convective Vortex** (Ares × Hestia) · `ConvectiveVortex` — Your Blade Rifts last 50% longer and inflicts 25 Scorch per hit. Scorch on foes in the rift builds up instead of burning down.
   - Meat Grinder
   - Flame Strike, Flame Flourish, Smolder Ring
 - **Spiteful Strength** (Hera × Hephaestus) · `SpitefulStrength` — Prime 60 Magick now. Your weapon strikes deal more damage for the share of your Magick that is Primed, up to +100% at all of it. Bonus is doubled for an Attack or Special with no percentage-damage boon on it (none, Zeus, Poseidon, Hestia, Hephaestus).
   - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain
   - Volcanic Strike, Volcanic Flourish, Anvil Ring, Smithy Rush, Tough Gain
   - High Surf, Static Shock, Secret Crush, Killing Stroke, Ingenious Strike, Ingenious Flourish, Stalwart Stand, Trusty Shield
-- **Volcanic Rift** (Hera × Hestia) · `VolcanicRift` — Your Fine Line fissures turn orange and erupt into 5 fireballs dealing 30 damage that leave fire puddles dealing 20 damage every 0.25 seconds.
-  - Fine Line
-  - Heat Rush, Volcanic Crown *(BoonEdits)*
 
 ## Alternate versions
 
@@ -30,6 +27,9 @@ Turning one of these on replaces the regular duo in the pool.
 - **Plasmic Capacitor Alt** (Ares × Zeus) · `PlasmicCapacitorAlt` — Your Blitz leaves Plasma behind, which creates chain-lightning when collected. Maximum plasma cap raised to 120.
   - Grisly Gain, Visceral Impact, Meat Grinder *(BoonEdits)*, Profuse Bleeding *(BoonEdits)*
   - Heaven Strike, Heaven Flourish
+- **Plasmic Capacitor Alt 2** (Ares × Zeus) · `PlasmicCapacitorAlt2` — Plasma is 20% more effective, caps at 120, and chain lightning deals 0.5 more damage for every Plasma you hold.
+  - Grisly Gain, Visceral Impact, Meat Grinder *(BoonEdits)*, Profuse Bleeding *(BoonEdits)*
+  - Static Shock
 - **Solar Eclipse Alt** (Apollo × Ares) · `SolarEclipseAlt` — Move and strike 10% faster for each Dazed foe, up to 50%. If all foes are Dazed, go Dark and deal double damage for 5 seconds (40 second recharge).
   - Solar Ring, Blinding Rush, Dazzling Display, Light Smite
   - Grievous Blow, Mutual Destruction, Blood Spree
@@ -43,3 +43,10 @@ Turning one of these on replaces the regular duo in the pool.
 ## Other Boons
 
 - **Pandemonium** (Chaos Legendary) · `Pandemonium` — ???
+
+## Mod support
+
+- **HermesDuos** (`Experimental.HermesDuos`, needs Wistiti-HermesDuos installed)
+  - **Sacrosanct Alms** (Hermes × Hera) — New Effect: Burnt Offering's effect on a Hermes duo: give up a boon now for 500 bonus Gold, and for the rest of the night you may purge rewards for more. Gain 20% of any Gold gained this way as Max Magick and Health.
+  - **Gilded Hook** (Hermes × Poseidon) — New Effect: Whenever you take a boon or a Hammer, or use an Anvil of Fates, 35% chance it is duplicated. Taking this grants a mystery boon or a Hammer.
+  - **Burnt Offering** is replaced with **Volcanic Rift** as the Hera x Hestia boon.

@@ -181,27 +181,29 @@ modutil.mod.Path.Wrap("ManaOverTimeRefund", function(base, duration, interval, v
 end)
 
 modutil.mod.Path.Wrap("CanGoldifyReward", function(base, reward)
-	return burnt_offering_allows_purge(base, reward)
+	return burnt_offering_allows_purge(function(r) return sacrosanct_alms_allows_purge(base, r) end, reward)
 end)
 
 modutil.mod.Path.Wrap("GetRewardGoldifyValue", function(base, reward)
-	return burnt_offering_purge_gold(base, reward)
+	return burnt_offering_purge_gold(function(r) return sacrosanct_alms_purge_gold(base, r) end, reward)
 end)
 
 modutil.mod.Path.Wrap("GoldifyPresentation", function(base, source)
 	local result = base(source)
 	burnt_offering_purged(source)
+	sacrosanct_alms_purged(source)
 	return result
 end)
 
 modutil.mod.Path.Wrap("HandleSellChoiceSelection", function(base, screen, button)
 	local result = base(screen, button)
 	burnt_offering_sold(button)
+	sacrosanct_alms_sold(button)
 	return result
 end)
 
 modutil.mod.Path.Wrap("CloseStoreScreen", function(base, screen, button)
-	return burnt_offering_close_store(base, screen, button)
+	return burnt_offering_close_store(function(s, b) return sacrosanct_alms_close_store(base, s, b) end, screen, button)
 end)
 
 modutil.mod.Path.Wrap("GetReplacementTraits", function(base, traitNames, onlyFromLootName)
@@ -221,7 +223,9 @@ modutil.mod.Path.Wrap("RemoveWeaponTrait", function(base, traitName, args)
 end)
 
 modutil.mod.Path.Wrap("HasTraitRequirements", function(base, traitName)
-	return duo_pair_limit_meets(burnt_offering_meets_requirements(base, traitName), traitName)
+	return duo_pair_limit_meets(burnt_offering_meets_requirements(function(t)
+		return sacrosanct_alms_meets_requirements(base, t)
+	end, traitName), traitName)
 end)
 
 
@@ -264,6 +268,10 @@ modutil.mod.Path.Wrap("CreateProjectileFromUnit", function(base, args)
 	local id = base(args)
 	volcanic_rift_track(args, id)
 	return id
+end)
+
+modutil.mod.Path.Wrap("CreateAnimationsBetween", function(base, args)
+	return base(volcanic_rift_trail(args))
 end)
 
 modutil.mod.Path.Wrap("CheckDemeterStormSpawn", function(base, hero, args)
@@ -322,7 +330,7 @@ end)
 
 
 modutil.mod.Path.Wrap("UpdateBloodDropSpeed", function(base, functionArgs, healthChange)
-	base(functionArgs, healthChange)
+	plasmic_capacitor_update_speed(base, functionArgs, healthChange)
 	plasmic_capacitor_raise_ceiling()
 end)
 
@@ -542,6 +550,59 @@ modutil.mod.Path.Wrap("LeaveRoom", function(base, currentRun, door)
 end)
 
 
+local function tray_lists(trait)
+	for _, traitName in pairs(duo_traits or {}) do
+		if traitName == trait.Name then return true end
+	end
+	return false
+end
+
+local trayListing = nil
+
+local function tray_proxy(trait)
+	local proxy = game.ShallowCopyTable(trait)
+	proxy.SWuTrayProxy = true
+	proxy.AnchorId = nil
+	proxy.TraitInfoCardId = nil
+	proxy.TraitInfoChargeId = nil
+	proxy.CustomLabel = nil
+	return proxy
+end
+
+modutil.mod.Path.Wrap("TraitTrayShowTraits", function(base, ...)
+	trayListing = 'tray'
+	local result = base(...)
+	trayListing = nil
+	return result
+end)
+
+modutil.mod.Path.Wrap("ShowTraitUI", function(base, ...)
+	local result = base(...)
+	if trayListing ~= 'tray' then return result end
+	trayListing = nil
+	local shallowCopy = game.ShallowCopyTable
+	game.ShallowCopyTable = function(orig, ...)
+		game.ShallowCopyTable = shallowCopy
+		local copy = shallowCopy(orig, ...)
+		if type(copy) ~= 'table' or not game.CurrentRun or not game.CurrentRun.Hero or orig ~= game.CurrentRun.Hero.Traits then
+			return copy
+		end
+		for i, trait in pairs(copy) do
+			if type(trait) == 'table' and not trait.SWuTrayProxy and trait.ShowInHUD and tray_lists(trait) then
+				copy[i] = tray_proxy(trait)
+			end
+		end
+		return copy
+	end
+	return result
+end)
+
+modutil.mod.Path.Wrap("IsShownInHUD", function(base, trait, ...)
+	if trait and trait.SWuTrayProxy then return false end
+	return base(trait, ...)
+end)
+
+
 modutil.mod.Path.Wrap("SetupMap", function(base, ...)
 	prefix_SetupMap()
 	local result = base(...)
@@ -613,6 +674,7 @@ function create_duo(spec)
 		requirements = { OneFromEachSet = duo_offer_sets(id) }
 	})
 
+	cross_list_duo(requirements.Gods[1], traitName)
 	cross_list_duo(requirements.Gods[2], traitName)
 
 	if requirements.Requires then

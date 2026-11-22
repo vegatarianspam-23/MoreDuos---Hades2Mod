@@ -7,12 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [9.9.9] - 2026-11-21
+
+### Changed
+
+- Plasmic Capacitor: Plasma is 50% more effective (was 20%) and no longer raises the max plasma cap. Excess plasma now converts to chain lightning on pickup.
+- Different League: deal 5% more damage for every attack you Dodge this encounter, Daze misses included, up to 100%, shown on its HUD icon. It keeps the +15% chance to Dodge attacks from nearby foes (up from 10%), but the passive dodge-damage scaling effect is removed.
+- Blood Born: taking damage or slaying a foe has a 30% chance to raise 1-5 Shamblers (10/30/30/20/10% for 1-5; still capped at 10), instead of 5 per kill. Slain Shamblers count toward the 5% extra damage per foe slain per location.
+- Orbital Ring, Energy Overflow and Ingenious Invention requirement updates: Apollo bucket is now Super Nova, Perfect Image, Extra Dose, and Prominence Flare
+- Air Control no longer destroys projectiles while channeling
+- Volcanic Rift: fireballs deal 60 damage (was 30)
+- Added experimental compatiblity with Zerp's MoreDashBoons and Wistiti's HermesDuos (various boon interactions, alternates for redundant boons)
+
 ## [1.1.8] - 2026-11-19
 
 ### Fixed
 
 - Fixed Air Control not destroying certain projectiles from Zagreus' Journey properly
 - Updated damage meter for Air Control, Blinding Smite and Tipped Scales lightning
+- Fixed issue with certain boons not showing up properly on boon tray
 
 ### Changed
 
@@ -261,6 +274,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
+[9.9.9]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.8...9.9.9
 [1.1.8]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.7...1.1.8
 [1.1.7]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.6...1.1.7
 [1.1.6]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.5...1.1.6

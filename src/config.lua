@@ -19,6 +19,7 @@ local config = {
     FamilyReunion = true;
     FamilyTrade = true;
     GentleCaress = true;
+    GildedHook = true;
     GlacialAdvance = true;
     GoldenRule = true;
     HotIron = true;
@@ -33,11 +34,13 @@ local config = {
     RazorShoals = true;
     RoomTemperature = true;
     RoyalBanquet = true;
+    SacrosanctAlms = true;
     SolarEclipse = true;
     SolarFlare = true;
     StormFront = true;
     TectonicCycle = true;
     TippedScales = true;
+    VolcanicRift = true;
     WinterSolstice = true;
     WishingWell = true;
   };
@@ -47,13 +50,13 @@ local config = {
 
     SpitefulStrength = false;
 
-    VolcanicRift = false;
-
     GlacialAdvanceAlt = false;
 
     HotIronAlt = false;
 
     PlasmicCapacitorAlt = false;
+
+    PlasmicCapacitorAlt2 = false;
 
     SolarEclipseAlt = false;
 
@@ -66,6 +69,8 @@ local config = {
     WrathOfOlympus = false;
 
     ZagreusJourney = false;
+
+    HermesDuos = false;
   };
 
   Options = {

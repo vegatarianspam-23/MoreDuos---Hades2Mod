@@ -133,7 +133,7 @@ function burnt_offering_purge_gold(base, reward)
 	if not duo_on('BurntOffering') then return value end
 
 	local minor = mod.tuning.BurntOffering.MinorFindMultiplier
-	if burnt_offering_minor(reward) and type(minor) == 'number' and minor < 1 then
+	if reward and reward.SWuBurntOfferingPurge and burnt_offering_minor(reward) and type(minor) == 'number' and minor < 1 then
 		value = math.floor(value * minor + 0.5)
 	end
 

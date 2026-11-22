@@ -7,7 +7,13 @@ local FIREBALL = mod.tuning.VolcanicRift.FireballProjectile
 local PUDDLE = mod.tuning.VolcanicRift.PuddleProjectile
 
 local SPRINT_TRAIL = mod.tuning.VolcanicRift.SprintTrail
-local ERUPTS = { [RIFT] = true, [FINE_LINE] = true }
+local SWORN = 'BlinkTrailProjectileHeraOmega'
+local ERUPTS = { [RIFT] = true, [FINE_LINE] = true, [SWORN] = true }
+
+
+local function volcanic_rift_erupts(name)
+	return ERUPTS[name]
+end
 
 
 once('VolcanicRiftProjectiles', function()
@@ -53,8 +59,8 @@ register_duo({
 
 		OnProjectileDeathFunction = {
 			Name = _PLUGIN.guid .. '.VolcanicRiftDeath',
-			ValidProjectiles = { RIFT, FINE_LINE, FIREBALL },
-			ValidProjectilesLookup = game.ToLookup({ RIFT, FINE_LINE, FIREBALL }),
+			ValidProjectiles = { RIFT, FINE_LINE, FIREBALL, SWORN },
+			ValidProjectilesLookup = game.ToLookup({ RIFT, FINE_LINE, FIREBALL, SWORN }),
 		},
 
 		OnEnemyDamagedAction = PUDDLES_SCORCH and {
@@ -104,7 +110,7 @@ end
 
 
 function volcanic_rift_tint(args)
-	if not args or not ERUPTS[args.Name] or not volcanic_rift_held() then return args end
+	if not args or not volcanic_rift_erupts(args.Name) or not volcanic_rift_held() then return args end
 
 	local tuning = mod.tuning.VolcanicRift
 	local tinted = game.ShallowCopyTable(args)
@@ -114,8 +120,20 @@ function volcanic_rift_tint(args)
 end
 
 
+local SWORN_TRAIL = game.ToLookup(mod.tuning.VolcanicRift.SwornTrailAnims)
+
+
+function volcanic_rift_trail(args)
+	if type(args) ~= 'table' or not SWORN_TRAIL[args.Animation] or not volcanic_rift_held() then return args end
+
+	local tinted = game.ShallowCopyTable(args)
+	tinted.Animation = mod.tuning.VolcanicRift.SwornTrailPrefix .. args.Animation
+	return tinted
+end
+
+
 function volcanic_rift_track(args, id)
-	if not id or not args or not ERUPTS[args.Name] then return end
+	if not id or not args or not volcanic_rift_erupts(args.Name) then return end
 	if not volcanic_rift_held() then return end
 
 	local hero = game.CurrentRun.Hero
@@ -204,7 +222,7 @@ function mod.VolcanicRiftDeath(triggerArgs, _args)
 		return
 	end
 
-	if not ERUPTS[triggerArgs.name] then return end
+	if not volcanic_rift_erupts(triggerArgs.name) then return end
 
 	local rifts = game.SessionMapState.SWuVolcanicRifts
 	local angle = rifts and triggerArgs.ProjectileId and rifts[triggerArgs.ProjectileId]

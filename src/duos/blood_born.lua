@@ -1,31 +1,20 @@
 ---@meta _
 
 
-register_duo({
-	key = 'BloodBorn',
+local function blood_born_ring()
+	return mod.tuning.BloodBorn.RingSummon == true
+end
 
-	StatLines = { 'SWuBloodBornStatDisplay', 'SWuBloodBornMaxStatDisplay' },
 
-	ExtractValues = with_keyword_extracts({
-		{
-			Key = 'SWuDamagePerKill',
-			ExtractAs = 'TooltipPerKill',
-			Format = 'Percent',
-		},
-		{
-			Key = 'SWuMaxBonus',
-			ExtractAs = 'TooltipMaxBonus',
-			Format = 'Percent',
-		},
-		{ Key = 'SWuZombies', ExtractAs = 'TooltipZombies', SkipAutoExtract = true },
-	}, mod.tuning.BloodBorn.Hitch and 'Link' or nil),
+local function blood_born_spec()
+	local tuning = mod.tuning.BloodBorn
 
-	ExtraFields = {
-		SWuDamagePerKill = mod.tuning.BloodBorn.DamagePerKill,
-		SWuMaxBonus = mod.tuning.BloodBorn.MaxBonus,
-		SWuZombies = mod.tuning.BloodBorn.Zombies,
+	local extraFields = {
+		SWuDamagePerKill = tuning.DamagePerKill,
+		SWuMaxBonus = tuning.MaxBonus,
+		SWuRaiseChance = tuning.RaiseChance,
 
-		LoadPackages = mod.tuning.BloodBorn.ZombiePackages,
+		LoadPackages = tuning.ZombiePackages,
 
 		ShowInHUD = true,
 		CustomLabel = {
@@ -42,14 +31,43 @@ register_duo({
 			Name = _PLUGIN.guid .. '.BloodBornSetup',
 			RepeatOnEncounterStart = true,
 		},
-	},
-})
+	}
+
+	extraFields.OnSelfDamagedFunction = { Name = _PLUGIN.guid .. '.BloodBornHit' }
+
+	return {
+		StatLines = blood_born_ring()
+			and { 'SWuBloodBornStatDisplay' }
+			or { 'SWuBloodBornStatDisplay', 'SWuBloodBornRaiseStatDisplay' },
+
+		ExtractValues = with_keyword_extracts({
+			{
+				Key = 'SWuDamagePerKill',
+				ExtractAs = 'TooltipPerKill',
+				Format = 'Percent',
+			},
+			{ Key = 'SWuRaiseChance', ExtractAs = 'TooltipRaiseChance', Format = 'Percent',
+				SkipAutoExtract = blood_born_ring() or nil },
+			{ Key = 'SWuMaxBonus', ExtractAs = 'TooltipMaxBonus', Format = 'Percent', SkipAutoExtract = true },
+		}, tuning.Hitch and 'Link' or nil),
+
+		ExtraFields = extraFields,
+	}
+end
+
+
+local spec = blood_born_spec()
+spec.key = 'BloodBorn'
+register_duo(spec)
 
 
 function mod.BloodBornSetup()
 	game.LoadPackages({ Names = mod.tuning.BloodBorn.ZombiePackages })
 
 	local room = game.CurrentRun and game.CurrentRun.CurrentRoom
+	if room and mod.tuning.BloodBorn.PerEncounter then
+		room.SWuBloodBornKills = 0
+	end
 	blood_born_set_bonus((room and room.SWuBloodBornKills) or 0)
 end
 
@@ -74,24 +92,39 @@ local function blood_born_fighting()
 end
 
 
-function blood_born_raise(victim)
+local function blood_born_count()
+	local weights = mod.tuning.BloodBorn.ZombieWeights
+	local total = 0
+	for _, weight in ipairs(weights) do total = total + weight end
+
+	local roll = game.RandomFloat(0, total)
+	for count, weight in ipairs(weights) do
+		roll = roll - weight
+		if roll <= 0 then return count end
+	end
+	return #weights
+end
+
+
+function blood_born_raise(source)
 	local tuning = mod.tuning.BloodBorn
 
 	local enemyData = game.EnemyData[tuning.ZombieEnemy]
 	if not enemyData then return end
 
 	local headroom = math.max(tuning.MaxAlive - blood_born_risen(), 0)
-	local count = math.min(tuning.Zombies, headroom)
+	local count = math.min(blood_born_count(), headroom)
 	if count <= 0 then return end
 
-	local graveId = game.SpawnObstacle({ Name = 'InvisibleTarget', DestinationId = victim.ObjectId })
+	local graveId = game.SpawnObstacle({ Name = 'InvisibleTarget', DestinationId = source.ObjectId })
 	if not graveId then return end
 
+	local start = game.RandomFloat(0, 360)
 	for index = 1, count do
 		if not blood_born_fighting() then break end
 		if blood_born_risen() >= tuning.MaxAlive then break end
 
-		local offset = game.CalcOffset(math.rad(index * (360 / count)), tuning.SummonSpread)
+		local offset = game.CalcOffset(math.rad(start + index * (360 / count)), tuning.SummonSpread)
 
 		local zombie = game.DeepCopyTable(enemyData)
 		zombie.ObjectId = game.SpawnUnit({
@@ -122,10 +155,21 @@ function blood_born_raise(victim)
 end
 
 
+local function blood_born_roll_raise(source)
+	if not source or not source.ObjectId then return end
+
+	local luck = game.GetTotalHeroTraitValue('LuckMultiplier', { IsMultiplier = true })
+	if not game.RandomChance(mod.tuning.BloodBorn.RaiseChance * luck) then return end
+
+	game.thread(blood_born_raise, source)
+end
+
+
 function blood_born_clear()
 	local lastKilled = game.LastEnemyKilled
 	for _, unit in pairs(game.ShallowCopyTable(game.ActiveEnemies or {})) do
 		if unit.SWuBloodBorn and not unit.IsDead then
+			unit.SWuBloodBornCleared = true
 			game.thread(game.Kill, unit, { BlockRespawns = true })
 		end
 	end
@@ -146,12 +190,27 @@ function mod.BloodBornSlain(victim, _args, _triggerArgs)
 	local room = game.CurrentRun and game.CurrentRun.CurrentRoom
 	if not room or not victim or not victim.ObjectId then return end
 
-	if victim.SWuBloodBorn then return end
+	if victim.SWuBloodBornCleared then return end
 
 	room.SWuBloodBornKills = (room.SWuBloodBornKills or 0) + 1
 	blood_born_set_bonus(room.SWuBloodBornKills)
 
-	blood_born_raise(victim)
+	if victim.SWuBloodBorn then return end
+
+	if blood_born_ring() then
+		blood_born_raise(victim)
+	else
+		blood_born_roll_raise(victim)
+	end
+end
+
+
+function mod.BloodBornHit(_unit, _args, triggerArgs)
+	if not duo_on('BloodBorn') or blood_born_ring() then return end
+	if not game.HeroHasTrait(duo_traits.BloodBorn) then return end
+	if not triggerArgs or triggerArgs.ManuallyTriggered or not duo_blow_attacker(triggerArgs) then return end
+
+	blood_born_roll_raise(game.CurrentRun.Hero)
 end
 
 
@@ -173,7 +232,8 @@ function blood_born_set_bonus(kills)
 	end
 
 	local tuning = mod.tuning.BloodBorn
-	local bonus = math.min(kills * tuning.DamagePerKill, tuning.MaxBonus)
+	local perKill = tuning.DamagePerKill
+	local bonus = math.min(kills * perKill, tuning.MaxBonus)
 	entry.ValidWeaponMultiplier = 1 + bonus
 	duo_show_percent(duo_traits.BloodBorn, 'SWuBloodBornPercent', bonus)
 end
