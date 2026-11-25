@@ -2,6 +2,18 @@
 
 
 local NASTY_COMEBACK_HITCH = 'DamageShareEffect'
+local NASTY_COMEBACK_SOURCE = mod.tuning.NastyComeback.ReflectSource
+
+
+once('NastyComebackSource', function()
+	local hitch = game.EffectData[NASTY_COMEBACK_HITCH]
+	if hitch and not game.EffectData[NASTY_COMEBACK_SOURCE] then
+		game.EffectData[NASTY_COMEBACK_SOURCE] = game.DeepCopyTable(hitch)
+	end
+	if game.EffectData[NASTY_COMEBACK_SOURCE] then
+		game.EffectData[NASTY_COMEBACK_SOURCE].Name = NASTY_COMEBACK_SOURCE
+	end
+end)
 
 
 register_duo({
@@ -24,25 +36,9 @@ local function nasty_comeback_damage(victim, args)
 	if not victim or not victim.ObjectId or game.IsInvulnerable({ Id = victim.ObjectId }) then return end
 	if victim.InvulnerableFlags and not game.IsEmpty(victim.InvulnerableFlags) then return end
 
-	local source = mod.tuning.NastyComeback.ReflectSource
-	local states = { game.CurrentRun, game.GameState }
-	local before = {}
-	for i, state in ipairs(states) do
-		local record = state and state.DamageDealtByHeroRecord
-		before[i] = record and record[NASTY_COMEBACK_HITCH] or 0
-	end
-
+	args.EffectName = game.EffectData[NASTY_COMEBACK_SOURCE] and NASTY_COMEBACK_SOURCE or NASTY_COMEBACK_HITCH
+	args.AttackerName = '_PlayerUnit'
 	game.Damage(victim, args)
-
-	for i, state in ipairs(states) do
-		local record = state and state.DamageDealtByHeroRecord
-		local dealt = record and (record[NASTY_COMEBACK_HITCH] or 0) - before[i] or 0
-		if dealt > 0 then
-			record[NASTY_COMEBACK_HITCH] = record[NASTY_COMEBACK_HITCH] - dealt
-			if record[NASTY_COMEBACK_HITCH] <= 0 then record[NASTY_COMEBACK_HITCH] = nil end
-			record[source] = (record[source] or 0) + dealt
-		end
-	end
 end
 
 
@@ -68,7 +64,6 @@ local function nasty_comeback_share(hero, foe, amount)
 			})
 
 			nasty_comeback_damage(enemy, {
-				EffectName = NASTY_COMEBACK_HITCH,
 				DamageAmount = damage,
 				AttackerTable = hero,
 				AttackerId = hero.ObjectId,
@@ -102,11 +97,13 @@ local function nasty_comeback_strike(hero, foe, damage)
 	nasty_comeback_damage(foe, {
 		AttackerTable = hero,
 		AttackerId = hero.ObjectId,
-		EffectName = NASTY_COMEBACK_HITCH,
 		DamageAmount = damage,
 		PureDamage = true,
 	})
 end
+
+
+local nastyComebackBypassed = false
 
 
 ---@diagnostic disable-next-line: unused-local
@@ -136,7 +133,23 @@ function mod.NastyComebackReflect(attacker, _args, triggerArgs)
 	if affront and not tuning.HeinousAffront then return end
 
 	local shared = math.min(taken * tuning.ReflectMultiplier, tuning.ReflectCap)
+	if nastyComebackBypassed then shared = tuning.BypassReflect end
 	if shared <= 0 then return end
 
 	game.thread(nasty_comeback_strike, hero, foe, shared)
+end
+
+
+function nasty_comeback_bypassed(victim, attacker, args)
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	if not hero or victim ~= hero or hero.IsDead or not args then return end
+	if not duo_on('NastyComeback') or not game.HeroHasTrait(duo_traits.NastyComeback) then return end
+
+	local projectile = args.SourceProjectile and game.ProjectileData[args.SourceProjectile]
+	if not projectile or not projectile.BypassDamagingRetaliate or projectile.BypassRetaliate then return end
+
+	nastyComebackBypassed = true
+	local ok, err = pcall(mod.NastyComebackReflect, attacker, nil, args)
+	nastyComebackBypassed = false
+	if not ok then error(err, 0) end
 end

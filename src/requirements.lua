@@ -240,7 +240,7 @@ duo_requirements = {
 		Gods = { 'Ares', 'Zeus' },
 		OneFromEachSet = {
 			game.LinkedTraitData.AresBloodDropTraits,
-			{ "FocusLightningBoon" },
+			{ "BoltRetaliateBoon", "ZeusManaBoltBoon", "CastAnywhereBoon" },
 		},
 	},
 

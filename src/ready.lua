@@ -315,6 +315,7 @@ end)
 modutil.mod.Path.Wrap("CheckOnDamagedPowers", function(base, victim, attacker, args)
 	duo_revenge_dispatch(base, victim, attacker, args)
 	intertwined_fate_ally_revenge(victim, attacker, args)
+	nasty_comeback_bypassed(victim, attacker, args)
 end)
 
 

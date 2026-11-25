@@ -23,7 +23,7 @@
 - **Intertwined Fate** (Aphrodite × Hera) — Nearby foes are Hitched while you fight, refreshed like Glamour Gain. Hitch shares 10% more damage for each Hitched foe, up to +200%.
 - **Kindled Spirit** (Aphrodite × Hestia) — Whenever you restore Health, inflict 20 Scorch per point restored on nearby foes. Restore 3 Health after taking damage.
 - **Land Mine** (Hephaestus × Ares) — When a foe steps into your Cast, spend 50 Magick to prime your Omega Cast, then erupt in a Hephaestus blast for 500 damage. Re-arms after 8 seconds.
-- **Nasty Comeback** (Hera × Hephaestus) — After you take damage from an attack, inflict Hitch on all foes and deal 10000% of taken damage back to your attacker (up to 9999). Heinous Affront only inflicts the Hitch.
+- **Nasty Comeback** (Hera × Hephaestus) — After you take damage from an attack, inflict Hitch on all foes and deal 10000% of taken damage back to your attacker (up to 9999); Heinous Affront only inflicts the Hitch.
 - **Orbital Ring** (Apollo × Hera) — When you Cast, every Hitched foe is pulled into the binding circle. Foes held in a Cast take 30% more damage.
 - **Permafrost Shield** (Demeter × Hephaestus) — You cannot take more than 35 damage from a single hit.
 - **Plasmic Capacitor** (Ares × Zeus) — Plasma is 50% more effective. Collecting Plasma past the 100 cap emits a burst of chain lightning (20 damage) at a nearby foe.

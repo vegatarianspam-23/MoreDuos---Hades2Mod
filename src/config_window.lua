@@ -44,12 +44,35 @@ local function config_gods(key)
 end
 
 
-local function config_sorted_keys(section)
-	local keys = {}
-	for key, value in pairs(section) do
-		if type(key) == 'string' and type(value) == 'boolean' then table.insert(keys, key) end
+local function config_node()
+	return { Cells = {}, Sections = {} }
+end
+
+
+local function config_read()
+	local root = config_node()
+	for definition, entry in pairs(chalk.original(config).entries) do
+		local value = entry:get()
+		if type(value) == 'boolean' then
+			local node = root
+			for name in definition.section:gmatch('[^.]+') do
+				node.Sections[name] = node.Sections[name] or config_node()
+				node = node.Sections[name]
+			end
+			node.Cells[definition.key] = { Entry = entry, Value = value }
+		end
 	end
-	table.sort(keys, function(a, b) return config_label(a) < config_label(b) end)
+	return root.Sections.config or config_node()
+end
+
+
+local function config_sorted_keys(section)
+	local labels, keys = {}, {}
+	for key in pairs(section and section.Cells or {}) do
+		labels[key] = config_label(key)
+		table.insert(keys, key)
+	end
+	table.sort(keys, function(a, b) return labels[a] < labels[b] end)
 	return keys
 end
 
@@ -60,10 +83,17 @@ local function config_save()
 end
 
 
-local function config_checkbox(label, id, section, key)
-	local value, pressed = rom.ImGui.Checkbox(label .. '##' .. id, section[key] == true)
+local function config_entry(cell, label, id)
+	return { Cell = cell, Label = label .. '##' .. id }
+end
+
+
+local function config_checkbox(entry)
+	local cell = entry.Cell
+	local value, pressed = rom.ImGui.Checkbox(entry.Label, cell.Value)
 	if pressed then
-		section[key] = value
+		cell.Value = value
+		cell.Entry:set(value)
 		duo_config_changed()
 		config_save()
 	end
@@ -78,12 +108,10 @@ local function config_header(name, id, open)
 end
 
 
-local function config_draw_duos()
-	local section = config.Duos
-	if not section then return end
-
+local function config_duos(section)
 	local byGod, godNames, other = {}, {}, {}
 	for _, key in ipairs(config_sorted_keys(section)) do
+		local cell, label = section.Cells[key], config_label(key)
 		local gods = config_gods(key)
 		if gods then
 			for i, god in ipairs(gods) do
@@ -91,31 +119,21 @@ local function config_draw_duos()
 					byGod[god] = {}
 					table.insert(godNames, god)
 				end
-				table.insert(byGod[god], { Key = key, Partner = gods[3 - i] })
+				local partner = gods[3 - i]
+				table.insert(byGod[god], config_entry(cell, partner and (label .. ' (with ' .. partner .. ')') or label, 'Duos.' .. god .. '.' .. key))
 			end
 		else
-			table.insert(other, key)
+			table.insert(other, config_entry(cell, label, 'Duos.Other.' .. key))
 		end
 	end
 	table.sort(godNames)
 
+	local groups = {}
 	for _, god in ipairs(godNames) do
-		if rom.ImGui.TreeNode(god .. '##Duos.' .. god) then
-			for _, entry in ipairs(byGod[god]) do
-				local label = config_label(entry.Key)
-				if entry.Partner then label = label .. ' (with ' .. entry.Partner .. ')' end
-				config_checkbox(label, 'Duos.' .. god .. '.' .. entry.Key, section, entry.Key)
-			end
-			rom.ImGui.TreePop()
-		end
+		table.insert(groups, { Label = god .. '##Duos.' .. god, Entries = byGod[god] })
 	end
-
-	if #other > 0 and rom.ImGui.TreeNode('Other##Duos.Other') then
-		for _, key in ipairs(other) do
-			config_checkbox(config_label(key), 'Duos.Other.' .. key, section, key)
-		end
-		rom.ImGui.TreePop()
-	end
+	if #other > 0 then table.insert(groups, { Label = 'Other##Duos.Other', Entries = other }) end
+	return groups
 end
 
 
@@ -127,50 +145,77 @@ local function config_experimental_group(key)
 end
 
 
-local function config_draw_experimental()
-	local section = config.Experimental
-	if not section then return end
-
-	local groups = {}
+local function config_experimental(section)
+	local byGroup = {}
 	for _, key in ipairs(config_sorted_keys(section)) do
+		local label = config_label(key)
+		local gods = config_gods(key)
+		if gods and #gods == 2 then label = label .. ' (' .. gods[1] .. ' & ' .. gods[2] .. ')' end
 		local group = config_experimental_group(key)
-		groups[group] = groups[group] or {}
-		table.insert(groups[group], key)
+		byGroup[group] = byGroup[group] or {}
+		table.insert(byGroup[group], config_entry(section.Cells[key], label, 'Experimental.' .. key))
 	end
 
+	local groups = {}
 	for _, spec in ipairs(CONFIG_EXPERIMENTAL_GROUPS) do
-		local keys = groups[spec.Key]
-		if keys and rom.ImGui.TreeNode(spec.Name .. '##Experimental.' .. spec.Key) then
-			for _, key in ipairs(keys) do
-				local label = config_label(key)
-				local gods = config_gods(key)
-				if gods and #gods == 2 then label = label .. ' (' .. gods[1] .. ' & ' .. gods[2] .. ')' end
-				config_checkbox(label, 'Experimental.' .. key, section, key)
-			end
+		if byGroup[spec.Key] then
+			table.insert(groups, { Label = spec.Name .. '##Experimental.' .. spec.Key, Entries = byGroup[spec.Key] })
+		end
+	end
+	return groups
+end
+
+
+local function config_options(section)
+	local entries = {}
+	for _, key in ipairs(config_sorted_keys(section)) do
+		table.insert(entries, config_entry(section.Cells[key], config_label(key), 'Options.' .. key))
+	end
+	return entries
+end
+
+
+local configLayout
+
+local function config_layout()
+	local layout = configLayout
+	if layout and layout.Source == config and layout.Text == duo_text and layout.Requirements == duo_requirements then
+		return layout
+	end
+
+	local root = config_read()
+	layout = { Source = config, Text = duo_text, Requirements = duo_requirements }
+	if root.Cells.enabled then layout.Enabled = config_entry(root.Cells.enabled, 'Enable MoreDuos', 'enabled') end
+	layout.Duos = config_duos(root.Sections.Duos)
+	layout.Experimental = config_experimental(root.Sections.Experimental)
+	layout.Options = config_options(root.Sections.Options)
+
+	configLayout = layout
+	return layout
+end
+
+
+local function config_draw_groups(groups)
+	for _, group in ipairs(groups) do
+		if rom.ImGui.TreeNode(group.Label) then
+			for _, entry in ipairs(group.Entries) do config_checkbox(entry) end
 			rom.ImGui.TreePop()
 		end
 	end
 end
 
 
-local function config_draw_options()
-	local section = config.Options
-	if not section then return end
-
-	for _, key in ipairs(config_sorted_keys(section)) do
-		config_checkbox(config_label(key), 'Options.' .. key, section, key)
-	end
-end
-
-
 function more_duos_draw_config()
 	if not config then return end
+	local layout = config_layout()
 
 	rom.ImGui.TextWrapped('Changes are saved right away. Turning a duo on or off applies from the next room. Alternate versions and other experimental options need a restart.')
-	config_checkbox('Enable MoreDuos', 'enabled', config, 'enabled')
+	if layout.Enabled then config_checkbox(layout.Enabled) end
 	rom.ImGui.Separator()
 
-	if config_header('Duos', 'Duos', true) then config_draw_duos() end
-	if config_header('Experimental', 'Experimental') then config_draw_experimental() end
-	if config_header('Options', 'Options') then config_draw_options() end
+	if config_header('Duos', 'Duos', true) then config_draw_groups(layout.Duos) end
+	if config_header('Experimental', 'Experimental') then config_draw_groups(layout.Experimental) end
+	if config_header('Options', 'Options') then
+		for _, entry in ipairs(layout.Options) do config_checkbox(entry) end
+	end
 end

@@ -8,7 +8,7 @@ local PUDDLE = mod.tuning.VolcanicRift.PuddleProjectile
 
 local SPRINT_TRAIL = mod.tuning.VolcanicRift.SprintTrail
 local SWORN = 'BlinkTrailProjectileHeraOmega'
-local ERUPTS = { [RIFT] = true, [FINE_LINE] = true, [SWORN] = true }
+local ERUPTS = { [RIFT] = true, [FINE_LINE] = true, [SWORN] = true, SWuSwornBlinkRift = true }
 
 
 local function volcanic_rift_erupts(name)

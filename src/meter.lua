@@ -63,4 +63,4 @@ duo_meter_add('LandMine', mod.tuning.LandMine.BlastProjectile, DUO_METER_ALIASED
 
 duo_meter_add('IntertwinedFate', mod.tuning.IntertwinedFate.RevengeSource, DUO_METER_FREE)
 duo_meter_add('BleedingHeart', mod.tuning.BleedingHeart.MeterSource, DUO_METER_FREE)
-duo_meter_add('NastyComeback', mod.tuning.NastyComeback.ReflectSource, DUO_METER_FREE)
+duo_meter_add('NastyComeback', mod.tuning.NastyComeback.ReflectSource, DUO_METER_ALIASED)

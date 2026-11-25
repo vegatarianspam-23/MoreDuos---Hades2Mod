@@ -250,6 +250,7 @@ mod.tuning = {
 		HeinousAffrontDamage = 50,
 		ReflectMultiplier = 100,
 		ReflectCap = 9999,
+		BypassReflect = 9999,
 		ShareDelay = 0.05,
 
 		ReflectSource = 'SWuNastyComebackReflect',

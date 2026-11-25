@@ -83,7 +83,7 @@ Each duo needs one boon from every group (sub-bullet). Boons marked *(BoonEdits)
   - Trusty Shield, Heavy Metal, Security System, Uncanny Fortitude
 - **Plasmic Capacitor**
   - Grisly Gain, Visceral Impact, Meat Grinder *(BoonEdits)*, Profuse Bleeding *(BoonEdits)*
-  - Static Shock
+  - Divine Vengeance, Power Surge, Lightning Lance
 - **Razor Shoals**
   - Tidal Ring, Slippery Slope
   - Vicious Strike, Vicious Flourish

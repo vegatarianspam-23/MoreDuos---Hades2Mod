@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Nasty Comeback: attacks that bypass retaliation, such as Chronos' nova, are answered with 9999 damage
+- Plasmic Capacitor requirement update: Zeus bucket is now Divine Vengeance, Power Surge, and Lightning Lance
+
+### Fixed
+
+- Fixed the game slowing down while the Hell2Modding menu (Insert) was open
+
 ## [1.2.0] - 2026-11-22
 
 ### Changed
