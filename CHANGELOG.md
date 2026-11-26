@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-11-25
+
 ### Fixed
 
 - The Hell2Modding Config tab no longer fills with a new copy of MoreDuos' settings on every room load
@@ -290,6 +292,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
+[1.2.2]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.2.1...1.2.2
 [1.2.1]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.8...1.2.0
 [1.1.8]: https://github.com/vegatarianspam-23/MoreDuos---Hades2Mod/compare/1.1.7...1.1.8
