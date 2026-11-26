@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- The Hell2Modding Config tab no longer fills with a new copy of MoreDuos' settings on every room load
+- Ingenious Invention: a reward that rolled its choices before the duo granted a Hammer in the same room no longer offers that Hammer. A Boon or Hammer reward re-rolls when you open it if it would offer something you already hold or something no longer eligible (its slot filled, its requirements no longer met, or the boon it would replace gone). Menus that list your own boons on purpose, such as the Anvil of Fates, are left alone.
+
 ## [1.2.1] - 2026-11-24
 
 ### Changed

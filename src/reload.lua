@@ -1440,16 +1440,15 @@ end
 
 
 function reload_config()
-	local ok, reloaded = pcall(function()
-		local loaded = chalk.auto('config.lua')
-		return loaded
+	local ok, err = pcall(function()
+		local path = rom.path.combine(rom.paths.config(), _PLUGIN.guid .. '.cfg')
+		local _, loaded = next(rom.toml.decodeFromFile(path))
+		if type(loaded) == 'table' then chalk.merge(config, loaded) end
 	end)
-	if ok and reloaded then
-		config = reloaded
-		public.config = config
+	if ok then
 		duo_config_changed()
 	else
-		print('[' .. _PLUGIN.guid .. '] config reload failed: ' .. tostring(reloaded))
+		print('[' .. _PLUGIN.guid .. '] config reload failed: ' .. tostring(err))
 	end
 end
 

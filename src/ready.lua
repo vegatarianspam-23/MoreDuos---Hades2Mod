@@ -257,6 +257,38 @@ modutil.mod.Path.Wrap("CheckChamberTraits", function(base, ...)
 	ingenious_invention_debug_hammers('encounter end')
 end)
 
+local function choice_offers_stale(lootData)
+	if not (lootData.GodLoot or lootData.Name == 'WeaponUpgrade') then return false end
+	local spawned = lootData.ObjectId and game.LootObjects and game.LootObjects[lootData.ObjectId]
+	if spawned ~= lootData then return false end
+
+	local eligible
+	local ok, list = pcall(game.GetEligibleUpgrades, nil, lootData, lootData)
+	if ok and type(list) == 'table' then
+		eligible = {}
+		for _, entry in ipairs(list) do eligible[entry.ItemName] = true end
+	end
+	for _, option in pairs(lootData.UpgradeOptions) do
+		local name = option.ItemName
+		if name and game.TraitData[name] then
+			if game.HeroHasTrait(name) then return true end
+			if option.TraitToReplace then
+				if not game.HeroHasTrait(option.TraitToReplace) then return true end
+			elseif eligible and not eligible[name] then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+modutil.mod.Path.Wrap("CreateBoonLootButtons", function(base, screen, lootData, reroll, args)
+	if not reroll and lootData and not lootData.StackOnly and not lootData.TransformingTraits and type(lootData.UpgradeOptions) == 'table' then
+		if choice_offers_stale(lootData) then lootData.UpgradeOptions = nil end
+	end
+	return base(screen, lootData, reroll, args)
+end)
+
 modutil.mod.Path.Wrap("RemoveTraitData", function(base, unit, trait, args)
 	ingenious_invention_debug_removed(unit, trait)
 	return base(unit, trait, args)
